@@ -1,83 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bending Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Apply Montserrat Font */
-        body {
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #f9f9f9;
-            background-image: radial-gradient(circle, #ccc 1px, transparent 1px); 
-            background-size: 20px 20px; 
-            margin: 0;
-            color: #333;
-        }
+/* General Styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f9f9f9;
+    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+    margin: 0;
+    color: #333;
+}
 
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            text-align: center;
-        }
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
 
-        .panel {
-            width: 300px;
-            height: 200px;
-            margin: 50px auto;
-            background: #fff;
-            border-radius: 15px;
-            border: 2px dashed #ccc;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transform-origin: center;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease-out; /* Smooth transition */
-        }
+/* Section Styles */
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #ccc;
+    text-align: center;
+    transform-origin: center;
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
 
-        .panel span {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #2D3C41;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="panel">
-            <span>Imagine My Biography Here</span>
-        </div>
-    </div>
-    <script>
-        // Select the panel
-        const panel = document.querySelector('.panel');
+.section h2 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #2D3C41;
+    margin-bottom: 15px;
+}
 
-        // Add mousemove event listener to the document
-        document.addEventListener('mousemove', (e) => {
-            // Get the panel's position and dimensions
-            const rect = panel.getBoundingClientRect();
-            const panelCenterX = rect.left + rect.width / 2; // Center X of the panel
-            const panelCenterY = rect.top + rect.height / 2; // Center Y of the panel
+.section p {
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
 
-            // Calculate the offset of the cursor relative to the panel's center
-            const offsetX = e.clientX - panelCenterX;
-            const offsetY = e.clientY - panelCenterY;
+a {
+    color: #2D3C41;
+    font-weight: 600;
+    text-decoration: none;
+}
 
-            // Calculate rotation angles (limit to avoid extreme tilt)
-            const rotateX = Math.max(Math.min(offsetY / 10, 10), -10); // Limit X tilt between -10 and 10
-            const rotateY = Math.max(Math.min(-offsetX / 10, 10), -10); // Limit Y tilt between -10 and 10
+a:hover {
+    text-decoration: underline;
+}
 
-            // Apply CSS transform to the panel
-            panel.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
+ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
 
-        // Reset the panel when the mouse leaves the window
-        document.addEventListener('mouseleave', () => {
-            panel.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        });
-    </script>
-</body>
-</html>
+li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+}
