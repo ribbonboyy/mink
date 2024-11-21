@@ -3,29 +3,33 @@ const sections = document.querySelectorAll('.section');
 
 // Add mousemove event listener to the document
 document.addEventListener('mousemove', (e) => {
+    // Get the center of the viewport (to calculate relative movement)
+    const viewportCenterX = window.innerWidth / 2;
+    const viewportCenterY = window.innerHeight / 2;
+
     // Loop through each section
     sections.forEach(section => {
         // Get the section's position and dimensions
         const rect = section.getBoundingClientRect();
-        const sectionCenterX = rect.left + rect.width / 2; // Center X of the section
-        const sectionCenterY = rect.top + rect.height / 2; // Center Y of the section
+        const sectionCenterX = rect.left + rect.width / 2;
+        const sectionCenterY = rect.top + rect.height / 2;
 
-        // Calculate the offset of the cursor relative to the section's center
+        // Calculate cursor offset relative to the section's center
         const offsetX = e.clientX - sectionCenterX;
         const offsetY = e.clientY - sectionCenterY;
 
-        // Calculate rotation angles (limit to avoid extreme tilt)
-        const rotateX = Math.max(Math.min(offsetY / 15, 10), -10); // Limit X tilt between -10 and 10
-        const rotateY = Math.max(Math.min(-offsetX / 15, 10), -10); // Limit Y tilt between -10 and 10
+        // Smooth out the rotation effect
+        const rotateX = (offsetY / rect.height) * 10; // Tilt along the X-axis (limit to ±10 degrees)
+        const rotateY = -(offsetX / rect.width) * 10; // Tilt along the Y-axis (limit to ±10 degrees)
 
-        // Apply CSS transform to the section
-        section.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        // Apply rotation with a smooth easing effect
+        section.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
 });
 
-// Reset the section when the mouse leaves the window
+// Reset the section when the mouse leaves the viewport
 document.addEventListener('mouseleave', () => {
     sections.forEach(section => {
-        section.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
     });
 });
