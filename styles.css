@@ -23,9 +23,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
     text-align: center;
+
+    /* Default flat state */
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
     transform-origin: center;
-    transform-style: preserve-3d;
-    transition: transform 0.1s ease-out;
+    transition: transform 0.2s ease-out; /* Smooth transition effect */
 }
 
 .section h2 {
