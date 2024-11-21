@@ -1,14 +1,9 @@
 // Select all sections
 const sections = document.querySelectorAll('.section');
 
-// Add mousemove event listener to the document
-document.addEventListener('mousemove', (e) => {
-    // Get the center of the viewport (to calculate relative movement)
-    const viewportCenterX = window.innerWidth / 2;
-    const viewportCenterY = window.innerHeight / 2;
-
-    // Loop through each section
-    sections.forEach(section => {
+// Add event listeners for hover effects
+sections.forEach(section => {
+    section.addEventListener('mousemove', (e) => {
         // Get the section's position and dimensions
         const rect = section.getBoundingClientRect();
         const sectionCenterX = rect.left + rect.width / 2;
@@ -22,14 +17,12 @@ document.addEventListener('mousemove', (e) => {
         const rotateX = (offsetY / rect.height) * 10; // Tilt along the X-axis (limit to ±10 degrees)
         const rotateY = -(offsetX / rect.width) * 10; // Tilt along the Y-axis (limit to ±10 degrees)
 
-        // Apply rotation with a smooth easing effect
+        // Apply rotation to the section
         section.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
-});
 
-// Reset the section when the mouse leaves the viewport
-document.addEventListener('mouseleave', () => {
-    sections.forEach(section => {
+    // Reset the section when the mouse leaves
+    section.addEventListener('mouseleave', () => {
         section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
     });
 });
