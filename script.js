@@ -28,7 +28,7 @@ sections.forEach(section => {
 });
 
 const apiKey = '49JUJZZ2UXPCOEP5'; // Replace with your API key from Alpha Vantage or another provider
-const apiUrl = `https://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=AAPL,MSFT,GOOGL,AMZN,TSLA`;
+const apiUrl = `https://api.marketstack.com/v1/eod?access_key=49JUJZZ2UXPCOEP5&symbols=AAPL,MSFT,GOOGL,AMZN,TSLA`;
 
 async function fetchStocks() {
     try {
