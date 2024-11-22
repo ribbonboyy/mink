@@ -28,7 +28,12 @@ sections.forEach(section => {
 });
 
 const apiKey = '49JUJZZ2UXPCOEP5'; // Alpha Vantage API key
-const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']; // Stock symbols
+const stockSymbols = [
+    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA',
+    'META', 'NFLX', 'NVDA', 'AMD', 'BABA',
+    'DIS', 'JPM', 'V', 'WMT', 'PYPL',
+    'INTC', 'KO', 'PEP', 'CSCO', 'ADBE'
+];
 const apiUrl = `https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=${stockSymbols.join(',')}&apikey=${apiKey}`;
 
 async function fetchStockData() {
