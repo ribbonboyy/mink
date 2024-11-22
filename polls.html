@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Poll</title>
+    <link rel="stylesheet" href="polls.css">
+</head>
+<body>
+    <div class="container">
+        <div class="section poll-container">
+            <h2>Which is your favorite programming language?</h2>
+            <p>Select one option below and cast your vote!</p>
+            <div class="options">
+                <button onclick="vote('JavaScript')">JavaScript</button>
+                <button onclick="vote('Python')">Python</button>
+                <button onclick="vote('Java')">Java</button>
+                <button onclick="vote('C++')">C++</button>
+            </div>
+            <div class="results">
+                <h3>Results</h3>
+                <div id="result-JavaScript" class="result">JavaScript: <span>0</span> votes</div>
+                <div id="result-Python" class="result">Python: <span>0</span> votes</div>
+                <div id="result-Java" class="result">Java: <span>0</span> votes</div>
+                <div id="result-C++" class="result">C++: <span>0</span> votes</div>
+            </div>
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
