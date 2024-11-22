@@ -158,6 +158,7 @@ const apiKey = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
 const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Fetch NASA data
     fetch(apiURL)
         .then(response => response.json())
         .then(data => {
@@ -175,12 +176,26 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error fetching NASA APOD:', error);
-
-            // Fallback in case of an error
             document.getElementById('apod-title').innerText = 'Error Loading Data';
             document.getElementById('apod-description').innerText = 'Unable to fetch data from NASA API. Please try again later.';
         });
+
+    // Add leaning/tilting effect to sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section) => {
+        section.addEventListener('mousemove', (event) => {
+            const { width, height, left, top } = section.getBoundingClientRect();
+            const x = event.clientX - left;
+            const y = event.clientY - top;
+            const rotateX = ((y / height) - 0.5) * -15; // Tilt range for X-axis
+            const rotateY = ((x / width) - 0.5) * 15;  // Tilt range for Y-axis
+
+            section.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        section.addEventListener('mouseleave', () => {
+            // Reset transform when mouse leaves
+            section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
+        });
+    });
 });
-
-
-
