@@ -73,3 +73,19 @@ li {
         padding: 15px;
     }
 }
+
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #ccc;
+    text-align: center;
+
+    /* Enable 3D transform and smooth return */
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
+    transform-origin: center;
+    transition: transform 0.2s ease-out;
+}
+
