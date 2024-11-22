@@ -26,3 +26,36 @@ sections.forEach(section => {
         section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
     });
 });
+
+const apiKey = '49JUJZZ2UXPCOEP5'; // Replace with your API key from Alpha Vantage or another provider
+const apiUrl = `https://api.marketstack.com/v1/eod?access_key=${apiKey}&symbols=AAPL,MSFT,GOOGL,AMZN,TSLA`;
+
+async function fetchStocks() {
+    try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) throw new Error('Failed to fetch stock data');
+        const data = await response.json();
+
+        const stocks = data.data;
+        displayStocks(stocks);
+    } catch (error) {
+        console.error(error);
+        document.getElementById('stocks-list').innerHTML = `<p>Failed to load stocks.</p>`;
+    }
+}
+
+function displayStocks(stocks) {
+    const stocksList = document.getElementById('stocks-list');
+    stocksList.innerHTML = '';
+
+    const ul = document.createElement('ul');
+    stocks.forEach(stock => {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${stock.symbol}</strong>: $${stock.close} (${stock.date})`;
+        ul.appendChild(li);
+    });
+
+    stocksList.appendChild(ul);
+}
+
+fetchStocks();
