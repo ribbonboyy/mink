@@ -98,3 +98,57 @@ async function displayStocks() {
 
 // Call the display function when the page loads
 displayStocks();
+
+// script.js
+
+// Initialize vote counts (mock data)
+const voteCounts = {
+    JavaScript: 0,
+    Python: 0,
+    Java: 0,
+    'C++': 0
+};
+
+// Load initial vote counts from local storage, if available
+Object.keys(voteCounts).forEach((option) => {
+    const savedCount = localStorage.getItem(`votes-${option}`);
+    if (savedCount !== null) {
+        voteCounts[option] = parseInt(savedCount, 10);
+    }
+});
+
+// Check if user has already voted
+const hasVoted = localStorage.getItem('hasVoted');
+
+// Display initial results
+function updateResults() {
+    Object.keys(voteCounts).forEach((option) => {
+        document.querySelector(`#result-${option} span`).textContent = voteCounts[option];
+    });
+}
+
+// Voting function
+function vote(option) {
+    if (hasVoted) {
+        document.getElementById('message').textContent = 'You have already voted.';
+        return;
+    }
+
+    // Increment the vote count
+    voteCounts[option] += 1;
+
+    // Save updated count to local storage
+    localStorage.setItem(`votes-${option}`, voteCounts[option]);
+
+    // Mark user as having voted
+    localStorage.setItem('hasVoted', 'true');
+
+    // Update the results display
+    updateResults();
+
+    // Show confirmation message
+    document.getElementById('message').textContent = 'Thank you for voting!';
+}
+
+// Initialize the results on page load
+updateResults();
