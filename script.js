@@ -150,3 +150,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 });
 
+// script.js
+
+// ZenQuotes API URL
+const API_URL = 'https://zenquotes.io/api/random';
+
+async function fetchQuote(sectionId) {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        const quote = data[0].q; // The quote
+        const author = data[0].a; // The author
+
+        const section = document.getElementById(sectionId);
+        section.innerHTML = `
+            <h2>"${quote}"</h2>
+            <p>- ${author}</p>
+        `;
+    } catch (error) {
+        console.error(error);
+        document.getElementById(sectionId).innerHTML = `
+            <h2>Unable to load quote</h2>
+            <p>Please check your internet connection or try again later.</p>
+        `;
+    }
+}
+
+// Fetch two quotes
+fetchQuote('quote1');
+fetchQuote('quote2');
