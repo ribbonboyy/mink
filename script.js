@@ -27,35 +27,45 @@ sections.forEach(section => {
     });
 });
 
-const apiKey = '49JUJZZ2UXPCOEP5'; // Replace with your API key from Alpha Vantage or another provider
-const apiUrl = `https://api.marketstack.com/v1/eod?access_key=49JUJZZ2UXPCOEP5&symbols=AAPL,MSFT,GOOGL,AMZN,TSLA`;
+const apiKey = '49JUJZZ2UXPCOEP5'; // Your Alpha Vantage API key
+const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']; // List of stock symbols
+const apiUrl = 'https://www.alphavantage.co/query';
 
-async function fetchStocks() {
+async function fetchStock(symbol) {
     try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error('Failed to fetch stock data');
+        const response = await fetch(`${apiUrl}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`);
+        if (!response.ok) throw new Error(`Failed to fetch data for ${symbol}`);
         const data = await response.json();
-
-        const stocks = data.data;
-        displayStocks(stocks);
+        return data['Global Quote'];
     } catch (error) {
         console.error(error);
-        document.getElementById('stocks-list').innerHTML = `<p>Failed to load stocks.</p>`;
+        return null; // Handle error gracefully
     }
 }
 
-function displayStocks(stocks) {
+async function fetchAllStocks() {
     const stocksList = document.getElementById('stocks-list');
-    stocksList.innerHTML = '';
+    stocksList.innerHTML = '<p>Loading stocks...</p>';
+
+    const stockData = await Promise.all(stockSymbols.map(fetchStock));
+
+    stocksList.innerHTML = ''; // Clear loading text
 
     const ul = document.createElement('ul');
-    stocks.forEach(stock => {
-        const li = document.createElement('li');
-        li.innerHTML = `<strong>${stock.symbol}</strong>: $${stock.close} (${stock.date})`;
-        ul.appendChild(li);
+    stockData.forEach((stock, index) => {
+        if (stock) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${stock['01. symbol']}</strong>: $${parseFloat(stock['05. price']).toFixed(2)} (Change: ${stock['09. change']}%)`;
+            ul.appendChild(li);
+        } else {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${stockSymbols[index]}</strong>: Failed to load data`;
+            ul.appendChild(li);
+        }
     });
 
     stocksList.appendChild(ul);
 }
 
-fetchStocks();
+// Fetch all stocks on page load
+fetchAllStocks();
