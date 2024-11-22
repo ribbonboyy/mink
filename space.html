@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Info Page</title>
+    <link rel="stylesheet" href="space.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="section">
+            <h2>NASA Astronomy Picture of the Day</h2>
+            <p>Discover the wonders of the universe, one picture at a time!</p>
+        </header>
+        <main id="content" class="section">
+            <h2 id="apod-title">Loading...</h2>
+            <img id="apod-image" src="" alt="Astronomy Picture of the Day" style="display: none; max-width: 100%; border-radius: 10px; margin: 20px 0;">
+            <p id="apod-description">Fetching today's astronomy picture. Please wait!</p>
+            <small id="apod-date" style="display: block; margin-top: 10px;"></small>
+        </main>
+        <footer class="section">
+            <p>
+                <a href="https://www.nasa.gov/" target="_blank">Visit NASA's Official Website</a> for more information.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        const apiKey = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
+        const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+        fetch(apiURL)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('apod-title').innerText = data.title;
+                document.getElementById('apod-description').innerText = data.explanation;
+                document.getElementById('apod-date').innerText = `Date: ${data.date}`;
+
+                const image = document.getElementById('apod-image');
+                image.src = data.url;
+                image.style.display = 'block';
+            })
+            .catch(error => {
+                document.getElementById('apod-title').innerText = 'Error Loading Data';
+                document.getElementById('apod-description').innerText = 'Unable to fetch data from NASA API. Please try again later.';
+            });
+    </script>
+</body>
+</html>
