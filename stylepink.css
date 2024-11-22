@@ -1,0 +1,73 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fdecef; /* Pastel pink background */
+    background-image: radial-gradient(circle, #f8d7e0 1px, transparent 1px); /* Subtle pink grid */
+    background-size: 20px 20px;
+    margin: 0;
+    color: #5a3e42; /* Soft pastel-like dark brown */
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.section {
+    background: #fff4f6; /* Lighter pastel pink for sections */
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #f8d7e0; /* Soft dashed border in pastel pink */
+    text-align: center;
+
+    transform-origin: center;
+    transition: transform 0.2s ease-out;
+}
+
+.section h2 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #d78199; /* Deeper pastel pink for headings */
+    margin-bottom: 15px;
+}
+
+.section p {
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #7a5054; /* A balanced pastel brown for text */
+}
+
+a {
+    color: #d78199; /* Deeper pastel pink */
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    padding-left: 20px;
+    list-style-type: disc;
+    color: #7a5054; /* Match text color for lists */
+}
+
+li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+}
