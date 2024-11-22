@@ -125,8 +125,8 @@ function vote(option) {
 updateResults();
 
 // NASA APOD API Key and URL
-const apiKey = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
-const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+const apiKey3 = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
+const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey3}`;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Fetch NASA APOD data
@@ -154,14 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // The Cat API URL
 const CAT_API_URL = 'https://api.thecatapi.com/v1/images/search';
-const API_KEY = 'live_0I7jU3fVXbmomkf1DcgDbtAbKqLp7SIdVVmgsft6biCY3hLpcGPXrsy9REnqiD2O';
+const API_KEY2 = 'live_0I7jU3fVXbmomkf1DcgDbtAbKqLp7SIdVVmgsft6biCY3hLpcGPXrsy9REnqiD2O';
 
 // Fetch a random cat and display it in the specified section
 async function fetchCat(sectionId) {
     try {
         const response = await fetch(CAT_API_URL, {
             headers: {
-                'x-api-key': API_KEY,
+                'x-api-key': API_KEY2,
             },
         });
         if (!response.ok) {
@@ -186,7 +186,3 @@ async function fetchCat(sectionId) {
 // Fetch two random cats
 fetchCat('cat1');
 fetchCat('cat2');
-
-// Fetch two quotes
-fetchQuote('quote1');
-fetchQuote('quote2');
