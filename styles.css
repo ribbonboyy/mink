@@ -110,18 +110,41 @@ body {
 .sidebar {
     position: fixed;
     top: 0;
-    left: -180px; /* Hidden except for a slim strip */
+    left: -150px; /* Start hidden except for toggle button */
     width: 200px;
     height: 100%;
     background-color: #2D3C41;
     color: white;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    transition: left 0.3s ease;
+    padding-top: 20px;
+    transition: left 0.3s ease; /* Slide-out animation */
 }
 
 .sidebar:hover {
-    left: 0; /* Slide the sidebar open when hovered */
+    left: 0; /* Slide sidebar out on hover */
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 20px;
+    right: -30px; /* Position the toggle outside of sidebar */
+    width: 30px;
+    height: 30px;
+    background-color: #2D3C41;
+    color: white;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.3s;
+}
+
+.sidebar-toggle:hover {
+    background-color: #1a2326;
 }
 
 .sidebar ul {
@@ -130,6 +153,7 @@ body {
     margin: 0;
     width: 100%;
     text-align: center;
+    padding-top: 50px; /* Add some spacing below toggle button */
 }
 
 .sidebar ul li {
