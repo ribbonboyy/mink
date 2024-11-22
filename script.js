@@ -153,3 +153,29 @@ function vote(option) {
 // Initialize the results on page load
 updateResults();
 
+// NASA APOD API Key and URL
+const apiKey = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
+const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch NASA APOD data
+    fetch(apiURL)
+        .then(response => response.json())
+        .then(data => {
+            // Populate the page with APOD data
+            document.getElementById('apod-title').innerText = data.title;
+            document.getElementById('apod-description').innerText = data.explanation;
+            document.getElementById('apod-date').innerText = `Date: ${data.date}`;
+            
+            // Update and display the image
+            const imageElement = document.getElementById('apod-image');
+            imageElement.src = data.url;
+            imageElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching NASA APOD:', error);
+            document.getElementById('apod-title').innerText = 'Error Loading Data';
+            document.getElementById('apod-description').innerText = 'Unable to fetch data. Please try again later.';
+        });
+});
+
