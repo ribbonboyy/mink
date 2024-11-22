@@ -2,19 +2,62 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
-    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
-    background-size: 20px 20px;
     margin: 0;
     color: #333;
 }
 
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -180px; /* Hidden except for a slim strip */
+    width: 200px;
+    height: 100%;
+    background-color: #2D3C41;
+    color: white;
+    display: flex;
+    align-items: center;
+    transition: left 0.3s ease;
+}
+
+.sidebar:hover {
+    left: 0; /* Slide the sidebar open when hovered */
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+    transition: background 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: #1a2326;
+}
+
+/* Main Container and Section Styles */
 .container {
     max-width: 900px;
     margin: 50px auto;
     padding: 20px;
+    margin-left: 220px; /* Offset content to the right of the sidebar */
 }
 
-/* Section Styles */
 .section {
     background: #fff;
     padding: 20px;
@@ -23,11 +66,6 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
     text-align: center;
-
-    /* Default flat state */
-    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
-    transform-origin: center;
-    transition: transform 0.3s ease-out; /* Smooth return when reset */
 }
 
 .section h2 {
@@ -37,64 +75,20 @@ body {
     margin-bottom: 15px;
 }
 
-.section p {
+.section p, .section ul li {
     line-height: 1.6;
     font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-a {
-    color: #2D3C41;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-ul {
-    padding-left: 20px;
-    list-style-type: disc;
-}
-
-li {
-    font-size: 1rem;
-    margin-bottom: 8px;
+    color: #333;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
-        width: 90%;
+        margin-left: 0;
         padding: 10px;
     }
 
-    .section {
-        padding: 15px;
+    .sidebar {
+        width: 150px;
     }
 }
-
-#am-i-termed {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.termed-status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem; /* Space between text and the image */
-}
-
-.termed-status p {
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #2e7d32; /* Green text to match the safety check mark */
-}
-
-.check-icon {
-    width: 40px; /* Adjust size as needed */
-    height: 40px;
-}
-
