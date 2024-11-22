@@ -27,7 +27,7 @@ sections.forEach(section => {
     });
 });
 
-const apiKey = '49JUJZZ2UXPCOEP5'; // Alpha Vantage API key
+const apiKey = '5FAXFFBSS5483KAN'; // Alpha Vantage API key
 const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']; // Stock symbols
 const apiUrl = `https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=${stockSymbols.join(',')}&apikey=${apiKey}`;
 
