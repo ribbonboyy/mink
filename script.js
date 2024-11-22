@@ -153,23 +153,23 @@ function vote(option) {
 // Initialize the results on page load
 updateResults();
 
-// Dark Mode Toggle
+// Select the dark mode toggle button
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 
 // Check for dark mode preference in localStorage
-const isDarkMode = localStorage.getItem('dark-mode') === 'true';
-if (isDarkMode) {
+if (localStorage.getItem('dark-mode') === 'true') {
     document.body.classList.add('dark-mode');
     darkModeToggle.textContent = 'Switch to Light Mode';
 }
 
+// Add event listener to the toggle button
 darkModeToggle.addEventListener('click', () => {
     const body = document.body;
 
     // Toggle dark mode class
     body.classList.toggle('dark-mode');
 
-    // Update button text
+    // Update button text and save preference to localStorage
     if (body.classList.contains('dark-mode')) {
         darkModeToggle.textContent = 'Switch to Light Mode';
         localStorage.setItem('dark-mode', 'true');
