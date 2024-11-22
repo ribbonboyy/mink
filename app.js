@@ -8,7 +8,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     document.getElementById('quote').textContent = `"${data.quote}"`;
                 })
-                .catch(error => console.error('Error fetching Kanye quote:', error));
+                .catch(error => {
+                    document.getElementById('quote').textContent = "Could not fetch Kanye quote.";
+                    console.error(error);
+                });
         });
     }
 
@@ -22,7 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     document.getElementById('output-text').textContent = data;
                 })
-                .catch(error => console.error('Error OwOifying text:', error));
+                .catch(error => {
+                    document.getElementById('output-text').textContent = "Could not OwOify the text.";
+                    console.error(error);
+                });
         });
     }
 
@@ -35,7 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     document.getElementById('fact').textContent = data.data.fact;
                 })
-                .catch(error => console.error('Error fetching fun fact:', error));
+                .catch(error => {
+                    document.getElementById('fact').textContent = "Could not fetch a fun fact.";
+                    console.error(error);
+                });
         });
     }
 });
