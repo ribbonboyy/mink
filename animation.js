@@ -19,10 +19,12 @@ sections.forEach(section => {
 
         // Apply rotation to the section
         section.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        section.style.transition = 'transform 0s'; // Disable transition during movement
     });
 
     // Reset the section when the mouse leaves
     section.addEventListener('mouseleave', () => {
         section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
+        section.style.transition = 'transform 0.2s ease-out'; // Smooth return effect
     });
 });
