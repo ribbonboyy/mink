@@ -1,39 +1,28 @@
+// Select all sections
 const sections = document.querySelectorAll('.section');
-const tiltIntensity = 15; // Adjust intensity of the tilt
 
+// Add tilt effect to each section
 sections.forEach((section) => {
-    let isAnimating = false;
-
     section.addEventListener('mousemove', (e) => {
-        if (!isAnimating) {
-            isAnimating = true;
-            requestAnimationFrame(() => {
-                const rect = section.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
+        // Get the section's dimensions and position
+        const rect = section.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
 
-                const offsetX = e.clientX - centerX;
-                const offsetY = e.clientY - centerY;
+        // Calculate the cursor's distance from the center
+        const offsetX = e.clientX - centerX;
+        const offsetY = e.clientY - centerY;
 
-                const rotateX = (offsetY / rect.height) * tiltIntensity;
-                const rotateY = -(offsetX / rect.width) * tiltIntensity;
+        // Scale these values for a subtle tilt effect
+        const rotateX = (offsetY / rect.height) * 10; // Rotate up/down
+        const rotateY = -(offsetX / rect.width) * 10; // Rotate left/right
 
-                section.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                section.style.webkitTransform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                isAnimating = false;
-            });
-        }
+        // Apply the transform to create the "balancing" effect
+        section.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
 
     section.addEventListener('mouseleave', () => {
-        section.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        section.style.webkitTransform = 'rotateX(0deg) rotateY(0deg)';
+        // Reset the section to its original state when the mouse leaves
+        section.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)';
     });
 });
-
-// Optional: Disable on touch devices
-if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-    sections.forEach(section => {
-        section.style.transform = 'none';
-    });
-}
