@@ -2,48 +2,89 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
+    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+    background-size: 20px 20px;
     margin: 0;
     color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
 }
 
 .container {
     max-width: 900px;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* Section Styles */
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #ccc;
+    text-align: center;
+
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
+}
+
+.section h2 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #2D3C41;
+    margin-bottom: 15px;
+}
+
+.section p {
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+a {
+    color: #2D3C41;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .section {
+        padding: 15px;
+    }
 }
 
 .section {
     background: #fff;
     padding: 20px;
     border-radius: 15px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
     text-align: center;
+
+    /* Enable 3D transform and smooth return */
+    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
+    transform-origin: center;
     transition: transform 0.2s ease-out;
-    transform-origin: center; /* Pivot around the center */
-    width: 250px;
-    height: 150px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.section h2 {
-    font-weight: 600;
-    font-size: 1.5rem;
-    color: #2D3C41;
-    margin: 0 0 10px 0;
-}
-
-.section p {
-    font-size: 1rem;
-    margin: 0;
 }
