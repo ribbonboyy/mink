@@ -23,6 +23,7 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
     text-align: center;
+
     transform: perspective(600px) rotateX(0deg) rotateY(0deg);
     transform-origin: center;
     transition: transform 0.3s ease-out;
@@ -71,30 +72,4 @@ li {
     .section {
         padding: 15px;
     }
-}
-
-#pagination-controls {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-button {
-    background-color: #2D3C41;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-span {
-    font-size: 1rem;
-    color: #333;
 }
