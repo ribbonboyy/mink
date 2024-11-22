@@ -152,32 +152,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // script.js
 
-// ZenQuotes API URL
-const API_URL = 'https://zenquotes.io/api/random';
+// The Cat API URL
+const CAT_API_URL = 'https://api.thecatapi.com/v1/images/search';
+const API_KEY = 'live_0I7jU3fVXbmomkf1DcgDbtAbKqLp7SIdVVmgsft6biCY3hLpcGPXrsy9REnqiD2O';
 
-async function fetchQuote(sectionId) {
+// Fetch a random cat and display it in the specified section
+async function fetchCat(sectionId) {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(CAT_API_URL, {
+            headers: {
+                'x-api-key': API_KEY,
+            },
+        });
         if (!response.ok) {
             throw new Error(`Error: ${response.status}`);
         }
         const data = await response.json();
-        const quote = data[0].q; // The quote
-        const author = data[0].a; // The author
+        const catImageUrl = data[0].url;
 
         const section = document.getElementById(sectionId);
         section.innerHTML = `
-            <h2>"${quote}"</h2>
-            <p>- ${author}</p>
+            <img src="${catImageUrl}" alt="A cute cat" style="max-width: 100%; border-radius: 10px;">
         `;
     } catch (error) {
         console.error(error);
         document.getElementById(sectionId).innerHTML = `
-            <h2>Unable to load quote</h2>
+            <h2>Unable to load cat</h2>
             <p>Please check your internet connection or try again later.</p>
         `;
     }
 }
+
+// Fetch two random cats
+fetchCat('cat1');
+fetchCat('cat2');
 
 // Fetch two quotes
 fetchQuote('quote1');
