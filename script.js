@@ -153,5 +153,34 @@ function vote(option) {
 // Initialize the results on page load
 updateResults();
 
+// Fetch and display the Astronomy Picture of the Day from NASA's API
+const apiKey = '7TUUcxITpxatYafCvKe2UsM2wLfB5p5UrbDQLF77';
+const apiURL = `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`;
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch(apiURL)
+        .then(response => response.json())
+        .then(data => {
+            // Update the DOM with data
+            const titleElement = document.getElementById('apod-title');
+            const descriptionElement = document.getElementById('apod-description');
+            const dateElement = document.getElementById('apod-date');
+            const imageElement = document.getElementById('apod-image');
+
+            titleElement.innerText = data.title;
+            descriptionElement.innerText = data.explanation;
+            dateElement.innerText = `Date: ${data.date}`;
+            imageElement.src = data.url;
+            imageElement.style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching NASA APOD:', error);
+
+            // Fallback in case of an error
+            document.getElementById('apod-title').innerText = 'Error Loading Data';
+            document.getElementById('apod-description').innerText = 'Unable to fetch data from NASA API. Please try again later.';
+        });
+});
+
 
 
