@@ -24,10 +24,16 @@ body {
     border: 2px dashed #ccc;
     text-align: center;
 
-    /* Default flat state */
+    /* Default transform state for animation */
     transform: perspective(600px) rotateX(0deg) rotateY(0deg);
-    transform-origin: center;
-    transition: transform 0.3s ease-out; /* Smooth return when reset */
+    transform-origin: center; /* Ensures the tilt is centered */
+    transition: transform 0.2s ease-out; /* Smooth return effect */
+}
+
+.section:hover {
+    /* Optional: Highlight when hovered */
+    border-color: #4CAF50; /* Green border */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .section h2 {
@@ -53,6 +59,7 @@ a:hover {
     text-decoration: underline;
 }
 
+/* List Styles */
 ul {
     padding-left: 20px;
     list-style-type: disc;
@@ -75,6 +82,7 @@ li {
     }
 }
 
+/* Status Styling */
 #am-i-termed {
     text-align: center;
     margin-top: 2rem;
