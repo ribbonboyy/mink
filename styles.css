@@ -26,14 +26,8 @@ body {
 
     /* Default transform state for animation */
     transform: perspective(600px) rotateX(0deg) rotateY(0deg);
-    transform-origin: center; /* Ensures the tilt is centered */
-    transition: transform 0.2s ease-out; /* Smooth return effect */
-}
-
-.section:hover {
-    /* Optional: Highlight when hovered */
-    border-color: #4CAF50; /* Green border */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform-origin: center; /* Pivot around the center */
+    transition: transform 0.2s ease-out; /* Smooth reset on mouse leave */
 }
 
 .section h2 {
@@ -59,17 +53,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* List Styles */
-ul {
-    padding-left: 20px;
-    list-style-type: disc;
-}
-
-li {
-    font-size: 1rem;
-    margin-bottom: 8px;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
@@ -80,28 +63,4 @@ li {
     .section {
         padding: 15px;
     }
-}
-
-/* Status Styling */
-#am-i-termed {
-    text-align: center;
-    margin-top: 2rem;
-}
-
-.termed-status {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem; /* Space between text and the image */
-}
-
-.termed-status p {
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: #2e7d32; /* Green text to match the safety check mark */
-}
-
-.check-icon {
-    width: 40px; /* Adjust size as needed */
-    height: 40px;
 }
