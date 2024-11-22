@@ -2,65 +2,48 @@
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
-    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
-    background-size: 20px 20px;
     margin: 0;
     color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
     max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
-/* Section Styles */
 .section {
     background: #fff;
     padding: 20px;
     border-radius: 15px;
-    margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
     text-align: center;
-
-    /* Default transform state for animation */
-    transform: perspective(600px) rotateX(0deg) rotateY(0deg);
+    transition: transform 0.2s ease-out;
     transform-origin: center; /* Pivot around the center */
-    transition: transform 0.2s ease-out; /* Smooth reset on mouse leave */
+    width: 250px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .section h2 {
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #2D3C41;
-    margin-bottom: 15px;
+    margin: 0 0 10px 0;
 }
 
 .section p {
-    line-height: 1.6;
     font-size: 1rem;
-    margin-bottom: 10px;
-}
-
-a {
-    color: #2D3C41;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 10px;
-    }
-
-    .section {
-        padding: 15px;
-    }
+    margin: 0;
 }
