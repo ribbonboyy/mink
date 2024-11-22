@@ -29,6 +29,7 @@ sections.forEach(section => {
 
 const apiKey = '5FAXFFBSS5483KAN'; // Alpha Vantage API key
 const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']; // Stock symbols
+const apiDelay = 12000; // 12 seconds delay to avoid hitting rate limits (adjust as needed)
 
 async function fetchStockData(symbol) {
     const apiUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
@@ -38,14 +39,20 @@ async function fetchStockData(symbol) {
         if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
         
         const data = await response.json();
-        
-        // Debug: Log the raw response
-        console.log(data);
 
-        if (data['Global Quote']) {
+        // Debug: Log the entire response to see the structure
+        console.log(`Response for ${symbol}:`, data);
+
+        // Check for rate limit or unexpected messages
+        if (data['Note'] || data['Information']) {
+            throw new Error(data['Note'] || data['Information']);
+        }
+
+        // Validate the structure for 'Global Quote'
+        if (data['Global Quote'] && data['Global Quote']['05. price']) {
             return data['Global Quote'];
         } else {
-            throw new Error('Invalid response structure');
+            throw new Error(`Invalid response structure for symbol ${symbol}`);
         }
     } catch (error) {
         console.error(`Error fetching data for ${symbol}:`, error.message);
@@ -53,38 +60,41 @@ async function fetchStockData(symbol) {
     }
 }
 
+// Utility function to add a delay
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function displayStocks() {
     const stocksList = document.getElementById('stocks-list');
     stocksList.innerHTML = '<p>Loading stocks...</p>';
 
-    // Fetch all stock data concurrently
-    const stockDataPromises = stockSymbols.map((symbol) => fetchStockData(symbol));
-    const stockDataResults = await Promise.all(stockDataPromises);
-
-    // Clear loading message
-    stocksList.innerHTML = ''; 
-
     const ul = document.createElement('ul');
 
-    stockDataResults.forEach((stockData, index) => {
+    for (const symbol of stockSymbols) {
+        const stockData = await fetchStockData(symbol);
+
+        const li = document.createElement('li');
         if (stockData) {
-            const li = document.createElement('li');
             li.innerHTML = `
-                <strong>${stockSymbols[index]}</strong>: 
+                <strong>${symbol}</strong>: 
                 $${parseFloat(stockData['05. price']).toFixed(2)} 
                 (Volume: ${stockData['06. volume']})
             `;
-            ul.appendChild(li);
         } else {
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>${stockSymbols[index]}</strong>: Failed to load data`;
-            ul.appendChild(li);
+            li.innerHTML = `<strong>${symbol}</strong>: Failed to load data`;
         }
-    });
 
+        ul.appendChild(li);
+        
+        // Add delay to avoid hitting API rate limits
+        await delay(apiDelay);
+    }
+
+    // Clear loading message and display stocks
+    stocksList.innerHTML = '';
     stocksList.appendChild(ul);
 }
 
 // Call the display function when the page loads
 displayStocks();
-
