@@ -152,3 +152,30 @@ function vote(option) {
 
 // Initialize the results on page load
 updateResults();
+
+// Dark Mode Toggle
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+// Check for dark mode preference in localStorage
+const isDarkMode = localStorage.getItem('dark-mode') === 'true';
+if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    darkModeToggle.textContent = 'Switch to Light Mode';
+}
+
+darkModeToggle.addEventListener('click', () => {
+    const body = document.body;
+
+    // Toggle dark mode class
+    body.classList.toggle('dark-mode');
+
+    // Update button text
+    if (body.classList.contains('dark-mode')) {
+        darkModeToggle.textContent = 'Switch to Light Mode';
+        localStorage.setItem('dark-mode', 'true');
+    } else {
+        darkModeToggle.textContent = 'Switch to Dark Mode';
+        localStorage.setItem('dark-mode', 'false');
+    }
+});
+
