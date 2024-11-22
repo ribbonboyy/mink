@@ -1,7 +1,7 @@
 // Alpha Vantage API key
 const alphaVantageApiKey = '5FAXFFBSS5483KAN';
 const stockSymbols = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']; // Stock symbols
-const apiDelay = 12000; // 12 seconds delay to avoid hitting rate limits (adjust as needed)
+const apiDelay = 12000; // 12 seconds delay to avoid hitting rate limits
 
 async function fetchStockData(symbol) {
     const apiUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${alphaVantageApiKey}`;
@@ -11,7 +11,6 @@ async function fetchStockData(symbol) {
         if (!response.ok) throw new Error(`HTTP Error ${response.status}`);
         
         const data = await response.json();
-
         console.log(`Response for ${symbol}:`, data);
 
         if (data['Note'] || data['Information']) {
@@ -35,6 +34,11 @@ function delay(ms) {
 
 async function displayStocks() {
     const stocksList = document.getElementById('stocks-list');
+    if (!stocksList) {
+        console.error('Element with id "stocks-list" not found.');
+        return;
+    }
+
     stocksList.innerHTML = '<p>Loading stocks...</p>';
 
     const ul = document.createElement('ul');
@@ -61,8 +65,6 @@ async function displayStocks() {
     stocksList.appendChild(ul);
 }
 
-displayStocks();
-
 // Voting Script
 const voteCounts = {
     JavaScript: 0,
@@ -82,7 +84,12 @@ const hasVoted = localStorage.getItem('hasVoted');
 
 function updateResults() {
     Object.keys(voteCounts).forEach((option) => {
-        document.querySelector(`#result-${option} span`).textContent = voteCounts[option];
+        const resultElement = document.querySelector(`#result-${option} span`);
+        if (resultElement) {
+            resultElement.textContent = voteCounts[option];
+        } else {
+            console.warn(`Result element for ${option} is missing.`);
+        }
     });
 }
 
