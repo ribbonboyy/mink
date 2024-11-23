@@ -1,0 +1,78 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #000;
+    background-image: radial-gradient(circle, #333 1px, transparent 1px),
+                      url('https://cdn.pixabay.com/photo/2016/11/29/12/54/space-1867427_960_720.jpg'); /* A starry background */
+    background-size: 20px 20px, cover;
+    background-position: center;
+    margin: 0;
+    color: #fff;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.section {
+    background: rgba(17, 17, 17, 0.85); /* Semi-transparent black background */
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    border: 2px dashed #555;
+    transform-origin: center;
+    transition: transform 0.2s ease-out;
+}
+
+.section:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+    border-color: #888;
+}
+
+.section h2 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #00ccff;
+    margin-bottom: 15px;
+}
+
+.section p, li {
+    line-height: 1.6;
+    font-size: 1rem;
+    color: #ccc;
+}
+
+ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+li {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+a {
+    color: #00ccff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #00ffff;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .section {
+        padding: 15px;
+    }
+}
