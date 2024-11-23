@@ -1,5 +1,6 @@
+/* General body styling */
 body {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f9f9f9;
     background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
     background-size: 20px 20px;
@@ -8,44 +9,50 @@ body {
     text-align: center;
 }
 
+/* Header styling */
 h1 {
     font-size: 2rem;
     margin: 20px 0;
-    color: #2D3C41;
+    color: #2d3c41;
 }
 
+/* Container for the grid */
 .container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
-    gap: 20px;
-    max-width: 900px;
-    margin: 50px auto;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive grid with min 250px per column */
+    gap: 15px; /* Spacing between cards */
+    max-width: 1000px;
+    margin: 30px auto;
     padding: 20px;
 }
 
+/* Image-button cards */
 .image-button {
     position: relative;
-    overflow: hidden;
-    border-radius: 15px;
-    border: 1px solid #ccc; /* Subtle gray border */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px; /* Rounded corners */
+    overflow: hidden; /* Prevent images from overflowing */
+    border: 2px solid #ddd; /* Light gray border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    aspect-ratio: 2 / 1; /* Keeps images proportional (800x400 ratio) */
+    aspect-ratio: 2 / 1; /* Maintain 800x400 ratio */
     cursor: pointer;
 }
 
+/* Ensuring images fit proportionally */
 .image-button img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures proper scaling without distortion */
-    border-radius: 15px;
+    object-fit: cover; /* Ensures the image doesn't stretch */
+    border-radius: 15px; /* Ensures image edges match the container */
 }
 
+/* Hover effect for interaction */
 .image-button:hover {
-    transform: scale(1.05); /* Subtle zoom effect */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05); /* Slight zoom-in effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow */
 }
 
+/* Adding clickable links */
 .image-button a {
     position: absolute;
     top: 0;
@@ -53,10 +60,5 @@ h1 {
     width: 100%;
     height: 100%;
     z-index: 10;
-    text-decoration: none;
+    text-decoration: none; /* Remove underline from links */
 }
-
-.image-button:hover img {
-    filter: brightness(90%);
-}
-
