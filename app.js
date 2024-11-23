@@ -15,22 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // OwOify Text Converter
-    const convertBtn = document.getElementById('convert');
-    if (convertBtn) {
-        convertBtn.addEventListener('click', () => {
-            const text = document.getElementById('input-text').value;
-            fetch(`https://owo.vc/api/owo?text=${encodeURIComponent(text)}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('output-text').textContent = data;
-                })
-                .catch(error => {
-                    document.getElementById('output-text').textContent = "Could not OwOify the text.";
-                    console.error(error);
-                });
-        });
-    }
+fetch(`https://owo.vc/api/owo?text=${encodeURIComponent(text)}`, { mode: 'no-cors' })
+    .then(response => {
+        // You can't process the response body in 'no-cors' mode.
+        console.log('Request sent, but response is opaque.');
+    })
+    .catch(error => {
+        console.error('CORS issue:', error);
+    });
+
 
     // Fun Fact Generator
     const getFactBtn = document.getElementById('get-fact');
