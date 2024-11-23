@@ -1,10 +1,10 @@
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: #fdecef; /* Pastel pink background */
-    background-image: radial-gradient(circle, #f8d7e0 1px, transparent 1px); /* Subtle pink grid */
+    background-color: #FFE4E6;
+    background-image: radial-gradient(circle, #FFC1CC 1px, transparent 1px);
     background-size: 20px 20px;
     margin: 0;
-    color: #5a3e42; /* Soft pastel-like dark brown */
+    color: #3D2D3D;
 }
 
 .container {
@@ -14,22 +14,25 @@ body {
 }
 
 .section {
-    background: #fff4f6; /* Lighter pastel pink for sections */
+    background: #FFF5F7;
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px dashed #f8d7e0; /* Soft dashed border in pastel pink */
+    border: 2px dashed #FFAFBD;
     text-align: center;
 
-    transform-origin: center;
     transition: transform 0.2s ease-out;
+}
+
+.section:hover {
+    transform: scale(1.05);
 }
 
 .section h2 {
     font-weight: 600;
     font-size: 1.8rem;
-    color: #d78199; /* Deeper pastel pink for headings */
+    color: #D81B60;
     margin-bottom: 15px;
 }
 
@@ -37,28 +40,39 @@ body {
     line-height: 1.6;
     font-size: 1rem;
     margin-bottom: 10px;
-    color: #7a5054; /* A balanced pastel brown for text */
+    color: #4A4A4A;
 }
 
-a {
-    color: #d78199; /* Deeper pastel pink */
-    font-weight: 600;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-ul {
-    padding-left: 20px;
-    list-style-type: disc;
-    color: #7a5054; /* Match text color for lists */
-}
-
-li {
+textarea {
+    width: 80%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #FFC1CC;
     font-size: 1rem;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #D81B60;
+    box-shadow: 0 0 5px #FF4081;
+}
+
+button {
+    background-color: #FF4081;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #D81B60;
 }
 
 @media (max-width: 768px) {
