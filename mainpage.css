@@ -50,8 +50,8 @@ h1 {
 
 /* Images inside grid items */
 .grid-item img {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     object-fit: cover; /* Ensures the images fit the grid item perfectly */
     border-radius: 10px; /* Makes the images corners slightly rounded */
 }
