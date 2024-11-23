@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // OwOify Text Converter
+  document.addEventListener('DOMContentLoaded', () => {
     const convertBtn = document.getElementById('convert');
     if (convertBtn) {
         convertBtn.addEventListener('click', () => {
@@ -23,12 +23,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const text = inputField.value; // Get the value entered by the user
             
             if (text.trim() !== "") { // Ensure there's text to convert
-                fetch(`https://cors-anywhere.herokuapp.com/https://owo.vc/api/owo?text=${encodeURIComponent(text)}`)
-                    .then(response => response.text())
+                // Use AllOrigins CORS Proxy
+                fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://owo.vc/api/owo?text=${text}`)}`)
+                    .then(response => response.json())
                     .then(data => {
-                        document.getElementById('output-text').textContent = data; // Display OwOified text
+                        // Extract and display OwOified text
+                        document.getElementById('output-text').textContent = data.contents; 
                     })
                     .catch(error => {
+                        // Display error if the API call fails
                         document.getElementById('output-text').textContent = "Could not OwOify the text.";
                         console.error(error);
                     });
@@ -37,6 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+});
+
 
     // Fun Fact Generator
     const getFactBtn = document.getElementById('get-fact');
