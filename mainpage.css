@@ -21,25 +21,28 @@ h1 {
     width: 90%;
     max-width: 900px;
     margin: 0 auto;
-    padding: 15px; /* Reduced padding */
+    padding: 15px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Flexible grid */
-    gap: 15px; /* Reduced gap */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Dynamic columns */
+    gap: 15px;
     justify-items: center;
 }
 
 .grid-item {
+    position: relative;
+    width: 100%;
+    max-width: 250px; /* Constrain max width */
+    aspect-ratio: 4 / 3; /* Maintain consistent aspect ratio for items */
     background: #fff;
     padding: 10px;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border: 2px dashed #ccc;
+    overflow: hidden; /* Prevent content overflow */
     transition: transform 0.2s ease-out;
-    width: 100%; /* Ensures item fills its grid column */
-    max-width: 220px; /* Slightly smaller max width */
 }
 
 .grid-item:hover {
@@ -47,9 +50,9 @@ h1 {
 }
 
 .grid-item img {
-    max-width: 100%;
-    height: auto;
-    max-height: 150px; /* Constrain image height */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Maintain aspect ratio while covering space */
     border-radius: 10px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -66,15 +69,12 @@ h1 {
     }
 
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 10px; /* Smaller gap for smaller screens */
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust grid for smaller screens */
+        gap: 10px;
     }
 
     .grid-item {
-        max-width: 180px; /* Reduce item width on smaller screens */
-    }
-
-    .grid-item img {
-        max-height: 120px; /* Constrain image height further for small screens */
+        max-width: 180px; /* Further constrain width for mobile */
+        aspect-ratio: 4 / 3;
     }
 }
