@@ -1,4 +1,3 @@
-/* General Body Styling */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
@@ -9,49 +8,55 @@ body {
     text-align: center;
 }
 
+h1 {
+    font-size: 2rem;
+    margin: 20px 0;
+    color: #2D3C41;
+}
+
 .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px;
     max-width: 900px;
     margin: 50px auto;
     padding: 20px;
 }
 
-h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #2D3C41;
-    margin-bottom: 40px;
-}
-
-/* Grid Layout */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    justify-items: center;
-}
-
-/* Grid Items (Image Cards) */
-.grid-item {
-    display: block;
-    width: 200px; /* Fixes image width */
-    aspect-ratio: 2 / 1; /* Maintains the 800x400 ratio */
+.image-button {
+    position: relative;
     overflow: hidden;
-    border: 2px solid #ccc; /* Subtle gray border */
-    border-radius: 12px; /* Rounds corners */
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-    background: #fff;
+    border-radius: 15px;
+    border: 1px solid #ccc; /* Subtle gray border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    aspect-ratio: 2 / 1; /* Keeps images proportional (800x400 ratio) */
+    cursor: pointer;
 }
 
-.grid-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    border-color: #999; /* Darker border on hover */
+.image-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures proper scaling without distortion */
+    border-radius: 15px;
 }
 
-/* Images inside grid items */
-.grid-item img {
-    width: 80%;
-    height: 80%;
-    object-fit: cover; /* Ensures the images fit the grid item perfectly */
-    border-radius: 10px; /* Makes the images corners slightly rounded */
+.image-button:hover {
+    transform: scale(1.05); /* Subtle zoom effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
+
+.image-button a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    text-decoration: none;
+}
+
+.image-button:hover img {
+    filter: brightness(90%);
+}
+
