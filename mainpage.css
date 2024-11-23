@@ -1,61 +1,57 @@
+/* General Body Styling */
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f9f9f9;
-    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
-    background-size: 20px 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
+    padding: 0;
     color: #333;
+    background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+/* Center Container */
+.container {
+    max-width: 1200px;
+    margin: 50px auto;
     text-align: center;
 }
 
-.container {
-    max-width: 900px;
-    margin: 50px auto;
-    padding: 20px;
-}
-
 h1 {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #2D3C41;
+    font-size: 2.5rem;
+    color: #2d3c41;
     margin-bottom: 40px;
 }
 
+/* Responsive Grid Layout */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive Snap */
     gap: 20px;
     justify-items: center;
 }
 
-.grid-item {
-    display: inline-block;
-    cursor: pointer;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+/* Button Styling */
+.button {
+    display: block;
+    width: 200px; /* Maintain aspect ratio of 800x400 images */
+    height: 100px;
+    border-radius: 15px;
+    border: 2px solid #ccc;
     overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
-.grid-item:hover {
+.button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image scales to fit */
+    border-radius: 15px;
+}
+
+/* Hover Effect */
+.button:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.grid-item img {
-    width: 100%; /* Full width of the grid-item */
-    height: auto; /* Maintain aspect ratio */
-    max-width: 300px; /* Prevents overly large buttons on larger screens */
-    border-radius: 10px; /* Optional: rounds the image corners */
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
 }
