@@ -17,7 +17,7 @@ body {
 
 .section {
     background: #fff;
-    padding: 20px;
+    padding: 15px; /* Reduced padding */
     border-radius: 15px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@ body {
 }
 
 .button-image {
-    max-width: 100%;
+    max-width: 70%; /* Adjusted button size */
     height: auto;
     border-radius: 10px;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s;
@@ -56,6 +56,10 @@ a {
     }
 
     .section {
-        padding: 15px;
+        padding: 10px; /* Reduced padding further for mobile */
+    }
+
+    .button-image {
+        max-width: 80%; /* Slightly larger buttons on small screens */
     }
 }
