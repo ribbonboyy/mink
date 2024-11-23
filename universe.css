@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Wonders</title>
+    <link rel="stylesheet" href="space.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="section">
+            <h1>Explore the Infinite Wonders of Space</h1>
+            <p>Uncover facts, live statistics, and the haunting truths of the cosmos.</p>
+        </header>
+
+        <!-- What is Space Section -->
+        <section id="what-is-space" class="section">
+            <h2>What is Space?</h2>
+            <p>
+                Space is a vast, near-perfect vacuum, devoid of air and matter. It stretches infinitely and is filled with stars, planets, galaxies, and mysteries beyond our imagination. 
+                It begins approximately 100 kilometers above Earth's surface at the *Kármán Line*.
+            </p>
+            <ul>
+                <li>Space is 99.99% empty, yet full of radiation and cosmic particles.</li>
+                <li>Galaxies are speeding away from us due to the universe's expansion.</li>
+                <li>It takes light millions of years to reach us from distant stars.</li>
+            </ul>
+        </section>
+
+        <!-- Space Live Stats Section -->
+        <section id="space-stats" class="section">
+            <h2>Live Space Statistics</h2>
+            <p>Since you opened this page:</p>
+            <ul>
+                <li id="earth-orbits">Earth orbits completed: Calculating...</li>
+                <li id="stars-formed">New stars formed in the universe: Calculating...</li>
+                <li id="meteors-burned">Meteors burned in Earth's atmosphere: Calculating...</li>
+            </ul>
+        </section>
+
+        <!-- Scary Space Facts Section -->
+        <section id="scary-facts" class="section">
+            <h2>Scary Facts About Space</h2>
+            <p>Space isn't just beautiful; it's also terrifying:</p>
+            <ul>
+                <li>
+                    If you fell into a black hole, you’d be “spaghettified” as the intense gravity stretches your body into a thin stream of atoms.
+                </li>
+                <li>
+                    There’s no sound in space. It’s a complete, eerie silence.
+                </li>
+                <li>
+                    Rogue planets wander the cosmos without a star, cold and desolate.
+                </li>
+                <li>
+                    The largest known black hole has a mass 66 billion times that of the Sun.
+                </li>
+            </ul>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
