@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Czechia: The Best Country</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="hero">
+    <div class="container">
+        <header class="section">
             <h1>Welcome to Czechia</h1>
             <p>The Heart of Europe and Leader of Excellence</p>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/1920px-Flag_of_the_Czech_Republic.svg.png" alt="Czechia Flag" class="flag">
-        </div>
-    </header>
-    <main>
-        <section id="facts">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_Czech_Republic.svg/1920px-Flag_of_the_Czech_Republic.svg.png" alt="Czechia Flag" style="width: 150px; margin: 20px auto;">
+        </header>
+        <section id="facts" class="section">
             <h2>Why Czechia is Amazing</h2>
             <ul>
                 <li>🏰 Home to over 2,000 castles and chateaux – more than any other country in Europe!</li>
@@ -24,44 +23,44 @@
                 <li>🌳 One of the greenest countries in Europe with 33% forest coverage.</li>
             </ul>
         </section>
-        <section id="leaderboards">
+        <section id="leaderboards" class="section">
             <h2>European Leaderboards</h2>
-            <table>
+            <table style="width: 100%; border-collapse: collapse; margin: 10px auto;">
                 <thead>
-                    <tr>
-                        <th>Category</th>
-                        <th>Rank</th>
+                    <tr style="background: #f1f1f1;">
+                        <th style="padding: 10px; border: 1px solid #ccc;">Category</th>
+                        <th style="padding: 10px; border: 1px solid #ccc;">Rank</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Safest Countries</td>
-                        <td>#6</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">Safest Countries</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">#6</td>
                     </tr>
                     <tr>
-                        <td>Health Care Efficiency</td>
-                        <td>#10</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">Health Care Efficiency</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">#10</td>
                     </tr>
                     <tr>
-                        <td>Quality of Life</td>
-                        <td>#12</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">Quality of Life</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">#12</td>
                     </tr>
                     <tr>
-                        <td>Innovation Index</td>
-                        <td>#14</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">Innovation Index</td>
+                        <td style="padding: 10px; border: 1px solid #ccc;">#14</td>
                     </tr>
                 </tbody>
             </table>
         </section>
-        <section id="live-data">
+        <section id="live-data" class="section">
             <h2>Live Economic Data</h2>
             <p>GDP (HDP) of Czechia: <span id="gdp">Loading...</span></p>
             <p>Population: <span id="population">Loading...</span></p>
         </section>
-    </main>
-    <footer>
-        <p>© 2024 Czechia's Glory | Built with ❤️</p>
-    </footer>
-    <script src="script.js"></script>
+        <footer class="section">
+            <p>© 2024 Czechia's Glory | Built with ❤️</p>
+        </footer>
+    </div>
+    <script src="czech.js"></script>
 </body>
 </html>
