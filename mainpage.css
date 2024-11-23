@@ -25,38 +25,28 @@ h1 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
+    justify-items: center;
 }
 
 .grid-item {
-    background: #fff;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ccc;
-    text-align: center;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    display: inline-block;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.grid-item img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-.grid-item span {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #2D3C41;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .grid-item:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.grid-item img {
+    width: 100%; /* Full width of the grid-item */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 300px; /* Prevents overly large buttons on larger screens */
+    border-radius: 10px; /* Optional: rounds the image corners */
 }
 
 @media (max-width: 768px) {
