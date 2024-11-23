@@ -20,4 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchEconomicData();
+
+    // Event Countdown Timer
+    const countdownElement = document.getElementById('countdown');
+    const eventDate = new Date('2024-05-12T00:00:00');
+
+    function updateCountdown() {
+        const now = new Date();
+        const diff = eventDate - now;
+
+        if (diff <= 0) {
+            countdownElement.textContent = "The event is live!";
+        } else {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
 });
