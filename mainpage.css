@@ -1,4 +1,4 @@
-/* General Styling */
+/* General Body Styling */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
@@ -30,17 +30,16 @@ h1 {
     justify-items: center;
 }
 
-/* Image Card Styling */
+/* Grid Items (Image Cards) */
 .grid-item {
-    display: inline-block;
-    cursor: pointer;
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 15px; /* Rounds the edges */
+    display: block;
+    width: 200px; /* Fixes image width */
+    aspect-ratio: 2 / 1; /* Maintains the 800x400 ratio */
     overflow: hidden;
-    border: 2px solid #ccc; /* Light gray border */
+    border: 2px solid #ccc; /* Subtle gray border */
+    border-radius: 12px; /* Rounds corners */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     background: #fff;
-    padding: 5px; /* Space around the image inside the border */
 }
 
 .grid-item:hover {
@@ -49,9 +48,10 @@ h1 {
     border-color: #999; /* Darker border on hover */
 }
 
+/* Images inside grid items */
 .grid-item img {
     width: 100%;
-    height: auto; /* Maintain the original aspect ratio */
-    max-width: 200px; /* Prevent the images from becoming too large */
-    border-radius: 10px; /* Softens the corners of the image itself */
+    height: 100%;
+    object-fit: cover; /* Ensures the images fit the grid item perfectly */
+    border-radius: 10px; /* Makes the images corners slightly rounded */
 }
