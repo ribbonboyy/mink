@@ -1,3 +1,4 @@
+/* General Styling */
 body {
     font-family: 'Montserrat', sans-serif;
     background-color: #f9f9f9;
@@ -21,41 +22,36 @@ h1 {
     margin-bottom: 40px;
 }
 
+/* Grid Layout */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
     justify-items: center;
 }
 
+/* Image Card Styling */
 .grid-item {
     display: inline-block;
     cursor: pointer;
     transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 15px; /* Rounds the edges */
     overflow: hidden;
+    border: 2px solid #ccc; /* Light gray border */
+    background: #fff;
+    padding: 5px; /* Space around the image inside the border */
 }
 
 .grid-item:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    border-color: #999; /* Darker border on hover */
 }
 
 .grid-item img {
-    width: 100%; /* Full width of the grid-item */
-    height: auto; /* Maintain aspect ratio */
-    max-width: 300px; /* Prevents overly large buttons on larger screens */
-    border-radius: 10px; /* Optional: rounds the image corners */
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 90%;
-        padding: 10px;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
+    width: 100%;
+    height: auto; /* Maintain the original aspect ratio */
+    max-width: 200px; /* Prevent the images from becoming too large */
+    border-radius: 10px; /* Softens the corners of the image itself */
 }
