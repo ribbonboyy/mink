@@ -3,126 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Styled Sliders</title>
+    <title>3D Planet Simulator with Orbits</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #000;
             color: #fff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             margin: 0;
+            overflow: hidden;
         }
 
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            width: 300px;
         }
 
         .slider-container {
-            margin: 10px 0;
-            width: 80%;
-            max-width: 500px;
+            margin-bottom: 15px;
         }
 
-        .slider-label {
+        label {
+            display: block;
             margin-bottom: 5px;
-            font-size: 1.2em;
         }
 
         input[type="range"] {
-            -webkit-appearance: none; /* Removes default styling */
             width: 100%;
-            height: 8px;
-            background: #444;
-            border-radius: 5px;
-            outline: none;
-            transition: background 0.3s;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #1e90ff;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            background: #1e90ff;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        input[type="range"]:focus {
-            background: #555;
         }
 
         .value-display {
-            font-size: 1em;
-            text-align: right;
+            font-size: 0.9em;
             margin-top: 5px;
+            text-align: right;
         }
     </style>
 </head>
 <body>
-    <h1>Styled Sliders</h1>
+    <div class="ui-panel">
+        <h2>Planet Simulator</h2>
 
-    <!-- Slider 1 -->
-    <div class="slider-container">
-        <label class="slider-label" for="mass-slider">Mass (Earth Masses):</label>
-        <input id="mass-slider" type="range" min="1" max="50" step="0.1" value="1">
-        <div class="value-display" id="mass-value">1.0</div>
-    </div>
+        <div class="slider-container">
+            <label for="moon-count">Number of Moons:</label>
+            <input id="moon-count" type="range" min="0" max="10" value="1">
+            <div class="value-display" id="moon-count-value">1</div>
+        </div>
 
-    <!-- Slider 2 -->
-    <div class="slider-container">
-        <label class="slider-label" for="temperature-slider">Temperature (K):</label>
-        <input id="temperature-slider" type="range" min="100" max="1000" step="10" value="290">
-        <div class="value-display" id="temperature-value">290</div>
-    </div>
+        <div class="slider-container">
+            <label for="orbit-speed">Moon Orbit Speed:</label>
+            <input id="orbit-speed" type="range" min="0.01" max="0.2" step="0.01" value="0.05">
+            <div class="value-display" id="orbit-speed-value">0.05</div>
+        </div>
 
-    <!-- Slider 3 -->
-    <div class="slider-container">
-        <label class="slider-label" for="moons-slider">Number of Moons:</label>
-        <input id="moons-slider" type="range" min="0" max="10" step="1" value="1">
-        <div class="value-display" id="moons-value">1</div>
+        <div class="slider-container">
+            <label for="moon-distance">Moon Distance:</label>
+            <input id="moon-distance" type="range" min="1" max="5" step="0.1" value="2">
+            <div class="value-display" id="moon-distance-value">2</div>
+        </div>
     </div>
 
     <script>
-        // Script to dynamically update slider values
-        const massSlider = document.getElementById("mass-slider");
-        const temperatureSlider = document.getElementById("temperature-slider");
-        const moonsSlider = document.getElementById("moons-slider");
+        // Initialize THREE.js Scene, Camera, and Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-        const massValue = document.getElementById("mass-value");
-        const temperatureValue = document.getElementById("temperature-value");
-        const moonsValue = document.getElementById("moons-value");
+        // Lights
+        const light = new THREE.PointLight(0xffffff, 1);
+        light.position.set(10, 10, 10);
+        scene.add(light);
 
-        function updateValue(slider, display) {
-            slider.addEventListener("input", () => {
-                display.textContent = slider.value;
-            });
+        // Planet
+        const planetGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x85C1E9 });
+        const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+        scene.add(planet);
+
+        // Moon Group
+        const moonGroup = new THREE.Group();
+        scene.add(moonGroup);
+
+        // Orbit Paths
+        const orbitGroup = new THREE.Group();
+        scene.add(orbitGroup);
+
+        // Camera Position
+        camera.position.z = 10;
+
+        // Variables for Options
+        let moonCount = 1;
+        let orbitSpeed = 0.05;
+        let moonDistance = 2;
+
+        // Update Moons and Orbits
+        function updateMoons() {
+            // Clear existing moons and orbits
+            moonGroup.clear();
+            orbitGroup.clear();
+
+            for (let i = 0; i < moonCount; i++) {
+                // Create Moon
+                const moonGeometry = new THREE.SphereGeometry(0.2, 16, 16);
+                const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xAAAAAA });
+                const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+
+                // Set Moon Position (initially placed on orbit)
+                const angle = (i / moonCount) * Math.PI * 2;
+                const x = moonDistance * Math.cos(angle);
+                const y = moonDistance * Math.sin(angle);
+                moon.position.set(x, y, 0);
+
+                // Add Moon to Group
+                moonGroup.add(moon);
+
+                // Create Orbit Path
+                const orbitGeometry = new THREE.RingGeometry(moonDistance - 0.01, moonDistance + 0.01, 64);
+                const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+                const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+                orbit.rotation.x = Math.PI / 2;
+
+                // Add Orbit Path to Group
+                orbitGroup.add(orbit);
+            }
         }
 
-        // Attach event listeners
-        updateValue(massSlider, massValue);
-        updateValue(temperatureSlider, temperatureValue);
-        updateValue(moonsSlider, moonsValue);
+        // Animation Loop
+        let moonAngles = [];
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate Moons
+            moonGroup.children.forEach((moon, i) => {
+                moonAngles[i] = (moonAngles[i] || 0) + orbitSpeed;
+                const x = moonDistance * Math.cos(moonAngles[i]);
+                const y = moonDistance * Math.sin(moonAngles[i]);
+                moon.position.set(x, y, 0);
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        // Event Listeners for Sliders
+        document.getElementById("moon-count").addEventListener("input", (event) => {
+            moonCount = parseInt(event.target.value);
+            document.getElementById("moon-count-value").textContent = moonCount;
+            updateMoons();
+        });
+
+        document.getElementById("orbit-speed").addEventListener("input", (event) => {
+            orbitSpeed = parseFloat(event.target.value);
+            document.getElementById("orbit-speed-value").textContent = orbitSpeed.toFixed(2);
+        });
+
+        document.getElementById("moon-distance").addEventListener("input", (event) => {
+            moonDistance = parseFloat(event.target.value);
+            document.getElementById("moon-distance-value").textContent = moonDistance.toFixed(1);
+            updateMoons();
+        });
+
+        // Initialize Moons and Start Animation
+        updateMoons();
+        animate();
     </script>
 </body>
 </html>
