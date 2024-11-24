@@ -1,105 +1,39 @@
-// Select the canvas and get the context
-const canvas = document.getElementById('mapCanvas');
-const ctx = canvas.getContext('2d');
+// Initialize the map
+const map = L.map('map').setView([20, 0], 2); // Centered at [lat, lng], zoom level 2
 
-// Variables to store map features
-let cities = [];
-let rivers = [];
-let mountains = [];
+// Add a fantasy map tile layer
+L.tileLayer('https://tile-examples.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+    maxZoom: 6,
+    attribution: '&copy; <a href="https://azgaar.github.io/Fantasy-Map-Generator/">Azgaar\'s Fantasy Map Generator</a>',
+}).addTo(map);
 
-// Generate Random Map
-function generateMap() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    cities = [];
-    rivers = [];
-    mountains = [];
+// Store markers for interactive elements
+const cities = [];
 
-    // Generate mountains
+// Generate random city markers
+function generateCities() {
     for (let i = 0; i < 5; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        mountains.push({ x, y });
-        drawMountain(x, y);
-    }
+        // Generate random lat/lng positions
+        const lat = Math.random() * 140 - 70;  // Random latitude
+        const lng = Math.random() * 360 - 180; // Random longitude
 
-    // Generate rivers
-    for (let i = 0; i < 3; i++) {
-        let startX = Math.random() * canvas.width;
-        let startY = Math.random() * canvas.height;
-        let endX = Math.random() * canvas.width;
-        let endY = Math.random() * canvas.height;
-        rivers.push({ startX, startY, endX, endY });
-        drawRiver(startX, startY, endX, endY);
-    }
+        const city = L.marker([lat, lng]).addTo(map);
+        city.bindPopup(`<b>City ${i + 1}</b><br>Random lore and details.`);
 
-    // Generate cities
-    for (let i = 0; i < 5; i++) {
-        let x = Math.random() * canvas.width;
-        let y = Math.random() * canvas.height;
-        cities.push({ x, y, name: `City ${i + 1}`, description: `Description for City ${i + 1}` });
-        drawCity(x, y);
+        cities.push(city);
     }
 }
 
-// Draw Mountains
-function drawMountain(x, y) {
-    ctx.fillStyle = '#8B4513'; // Brown color for mountains
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x - 20, y + 40);
-    ctx.lineTo(x + 20, y + 40);
-    ctx.closePath();
-    ctx.fill();
-}
+// Generate Cities on Page Load
+generateCities();
 
-// Draw Rivers
-function drawRiver(startX, startY, endX, endY) {
-    ctx.strokeStyle = '#1E90FF'; // Blue color for rivers
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-}
-
-// Draw Cities
-function drawCity(x, y) {
-    ctx.fillStyle = '#FF4500'; // Orange color for cities
-    ctx.beginPath();
-    ctx.arc(x, y, 5, 0, Math.PI * 2);
-    ctx.fill();
-}
-
-// Handle Clicks on Cities
-canvas.addEventListener('click', (event) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    cities.forEach(city => {
-        const distance = Math.sqrt((x - city.x) ** 2 + (y - city.y) ** 2);
-        if (distance < 10) {
-            showCityInfo(city);
-        }
+// Export map as PNG using Leaflet's print control
+document.getElementById('export-png').addEventListener('click', function() {
+    map.once('postcompose', function(event) {
+        const dataURL = canvas.toDataURL("image/png");
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'fantasy_map.png';
+        link.click();
     });
 });
-
-// Show city information
-function showCityInfo(city) {
-    alert(`${city.name}\n${city.description}`);
-}
-
-// Export canvas as PNG
-function exportAsPNG() {
-    const link = document.createElement('a');
-    link.download = 'fantasy_map.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-}
-
-// Event listeners for buttons
-document.getElementById('generate-map').addEventListener('click', generateMap);
-document.getElementById('export-png').addEventListener('click', exportAsPNG);
-
-// Initial map generation
-generateMap();
