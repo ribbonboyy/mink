@@ -7,7 +7,7 @@
     <title>Enhanced Planet Simulator</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* General Reset and Styling */
+        /* General Styling */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -62,32 +62,14 @@
             background: radial-gradient(circle at center, #85C1E9, #2E86C1);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
             overflow: hidden;
-            animation: spin 10s linear infinite;
         }
 
-        .black-hole {
-            background: black;
-            border: 5px solid rgba(255, 255, 0, 0.6);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .gas-giant {
+            background: radial-gradient(circle at center, #FFD700, #FF4500);
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
-            }
-            50% {
-                box-shadow: 0 0 40px rgba(255, 255, 0, 1);
-            }
-        }
-
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
+        .ice-world {
+            background: radial-gradient(circle at center, #B0E0E6, #4682B4);
         }
 
         .land {
@@ -114,16 +96,6 @@
             height: 20px;
             background: gray;
             border-radius: 50%;
-            animation: orbit 5s linear infinite;
-        }
-
-        @keyframes orbit {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         /* Panel Styling */
@@ -135,10 +107,6 @@
         .slider-container {
             margin: 10px 0;
             padding: 10px;
-        }
-
-        .slider-container:not(:last-child) {
-            border-bottom: 1px dashed #555;
         }
 
         input[type="range"] {
@@ -247,31 +215,48 @@
                 values[key].innerText = sliders[key].value;
             });
 
+            const gravity = parseFloat(sliders.gravity.value);
             const mass = parseFloat(sliders.mass.value);
+            const distance = parseFloat(sliders.solarDistance.value);
             const temperature = parseFloat(sliders.temperature.value);
             const moonCount = parseInt(sliders.moons.value);
 
-            // Transform into black hole if mass is at max
-            if (mass === 50) {
-                planetElement.className = "planet black-hole";
+            // Determine planet type
+            if (mass > 10) {
+                planetElement.className = "planet gas-giant";
                 landElement.style.display = "none";
-                moonsElement.innerHTML = "";
+            } else if (temperature < 150) {
+                planetElement.className = "planet ice-world";
+                landElement.style.display = "block";
             } else {
                 planetElement.className = "planet";
                 landElement.style.display = "block";
-
-                // Update moons
-                moonsElement.innerHTML = "";
-                for (let i = 0; i < moonCount; i++) {
-                    const moon = document.createElement("div");
-                    moon.className = "moon";
-                    const angle = (360 / moonCount) * i;
-                    const orbitRadius = 100;
-                    moon.style.transform = `rotate(${angle}deg) translate(${orbitRadius}px)`;
-                    moon.style.animationDuration = `${5 + i}s`;
-                    moonsElement.appendChild(moon);
-                }
             }
+
+            // Habitability check
+            let habitability = "Not Habitable";
+            if (gravity >= 8 && gravity <= 15 && distance >= 0.8 && distance <= 1.5 && temperature >= 273 && temperature <= 373) {
+                habitability = "Potentially Habitable";
+            }
+
+            // Moons
+            moonsElement.innerHTML = "";
+            for (let i = 0; i < moonCount; i++) {
+                const moon = document.createElement("div");
+                moon.className = "moon";
+                moon.style.transform = `rotate(${(360 / moonCount) * i}deg) translate(100px)`;
+                moonsElement.appendChild(moon);
+            }
+
+            // Planet resemblance
+            let resemblance = "None";
+            if (mass <= 1.2 && temperature >= 250 && temperature <= 300) resemblance = "Earth";
+            if (mass > 15) resemblance = "Jupiter-like";
+
+            // Update description
+            document.getElementById("description").innerText =
+                `Gravity: ${gravity} m/s², Mass: ${mass} Earth Masses, Solar Distance: ${distance} AU, Temperature: ${temperature}K, ` +
+                `Moons: ${moonCount}, Habitability: ${habitability}, Closest resemblance: ${resemblance}.`;
         }
 
         updatePlanet();
