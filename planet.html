@@ -1,30 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planet Simulator</title>
+    <link href="styles.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #fff;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            text-align: center;
-            padding: 20px;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
+        /* Specific to planet simulator */
         .planet {
             position: relative;
             margin: 0 auto;
@@ -64,76 +47,62 @@
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
-        input[type="range"] {
-            width: 80%;
-            margin: 15px auto;
-            display: block;
-        }
-
-        .slider-label {
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
         button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: #fff;
-            background: #00A2E8;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #007BB8;
+            margin-top: 10px;
         }
 
         .description {
             font-size: 1rem;
-            color: #aaa;
+            color: #666;
+            margin-top: 15px;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h2>Planet Simulator</h2>
-        <div class="planet" id="planet">
-            <div class="land" id="land"></div>
-        </div>
-        <div class="moons" id="moons"></div>
+        <div class="section">
+            <h2>Planet Simulator</h2>
+            <p>Create a planet by adjusting its properties. Visualize its habitability, moons, and land features.</p>
 
-        <div class="controls">
+            <!-- Planet visualization -->
+            <div class="planet" id="planet">
+                <div class="land" id="land"></div>
+            </div>
+            <div class="moons" id="moons"></div>
+
+            <!-- Controls -->
             <div class="slider-container">
                 <label class="slider-label" for="gravity">Gravity (m/s²): <span id="gravity-value">9.8</span></label>
-                <input type="range" id="gravity" min="0.1" max="50" step="0.1" value="9.8">
+                <input type="range" id="gravity" min="0.1" max="50" step="0.1" value="9.8" class="slider">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
-                <input type="range" id="mass" min="0.1" max="50" step="0.1" value="1.0">
+                <input type="range" id="mass" min="0.1" max="50" step="0.1" value="1.0" class="slider">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="solar-distance">Solar Distance (AU): <span id="solar-distance-value">1.0</span></label>
-                <input type="range" id="solar-distance" min="0.1" max="10" step="0.1" value="1.0">
+                <input type="range" id="solar-distance" min="0.1" max="10" step="0.1" value="1.0" class="slider">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="moons">Number of Moons: <span id="moons-value">1</span></label>
-                <input type="range" id="moons" min="0" max="10" step="1" value="1">
+                <input type="range" id="moons" min="0" max="10" step="1" value="1" class="slider">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
-                <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
+                <input type="range" id="temperature" min="50" max="1000" step="10" value="288" class="slider">
             </div>
 
+            <!-- Update button -->
             <button onclick="updatePlanet()">Update Planet</button>
-        </div>
 
-        <p id="description" class="description">Modify the planet's attributes to explore how it evolves!</p>
+            <!-- Description -->
+            <p id="description" class="description">Modify the sliders above to see your planet's changes.</p>
+        </div>
     </div>
 
     <script>
@@ -202,4 +171,5 @@
         updatePlanet(); // Initialize
     </script>
 </body>
+
 </html>
