@@ -65,6 +65,22 @@
             animation: spin 10s linear infinite;
         }
 
+        .black-hole {
+            background: black;
+            border: 5px solid rgba(255, 255, 0, 0.6);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 255, 0, 1);
+            }
+        }
+
         @keyframes spin {
             from {
                 transform: rotate(0deg);
@@ -227,49 +243,39 @@
         };
 
         function updatePlanet() {
-            // Update slider values
             Object.keys(sliders).forEach(key => {
                 values[key].innerText = sliders[key].value;
             });
 
-            const gravity = parseFloat(sliders.gravity.value);
             const mass = parseFloat(sliders.mass.value);
-            const solarDistance = parseFloat(sliders.solarDistance.value);
             const temperature = parseFloat(sliders.temperature.value);
             const moonCount = parseInt(sliders.moons.value);
 
-            // Update planet visuals
-            if (temperature >= 273 && temperature <= 373 && solarDistance >= 0.8 && solarDistance <= 1.5) {
-                landElement.style.background = "green";
-                planetElement.style.background = "radial-gradient(circle at center, #85C1E9, #2E86C1)";
-            } else if (temperature > 500) {
-                landElement.style.background = "orange";
-                planetElement.style.background = "radial-gradient(circle at center, #FF5733, #C70039)";
+            // Transform into black hole if mass is at max
+            if (mass === 50) {
+                planetElement.className = "planet black-hole";
+                landElement.style.display = "none";
+                moonsElement.innerHTML = "";
             } else {
-                landElement.style.background = "brown";
-                planetElement.style.background = "radial-gradient(circle at center, #6E2C00, #1C2833)";
-            }
+                planetElement.className = "planet";
+                landElement.style.display = "block";
 
-            // Update moons
-            moonsElement.innerHTML = "";
-            for (let i = 0; i < moonCount; i++) {
-                const moon = document.createElement("div");
-                moon.className = "moon";
-                const angle = (360 / moonCount) * i;
-                const orbitRadius = 100;
-                moon.style.transform = `rotate(${angle}deg) translate(${orbitRadius}px)`;
-                moon.style.animationDuration = `${5 + i}s`;
-                moonsElement.appendChild(moon);
+                // Update moons
+                moonsElement.innerHTML = "";
+                for (let i = 0; i < moonCount; i++) {
+                    const moon = document.createElement("div");
+                    moon.className = "moon";
+                    const angle = (360 / moonCount) * i;
+                    const orbitRadius = 100;
+                    moon.style.transform = `rotate(${angle}deg) translate(${orbitRadius}px)`;
+                    moon.style.animationDuration = `${5 + i}s`;
+                    moonsElement.appendChild(moon);
+                }
             }
-
-            // Update description
-            const desc = `Gravity: ${gravity} m/s², Mass: ${mass} Earth masses, Distance: ${solarDistance} AU, Temperature: ${temperature}K, Moons: ${moonCount}`;
-            document.getElementById("description").innerText = desc;
         }
 
-        updatePlanet(); // Initialize
+        updatePlanet();
     </script>
 </body>
 
 </html>
-
