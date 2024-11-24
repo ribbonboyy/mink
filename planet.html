@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced 3D Planet Simulator</title>
+    <title>3D Planet and Black Hole Simulator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
@@ -68,11 +68,8 @@
             transition: all 0.3s ease;
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
-            background: #2196f3;
-        }
-
-        select {
+        select,
+        input[type="color"] {
             width: 100%;
             padding: 8px;
             border-radius: 5px;
@@ -81,139 +78,124 @@
             color: white;
             font-size: 14px;
         }
-
-        select:focus {
-            outline: 2px solid #00bcd4;
-        }
-
-        input[type="color"] {
-            width: 50px;
-            height: 30px;
-            border: none;
-            margin-top: 5px;
-        }
-
-        .description {
-            margin-top: 15px;
-            font-size: 12px;
-            color: #ccc;
-            line-height: 1.5;
-        }
-
-        .status {
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 20px;
-        }
     </style>
 </head>
 
 <body>
     <div class="ui-panel">
-        <h2>3D Planet Simulator</h2>
-
+        <h2>3D Simulator</h2>
         <div class="slider-container">
             <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
             <input type="range" id="mass" min="0.1" max="100" step="0.1" value="1.0">
         </div>
-
         <div class="slider-container">
             <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
             <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
         </div>
-
-        <div class="slider-container">
-            <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
-            <input type="range" id="moons" min="0" max="10" step="1" value="1">
-        </div>
-
-        <div class="dropdown-container">
-            <label for="planet-type">Planet Type:</label>
-            <select id="planet-type">
-                <option value="land">Land</option>
-                <option value="gas">Gas</option>
-            </select>
-        </div>
-
         <div class="color-picker-container">
-            <label for="planet-color">Planet Color:</label>
-            <input type="color" id="planet-color" value="#3498db">
+            <label for="accretion-color">Accretion Disk Color:</label>
+            <input type="color" id="accretion-color" value="#ff4500">
         </div>
-
-        <div class="description" id="description">
-            Adjust the sliders and options to customize your planet!
+        <div class="slider-container">
+            <label for="disk-speed">Disk Rotation Speed: <span id="disk-speed-value">1.0</span></label>
+            <input type="range" id="disk-speed" min="0.1" max="5" step="0.1" value="1.0">
         </div>
-
-        <div class="status" id="status">
-            Habitability: Unknown
-        </div>
+        <div class="status" id="status">Status: Planet Mode</div>
     </div>
 
     <script>
-        const massSlider = document.getElementById("mass");
-        const temperatureSlider = document.getElementById("temperature");
-        const moonsSlider = document.getElementById("moons");
-        const planetTypeDropdown = document.getElementById("planet-type");
-        const planetColorPicker = document.getElementById("planet-color");
-
-        const massValue = document.getElementById("mass-value");
-        const temperatureValue = document.getElementById("temperature-value");
-        const moonsValue = document.getElementById("moons-value");
-        const statusDisplay = document.getElementById("status");
-
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        const geometry = new THREE.SphereGeometry(1, 32, 32);
-        const material = new THREE.MeshPhongMaterial({ color: 0x3498db });
-        const planet = new THREE.Mesh(geometry, material);
-        scene.add(planet);
-
+        // Create light
         const light = new THREE.PointLight(0xffffff, 1, 100);
         light.position.set(10, 10, 10);
         scene.add(light);
 
+        // Create planet and black hole objects
+        const planetMaterial = new THREE.MeshPhongMaterial({ color: 0x3498db });
+        const planet = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), planetMaterial);
+        scene.add(planet);
+
+        const blackHole = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
+        blackHole.visible = false;
+        scene.add(blackHole);
+
+        // Create particle system for accretion disk
+        const accretionDiskGeometry = new THREE.BufferGeometry();
+        const particles = [];
+        for (let i = 0; i < 5000; i++) {
+            const angle = Math.random() * 2 * Math.PI;
+            const radius = 2 + Math.random() * 0.5;
+            particles.push(
+                Math.cos(angle) * radius,
+                0,
+                Math.sin(angle) * radius
+            );
+        }
+        accretionDiskGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particles, 3));
+        const accretionDiskMaterial = new THREE.PointsMaterial({ size: 0.02, color: 0xff4500 });
+        const accretionDisk = new THREE.Points(accretionDiskGeometry, accretionDiskMaterial);
+        accretionDisk.visible = false;
+        scene.add(accretionDisk);
+
         camera.position.z = 5;
 
-        function updatePlanet() {
+        // UI elements
+        const massSlider = document.getElementById("mass");
+        const temperatureSlider = document.getElementById("temperature");
+        const accretionColorPicker = document.getElementById("accretion-color");
+        const diskSpeedSlider = document.getElementById("disk-speed");
+        const massValue = document.getElementById("mass-value");
+        const temperatureValue = document.getElementById("temperature-value");
+        const diskSpeedValue = document.getElementById("disk-speed-value");
+        const statusDisplay = document.getElementById("status");
+
+        function updateScene() {
             const mass = parseFloat(massSlider.value);
-            const temperature = parseFloat(temperatureSlider.value);
-            const moons = parseInt(moonsSlider.value);
-            const planetType = planetTypeDropdown.value;
-            const color = planetColorPicker.value;
+            const accretionColor = accretionColorPicker.value;
+            const diskSpeed = parseFloat(diskSpeedSlider.value);
 
             massValue.textContent = mass.toFixed(1);
-            temperatureValue.textContent = temperature.toFixed(0);
-            moonsValue.textContent = moons;
-
-            material.color.set(color);
-            planet.scale.set(mass / 10, mass / 10, mass / 10);
+            diskSpeedValue.textContent = diskSpeed.toFixed(1);
 
             if (mass > 50) {
-                statusDisplay.textContent = "Habitability: Black Hole!";
-            } else if (planetType === "land" && temperature > 273 && temperature < 373) {
-                statusDisplay.textContent = `Habitability: Habitable!`;
+                // Black hole mode
+                planet.visible = false;
+                blackHole.visible = true;
+                accretionDisk.visible = true;
+                accretionDiskMaterial.color.set(accretionColor);
+                statusDisplay.textContent = "Status: Black Hole Mode";
             } else {
-                statusDisplay.textContent = `Habitability: Not Habitable`;
+                // Planet mode
+                planet.visible = true;
+                blackHole.visible = false;
+                accretionDisk.visible = false;
+                planetMaterial.color.set(0x3498db);
+                planet.scale.set(mass / 10, mass / 10, mass / 10);
+                statusDisplay.textContent = "Status: Planet Mode";
             }
         }
 
         function animate() {
             requestAnimationFrame(animate);
+            if (accretionDisk.visible) {
+                accretionDisk.rotation.y += parseFloat(diskSpeedSlider.value) * 0.01;
+            }
             planet.rotation.y += 0.01;
+            blackHole.rotation.y += 0.01;
             renderer.render(scene, camera);
         }
 
-        massSlider.addEventListener("input", updatePlanet);
-        temperatureSlider.addEventListener("input", updatePlanet);
-        moonsSlider.addEventListener("input", updatePlanet);
-        planetTypeDropdown.addEventListener("change", updatePlanet);
-        planetColorPicker.addEventListener("input", updatePlanet);
+        massSlider.addEventListener("input", updateScene);
+        temperatureSlider.addEventListener("input", updateScene);
+        accretionColorPicker.addEventListener("input", updateScene);
+        diskSpeedSlider.addEventListener("input", updateScene);
 
-        updatePlanet();
+        updateScene();
         animate();
     </script>
 </body>
