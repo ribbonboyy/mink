@@ -112,25 +112,21 @@
     <div class="ui-panel">
         <h2>3D Planet Simulator</h2>
 
-        <!-- Mass Slider -->
         <div class="slider-container">
             <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
             <input type="range" id="mass" min="0.1" max="100" step="0.1" value="1.0">
         </div>
 
-        <!-- Temperature Slider -->
         <div class="slider-container">
             <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
             <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
         </div>
 
-        <!-- Moons Slider -->
         <div class="slider-container">
             <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
             <input type="range" id="moons" min="0" max="10" step="1" value="1">
         </div>
 
-        <!-- Planet Type Dropdown -->
         <div class="dropdown-container">
             <label for="planet-type">Planet Type:</label>
             <select id="planet-type">
@@ -139,25 +135,21 @@
             </select>
         </div>
 
-        <!-- Planet Color Picker -->
         <div class="color-picker-container">
             <label for="planet-color">Planet Color:</label>
             <input type="color" id="planet-color" value="#3498db">
         </div>
 
-        <!-- Description -->
         <div class="description" id="description">
             Adjust the sliders and options to customize your planet!
         </div>
 
-        <!-- Habitability Status -->
         <div class="status" id="status">
             Habitability: Unknown
         </div>
     </div>
 
     <script>
-        // Get elements
         const massSlider = document.getElementById("mass");
         const temperatureSlider = document.getElementById("temperature");
         const moonsSlider = document.getElementById("moons");
@@ -169,38 +161,60 @@
         const moonsValue = document.getElementById("moons-value");
         const statusDisplay = document.getElementById("status");
 
-        // Update UI elements
-        function updateUI() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const geometry = new THREE.SphereGeometry(1, 32, 32);
+        const material = new THREE.MeshPhongMaterial({ color: 0x3498db });
+        const planet = new THREE.Mesh(geometry, material);
+        scene.add(planet);
+
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        camera.position.z = 5;
+
+        function updatePlanet() {
             const mass = parseFloat(massSlider.value);
             const temperature = parseFloat(temperatureSlider.value);
             const moons = parseInt(moonsSlider.value);
             const planetType = planetTypeDropdown.value;
             const color = planetColorPicker.value;
 
-            // Update displayed values
             massValue.textContent = mass.toFixed(1);
             temperatureValue.textContent = temperature.toFixed(0);
             moonsValue.textContent = moons;
 
-            // Determine habitability
+            material.color.set(color);
+            planet.scale.set(mass / 10, mass / 10, mass / 10);
+
             if (mass > 50) {
                 statusDisplay.textContent = "Habitability: Black Hole!";
             } else if (planetType === "land" && temperature > 273 && temperature < 373) {
-                statusDisplay.textContent = `Habitability: Habitable! (${color})`;
+                statusDisplay.textContent = `Habitability: Habitable!`;
             } else {
                 statusDisplay.textContent = `Habitability: Not Habitable`;
             }
         }
 
-        // Add event listeners
-        massSlider.addEventListener("input", updateUI);
-        temperatureSlider.addEventListener("input", updateUI);
-        moonsSlider.addEventListener("input", updateUI);
-        planetTypeDropdown.addEventListener("change", updateUI);
-        planetColorPicker.addEventListener("input", updateUI);
+        function animate() {
+            requestAnimationFrame(animate);
+            planet.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
 
-        // Initialize UI
-        updateUI();
+        massSlider.addEventListener("input", updatePlanet);
+        temperatureSlider.addEventListener("input", updatePlanet);
+        moonsSlider.addEventListener("input", updatePlanet);
+        planetTypeDropdown.addEventListener("change", updatePlanet);
+        planetColorPicker.addEventListener("input", updatePlanet);
+
+        updatePlanet();
+        animate();
     </script>
 </body>
 
