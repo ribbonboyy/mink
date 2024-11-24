@@ -6,35 +6,21 @@
     <title>Simulate a Planet</title>
     <link href="styles.css" rel="stylesheet">
     <style>
-        .slider-container {
-            margin: 20px 0;
+        .planet {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 20px auto;
+            background: radial-gradient(circle at center, #85C1E9, #2E86C1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            transition: background 0.5s ease, transform 0.5s ease;
         }
 
-        .slider-label {
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        .slider {
-            width: 100%;
-        }
-
-        .output {
-            margin: 10px 0;
+        .comparison-text {
             font-size: 1.2rem;
-            font-weight: 500;
+            font-weight: 600;
+            margin-top: 20px;
             color: #2D3C41;
-        }
-
-        .habitability-feedback {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #008000;
-        }
-
-        .habitability-feedback.not-habitable {
-            color: #FF0000;
         }
     </style>
 </head>
@@ -42,7 +28,7 @@
     <div class="container">
         <div class="section">
             <h2>Simulate a Planet</h2>
-            <p>Adjust the sliders below to modify your planet's gravity, atmospheric pressure, and solar distance. Observe the feedback to determine whether life can thrive on your planet.</p>
+            <p>Adjust the sliders below to modify your planet's gravity, atmospheric pressure, and solar distance. See your planet model and find out which real planet it most resembles!</p>
             
             <div class="slider-container">
                 <label class="slider-label" for="gravity">Gravity (m/s²): <span id="gravity-value">9.8</span></label>
@@ -59,8 +45,11 @@
                 <input id="solar-distance" class="slider" type="range" min="0.1" max="5" step="0.1" value="1.0">
             </div>
 
+            <div class="planet" id="planet"></div>
+
             <p class="output">Habitability: <span id="habitability-status">Undetermined</span></p>
             <p id="habitability-feedback" class="habitability-feedback not-habitable">Adjust parameters to see feedback.</p>
+            <p id="comparison-text" class="comparison-text"></p>
         </div>
     </div>
 
@@ -75,19 +64,24 @@
 
         const habitabilityStatus = document.getElementById('habitability-status');
         const habitabilityFeedback = document.getElementById('habitability-feedback');
+        const comparisonText = document.getElementById('comparison-text');
+        const planetElement = document.getElementById('planet');
 
         const updateValues = () => {
             const gravity = parseFloat(gravitySlider.value);
             const atmosphere = parseFloat(atmosphereSlider.value);
             const solarDistance = parseFloat(solarDistanceSlider.value);
 
-            gravityValue.textContent = gravity;
-            atmosphereValue.textContent = atmosphere;
-            solarDistanceValue.textContent = solarDistance;
+            gravityValue.textContent = gravity.toFixed(1);
+            atmosphereValue.textContent = atmosphere.toFixed(1);
+            solarDistanceValue.textContent = solarDistance.toFixed(1);
 
             let habitability = 'Undetermined';
             let feedbackClass = 'not-habitable';
+            let planetComparison = 'an unknown planet';
+            let planetColor = '#85C1E9';
 
+            // Determine habitability
             if (gravity >= 9.8 && gravity <= 15 && atmosphere >= 0.8 && atmosphere <= 2 && solarDistance >= 0.8 && solarDistance <= 1.5) {
                 habitability = 'Habitable';
                 feedbackClass = '';
@@ -95,16 +89,36 @@
                 habitability = 'Not Habitable';
             }
 
+            // Determine comparison planet
+            if (gravity >= 9 && gravity <= 11 && atmosphere >= 0.8 && atmosphere <= 1.5 && solarDistance >= 0.9 && solarDistance <= 1.1) {
+                planetComparison = 'Earth';
+                planetColor = '#85C1E9'; // Blue-green for Earth-like planet
+            } else if (gravity < 9 && atmosphere < 0.8 && solarDistance > 1.5) {
+                planetComparison = 'Mars';
+                planetColor = '#E74C3C'; // Red for Mars-like planet
+            } else if (gravity > 15 && atmosphere > 2 && solarDistance < 0.8) {
+                planetComparison = 'Venus';
+                planetColor = '#F4D03F'; // Yellow-gold for Venus-like planet
+            }
+
+            // Update habitability feedback
             habitabilityStatus.textContent = habitability;
             habitabilityFeedback.textContent = habitability === 'Habitable' ? 'Life can thrive here!' : 'Conditions are not suitable for life.';
             habitabilityFeedback.className = `habitability-feedback ${feedbackClass}`;
+
+            // Update comparison text
+            comparisonText.textContent = `Your planet most closely resembles ${planetComparison}.`;
+
+            // Update planet appearance
+            planetElement.style.background = `radial-gradient(circle at center, ${planetColor}, #2E86C1)`;
+            planetElement.style.transform = habitability === 'Habitable' ? 'scale(1.2)' : 'scale(1)';
         };
 
         gravitySlider.addEventListener('input', updateValues);
         atmosphereSlider.addEventListener('input', updateValues);
         solarDistanceSlider.addEventListener('input', updateValues);
 
-        updateValues(); // Initialize feedback on page load
+        updateValues(); // Initialize on page load
     </script>
 </body>
 </html>
