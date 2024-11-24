@@ -3,11 +3,11 @@ if (document.getElementById('map')) {
     // Initialize the map at a central position with a zoom level
     const map = L.map('map').setView([20, 0], 3);
 
-    // Add Stamen Watercolor fantasy-style tile layer for a fantasy look
     L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
-        maxZoom: 16,
-        attribution: '&copy; <a href="http://stamen.com">Stamen Design</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    maxZoom: 16,
+    attribution: '&copy; Stamen Design & OpenStreetMap contributors'
+}).addTo(map);
+
 
     // Confirm map is set up
     console.log("Map initialized:", map);
