@@ -1,0 +1,95 @@
+/* Reset basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+  background-color: #000;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.container {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  scroll-snap-align: start;
+}
+
+.section h1, .section h2 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+.section p {
+  font-size: 1.2em;
+  line-height: 1.6;
+}
+
+/* Section-specific styles */
+.iss {
+  background: linear-gradient(to bottom, #000428, #004e92);
+}
+
+.troposphere {
+  background: linear-gradient(to bottom, #13547a, #80d0c7);
+}
+
+.stratosphere {
+  background: linear-gradient(to bottom, #1e3c72, #2a5298);
+}
+
+.mesosphere {
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+}
+
+.thermosphere {
+  background: linear-gradient(to bottom, #091236, #1e215d, #4b79a1);
+}
+
+.exosphere {
+  background: linear-gradient(to bottom, #000, #434343);
+}
+
+.earth {
+  background: linear-gradient(to bottom, #2c3e50, #3498db);
+}
+
+/* Text fun */
+p {
+  font-style: italic;
+}
+
+h1, h2 {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Add a little animation */
+.section p {
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
