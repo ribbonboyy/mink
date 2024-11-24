@@ -8,14 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
         body {
             margin: 0;
             overflow: hidden;
             background-color: black;
             font-family: 'Montserrat', sans-serif;
         }
-
         .ui-panel {
             position: absolute;
             top: 20px;
@@ -28,34 +26,14 @@
             font-size: 14px;
             max-width: 300px;
         }
-
-        h2 {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
         label {
             display: block;
             font-weight: 700;
             margin-bottom: 8px;
         }
-
         input[type="range"], select, input[type="color"] {
             width: 100%;
             margin-bottom: 10px;
-        }
-
-        .description {
-            font-size: 12px;
-            color: #ccc;
-            line-height: 1.5;
-        }
-
-        .status {
-            font-size: 14px;
-            font-weight: 700;
-            margin-top: 20px;
         }
     </style>
 </head>
@@ -64,45 +42,29 @@
         <h2>3D Planet Simulator</h2>
         <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
         <input type="range" id="mass" min="0.1" max="100" step="0.1" value="1.0">
-
         <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
         <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
-
         <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
         <input type="range" id="moons" min="0" max="10" step="1" value="1">
-
         <label for="planet-type">Planet Type:</label>
         <select id="planet-type">
             <option value="land">Land</option>
             <option value="gas">Gas</option>
         </select>
-
         <label for="planet-color">Planet Color:</label>
         <input type="color" id="planet-color" value="#3498db">
-
-        <label>
-            <input type="checkbox" id="toggle-blackhole"> Black Hole Mode
-        </label>
-
-        <div class="description" id="description">
-            Adjust sliders and settings to customize your planet, or toggle Black Hole Mode for a cosmic experience!
-        </div>
+        <label><input type="checkbox" id="toggle-blackhole"> Black Hole Mode</label>
         <div class="status" id="status">Habitability: Unknown</div>
     </div>
-
     <script>
-        // === Scene Setup ===
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
-
-        // Orbit Controls
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
 
-        // Lights
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
 
@@ -110,30 +72,27 @@
         pointLight.position.set(10, 10, 10);
         scene.add(pointLight);
 
-        // Planet Object
         const planetGeometry = new THREE.SphereGeometry(2, 64, 64);
         const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x3498db });
         const planet = new THREE.Mesh(planetGeometry, planetMaterial);
         scene.add(planet);
 
-        // Black Hole
         let blackHole, accretionDisk;
         const createBlackHole = () => {
-            // Event Horizon
-            const blackHoleGeometry = new THREE.SphereGeometry(1.5, 32, 32);
-            const blackHoleMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
-            blackHole = new THREE.Mesh(blackHoleGeometry, blackHoleMaterial);
+            blackHole = new THREE.Mesh(
+                new THREE.SphereGeometry(1.5, 32, 32),
+                new THREE.MeshBasicMaterial({ color: 0x000000 })
+            );
             scene.add(blackHole);
-
-            // Accretion Disk
-            const diskGeometry = new THREE.RingGeometry(1.8, 4, 64);
-            const diskMaterial = new THREE.MeshBasicMaterial({
-                color: 0xff4500,
-                side: THREE.DoubleSide,
-                transparent: true,
-                opacity: 0.8,
-            });
-            accretionDisk = new THREE.Mesh(diskGeometry, diskMaterial);
+            accretionDisk = new THREE.Mesh(
+                new THREE.RingGeometry(1.8, 4, 64),
+                new THREE.MeshBasicMaterial({
+                    color: 0xff4500,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 0.8,
+                })
+            );
             accretionDisk.rotation.x = Math.PI / 2;
             scene.add(accretionDisk);
         };
@@ -143,47 +102,68 @@
             if (accretionDisk) scene.remove(accretionDisk);
         };
 
-        // UI Elements
+        let moons = [];
+        const createMoons = (count) => {
+            moons.forEach((moon) => scene.remove(moon));
+            moons = [];
+            for (let i = 0; i < count; i++) {
+                const moon = new THREE.Mesh(
+                    new THREE.SphereGeometry(0.2, 32, 32),
+                    new THREE.MeshStandardMaterial({ color: 0xffffff })
+                );
+                moon.userData = { angle: Math.random() * Math.PI * 2, orbitRadius: 3 + i * 0.5 };
+                scene.add(moon);
+                moons.push(moon);
+            }
+        };
+
+        const updateMoons = () => {
+            moons.forEach((moon) => {
+                moon.userData.angle += 0.01;
+                const r = moon.userData.orbitRadius;
+                moon.position.set(Math.cos(moon.userData.angle) * r, 0, Math.sin(moon.userData.angle) * r);
+            });
+        };
+
+        camera.position.z = 10;
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            updateMoons();
+            if (!blackHole) planet.rotation.y += 0.005;
+            controls.update();
+            renderer.render(scene, camera);
+        };
+        animate();
+
         const massSlider = document.getElementById("mass");
         const temperatureSlider = document.getElementById("temperature");
         const moonsSlider = document.getElementById("moons");
         const planetTypeDropdown = document.getElementById("planet-type");
         const planetColorPicker = document.getElementById("planet-color");
         const toggleBlackhole = document.getElementById("toggle-blackhole");
-
-        const massValue = document.getElementById("mass-value");
-        const temperatureValue = document.getElementById("temperature-value");
-        const moonsValue = document.getElementById("moons-value");
         const statusDisplay = document.getElementById("status");
 
-        // === Event Listeners ===
         const updatePlanet = () => {
             const mass = parseFloat(massSlider.value);
             const temperature = parseFloat(temperatureSlider.value);
-            const moons = parseInt(moonsSlider.value);
+            const moonsCount = parseInt(moonsSlider.value);
             const planetType = planetTypeDropdown.value;
             const color = planetColorPicker.value;
-
-            massValue.textContent = mass.toFixed(1);
-            temperatureValue.textContent = temperature.toFixed(0);
-            moonsValue.textContent = moons;
-
             planet.material.color.set(color);
-
-            // Habitability Check
-            if (mass > 50) {
-                statusDisplay.textContent = "Habitability: Black Hole!";
-                toggleBlackhole.checked = true;
+            createMoons(moonsCount);
+            if (toggleBlackhole.checked || mass > 50) {
                 createBlackHole();
                 scene.remove(planet);
-            } else if (planetType === "land" && temperature > 273 && temperature < 373) {
-                statusDisplay.textContent = `Habitability: Habitable (${color})`;
-                removeBlackHole();
-                scene.add(planet);
+                statusDisplay.textContent = "Black Hole Mode";
             } else {
-                statusDisplay.textContent = "Habitability: Not Habitable";
                 removeBlackHole();
                 scene.add(planet);
+                if (planetType === "land" && temperature > 273 && temperature < 373) {
+                    statusDisplay.textContent = "Habitability: Habitable";
+                } else {
+                    statusDisplay.textContent = "Habitability: Not Habitable";
+                }
             }
         };
 
@@ -192,149 +172,8 @@
         moonsSlider.addEventListener("input", updatePlanet);
         planetTypeDropdown.addEventListener("change", updatePlanet);
         planetColorPicker.addEventListener("input", updatePlanet);
-        toggleBlackhole.addEventListener("change", () => {
-            if (toggleBlackhole.checked) {
-                createBlackHole();
-                scene.remove(planet);
-            } else {
-                removeBlackHole();
-                scene.add(planet);
-            }
-        });
-
-        // === Initial Setup ===
+        toggleBlackhole.addEventListener("change", updatePlanet);
         updatePlanet();
-
-        // Camera Position
-        camera.position.z = 10;
-
-        // Render Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
     </script>
 </body>
 </html>
-
-
-// === Moons ===
-let moons = [];
-const createMoons = (count) => {
-    // Clear existing moons
-    moons.forEach((moon) => scene.remove(moon));
-    moons = [];
-
-    // Create new moons
-    for (let i = 0; i < count; i++) {
-        const moonGeometry = new THREE.SphereGeometry(0.2, 32, 32);
-        const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
-        const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-
-        // Set initial moon position and orbit radius
-        const orbitRadius = 3 + i * 0.5;
-        moon.userData = { angle: Math.random() * Math.PI * 2, orbitRadius };
-
-        // Add moon to scene and array
-        scene.add(moon);
-        moons.push(moon);
-    }
-};
-
-const updateMoons = () => {
-    moons.forEach((moon) => {
-        moon.userData.angle += 0.01; // Adjust orbit speed
-        const radius = moon.userData.orbitRadius;
-        moon.position.set(
-            Math.cos(moon.userData.angle) * radius,
-            0,
-            Math.sin(moon.userData.angle) * radius
-        );
-    });
-};
-
-// Add moon creation to the UI update function
-const originalUpdatePlanet = updatePlanet;
-updatePlanet = () => {
-    originalUpdatePlanet();
-    createMoons(parseInt(moonsSlider.value));
-};
-
-// === Atmosphere Effect ===
-let atmosphere;
-const createAtmosphere = () => {
-    if (atmosphere) scene.remove(atmosphere);
-
-    const atmosphereGeometry = new THREE.SphereGeometry(2.1, 64, 64);
-    const atmosphereMaterial = new THREE.ShaderMaterial({
-        uniforms: {},
-        vertexShader: `
-            varying vec3 vNormal;
-            void main() {
-                vNormal = normalize(normalMatrix * normal);
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-        `,
-        fragmentShader: `
-            varying vec3 vNormal;
-            void main() {
-                float intensity = pow(1.0 - dot(vNormal, vec3(0, 0, 1.0)), 2.0);
-                gl_FragColor = vec4(0.0, 0.5, 1.0, 0.4) * intensity;
-            }
-        `,
-        transparent: true,
-    });
-    atmosphere = new THREE.Mesh(atmosphereGeometry, atmosphereMaterial);
-    scene.add(atmosphere);
-};
-
-// Automatically create atmosphere when planet updates
-updatePlanet = () => {
-    originalUpdatePlanet();
-    createAtmosphere();
-};
-
-// === Dynamic Rings for Gas Planets ===
-let rings;
-const createRings = () => {
-    if (rings) scene.remove(rings);
-
-    const ringGeometry = new THREE.RingGeometry(2.5, 3.5, 64);
-    const ringMaterial = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: 0.7,
-    });
-    rings = new THREE.Mesh(ringGeometry, ringMaterial);
-    rings.rotation.x = Math.PI / 2;
-    scene.add(rings);
-};
-
-// Add rings only for gas planets
-planetTypeDropdown.addEventListener("change", () => {
-    if (planetTypeDropdown.value === "gas") {
-        createRings();
-    } else if (rings) {
-        scene.remove(rings);
-        rings = null;
-    }
-});
-
-// === Animation Loop ===
-function animate() {
-    requestAnimationFrame(animate);
-
-    // Rotate planet
-    if (!blackHole) planet.rotation.y += 0.005;
-
-    // Update moons
-    updateMoons();
-
-    // Render the scene
-    controls.update();
-    renderer.render(scene, camera);
-}
-animate();
