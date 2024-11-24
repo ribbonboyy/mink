@@ -1,146 +1,192 @@
-<script>
-    // Scene, Camera, Renderer
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+<!DOCTYPE html>
+<html lang="en">
 
-    // Orbit Controls
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-
-    // Lights
-    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-    pointLight.position.set(10, 10, 10);
-    scene.add(pointLight);
-
-    const ambientLight = new THREE.AmbientLight(0x404040); // Soft white light
-    scene.add(ambientLight);
-
-    // Planet and Moon Groups
-    const planetGroup = new THREE.Group();
-    const moonGroup = new THREE.Group();
-
-    // Create Planet (Sphere)
-    const planetGeometry = new THREE.SphereGeometry(1, 32, 32);
-    const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x85C1E9 });
-    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-    planetGroup.add(planet);
-
-    // Add planet group to scene
-    scene.add(planetGroup);
-    planetGroup.add(moonGroup);
-
-    // Land Mesh (optional)
-    let landMesh = null;
-
-    // Position camera
-    camera.position.z = 5;
-
-    // Update planet appearance
-    function updatePlanet(mass, temperature, moonCount, color, addLand) {
-        console.log("Updating Planet:", { mass, temperature, moonCount, color, addLand });
-
-        // Change planet size based on mass
-        const scale = mass / 10;
-        planet.scale.set(scale, scale, scale);
-
-        // Change planet color
-        planetMaterial.color.set(color);
-
-        // Land Feature Toggle
-        if (addLand && !landMesh) {
-            const landGeometry = new THREE.SphereGeometry(1.02, 32, 32);
-            const landMaterial = new THREE.MeshStandardMaterial({
-                color: 0x228B22,
-                wireframe: true,
-                transparent: true,
-                opacity: 0.5,
-            });
-            landMesh = new THREE.Mesh(landGeometry, landMaterial);
-            planetGroup.add(landMesh);
-        } else if (!addLand && landMesh) {
-            planetGroup.remove(landMesh);
-            landMesh = null;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Planet Simulator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            font-family: Arial, sans-serif;
         }
 
-        // Transition to Black Hole if mass exceeds threshold
-        if (mass > 50) {
-            planetMaterial.color.set(0x000000); // Black
-            planetMaterial.emissive.set(0x222222); // Glow effect
-            planet.scale.set(0.5, 0.5, 0.5); // Shrink into singularity
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
         }
 
-        // Update moons
-        moonGroup.clear();
-        for (let i = 0; i < moonCount; i++) {
-            const moonGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-            const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xAAAAAA });
-            const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-
-            // Position moons in orbit
-            const angle = (i / moonCount) * Math.PI * 2;
-            const radius = scale + 0.5;
-            moon.position.set(
-                radius * Math.cos(angle),
-                radius * Math.sin(angle),
-                0
-            );
-
-            moonGroup.add(moon);
+        .slider-container {
+            margin-bottom: 10px;
         }
-    }
 
-    // Sliders and Controls
-    const massSlider = document.getElementById("mass");
-    const temperatureSlider = document.getElementById("temperature");
-    const moonsSlider = document.getElementById("moons");
-    const colorPicker = document.getElementById("color");
-    const landToggle = document.getElementById("land");
-
-    const massValue = document.getElementById("mass-value");
-    const temperatureValue = document.getElementById("temperature-value");
-    const moonsValue = document.getElementById("moons-value");
-
-    function updateSliders() {
-        const mass = parseFloat(massSlider.value);
-        const temperature = parseFloat(temperatureSlider.value);
-        const moons = parseInt(moonsSlider.value);
-        const color = colorPicker.value;
-        const addLand = landToggle.checked;
-
-        massValue.textContent = mass.toFixed(1);
-        temperatureValue.textContent = temperature.toFixed(0);
-        moonsValue.textContent = moons;
-
-        updatePlanet(mass, temperature, moons, color, addLand);
-
-        const description = document.getElementById("description");
-        if (mass > 50) {
-            description.textContent = "The planet has collapsed into a black hole!";
-        } else {
-            description.textContent = "Adjust the sliders to create your planet. If the mass exceeds 50, the planet will collapse into a black hole!";
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
-    }
 
-    massSlider.addEventListener("input", updateSliders);
-    temperatureSlider.addEventListener("input", updateSliders);
-    moonsSlider.addEventListener("input", updateSliders);
-    colorPicker.addEventListener("input", updateSliders);
-    landToggle.addEventListener("change", updateSliders);
+        input[type="range"] {
+            width: 100%;
+        }
 
-    // Animation Loop
-    function animate() {
-        requestAnimationFrame(animate);
+        .description {
+            margin-top: 10px;
+            font-size: 12px;
+        }
+    </style>
+</head>
 
-        // Rotate planet and moons
-        planet.rotation.y += 0.005;
-        moonGroup.rotation.y += 0.01;
+<body>
+    <div class="ui-panel">
+        <h2>3D Planet Simulator</h2>
+        <div class="slider-container">
+            <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
+            <input type="range" id="mass" min="0.1" max="100" step="0.1" value="1.0">
+        </div>
+        <div class="slider-container">
+            <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
+            <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
+        </div>
+        <div class="slider-container">
+            <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
+            <input type="range" id="moons" min="0" max="10" step="1" value="1">
+        </div>
+        <div class="description" id="description">
+            Adjust the sliders to create your planet. If the mass exceeds 50, the planet will collapse into a black hole!
+        </div>
+    </div>
 
-        controls.update();
-        renderer.render(scene, camera);
-    }
+    <script>
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-    updateSliders(); // Initialize with default values
-    animate();
-</script>
+        // Lights
+        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+        scene.add(ambientLight);
+
+        // Planet and Moon Groups
+        const planetGroup = new THREE.Group();
+        const moonGroup = new THREE.Group();
+
+        // Create Planet (Sphere)
+        const planetGeometry = new THREE.SphereGeometry(1, 32, 32);
+        const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x85C1E9 });
+        const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+        planetGroup.add(planet);
+
+        // Add planet group to scene
+        scene.add(planetGroup);
+        planetGroup.add(moonGroup);
+
+        // Position camera
+        camera.position.z = 5;
+
+        // Update planet appearance
+        function updatePlanet(mass, temperature, moonCount) {
+            // Change planet size based on mass
+            const scale = mass / 10;
+            planet.scale.set(scale, scale, scale);
+
+            // Change planet color based on temperature
+            if (temperature < 150) {
+                planetMaterial.color.set(0x4682B4); // Cold (ice world)
+            } else if (temperature > 800) {
+                planetMaterial.color.set(0xFF4500); // Hot (lava world)
+            } else {
+                planetMaterial.color.set(0x85C1E9); // Temperate
+            }
+
+            // Transition to Black Hole if mass exceeds threshold
+            if (mass > 50) {
+                planetMaterial.color.set(0x000000); // Black
+                planetMaterial.emissive.set(0x222222); // Glow effect
+                planet.scale.set(0.5, 0.5, 0.5); // Shrink into singularity
+            }
+
+            // Update moons
+            moonGroup.clear();
+            for (let i = 0; i < moonCount; i++) {
+                const moonGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+                const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xAAAAAA });
+                const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+
+                // Position moons in orbit
+                const angle = (i / moonCount) * Math.PI * 2;
+                const radius = scale + 0.5;
+                moon.position.set(
+                    radius * Math.cos(angle),
+                    radius * Math.sin(angle),
+                    0
+                );
+
+                moonGroup.add(moon);
+            }
+        }
+
+        // Sliders
+        const massSlider = document.getElementById("mass");
+        const temperatureSlider = document.getElementById("temperature");
+        const moonsSlider = document.getElementById("moons");
+
+        const massValue = document.getElementById("mass-value");
+        const temperatureValue = document.getElementById("temperature-value");
+        const moonsValue = document.getElementById("moons-value");
+
+        function updateSliders() {
+            const mass = parseFloat(massSlider.value);
+            const temperature = parseFloat(temperatureSlider.value);
+            const moons = parseInt(moonsSlider.value);
+
+            massValue.textContent = mass.toFixed(1);
+            temperatureValue.textContent = temperature.toFixed(0);
+            moonsValue.textContent = moons;
+
+            updatePlanet(mass, temperature, moons);
+
+            const description = document.getElementById("description");
+            if (mass > 50) {
+                description.textContent = "The planet has collapsed into a black hole!";
+            } else {
+                description.textContent = "Adjust the sliders to create your planet. If the mass exceeds 50, the planet will collapse into a black hole!";
+            }
+        }
+
+        massSlider.addEventListener("input", updateSliders);
+        temperatureSlider.addEventListener("input", updateSliders);
+        moonsSlider.addEventListener("input", updateSliders);
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate planet and moons
+            planet.rotation.y += 0.005;
+            moonGroup.rotation.y += 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        updateSliders(); // Initialize with default values
+        animate();
+    </script>
+</body>
+
+</html>
