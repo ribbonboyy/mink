@@ -1,4 +1,4 @@
-/* Reset styles */
+/* General Reset */
 * {
   margin: 0;
   padding: 0;
@@ -6,44 +6,49 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #000;
+  font-family: 'Arial', sans-serif;
+  background: #000;
   color: #fff;
   overflow-y: scroll;
   height: 100vh;
 }
 
-/* Extremely long scrolling background */
+/* The super long scrolling background */
 .background {
   position: relative;
-  height: 5500vh; /* Even longer! */
+  height: 30000vh; /* Extra-long for more milestones! */
   width: 100%;
-  background: radial-gradient(circle, #000 70%, #002147 100%);
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: linear-gradient(to bottom, #000 0%, #002147 15%, #013370 30%, #2e75b6 45%, #58a8ff 60%, #87cefa 80%, #d0f4f7 100%);
+  background-size: cover;
 }
 
-/* Milestones styles */
-.milestone {
+/* Fact cards */
+.fact {
   position: absolute;
   width: 100%;
   text-align: center;
-  padding: 2rem 1rem;
+  font-size: 1.5rem;
+  padding: 2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-.milestone h1, .milestone h2 {
+.fact h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  color: #ffecb3;
 }
 
-.milestone p {
-  font-size: 1.5rem;
-  margin-top: 10px;
-  font-style: italic;
+/* Horizon lines */
+.fact::before,
+.fact::after {
+  content: "---------------------------------------------------------------";
+  display: block;
+  margin: 1rem 0;
+  font-family: 'Courier New', Courier, monospace;
+  color: #888;
 }
 
-/* Starry background animation */
+/* Starry overlay */
 body::before {
   content: '';
   position: fixed;
@@ -53,15 +58,15 @@ body::before {
   height: 100%;
   background: url('https://i.imgur.com/9zrnwM3.png') repeat;
   z-index: -1;
-  opacity: 0.8;
-  animation: twinkling 5s infinite alternate;
+  opacity: 0.7;
+  animation: stars 10s infinite alternate;
 }
 
-@keyframes twinkling {
+@keyframes stars {
   from {
-    transform: translateY(0);
+    background-position: 0 0;
   }
   to {
-    transform: translateY(-10px);
+    background-position: 0 -100px;
   }
 }
