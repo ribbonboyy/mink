@@ -18,7 +18,6 @@ body {
   position: relative;
   height: 55000vh; /* Even longer! */
   width: 100%;
-  background: radial-gradient(circle, #000 70%, #002147 100%);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
