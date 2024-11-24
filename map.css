@@ -1,0 +1,20 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f9f9f9;
+    background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+    background-size: 20px 20px;
+    margin: 0;
+    color: #333;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    margin
