@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fantasy Map Maker</title>
-    <link rel="stylesheet" href="map.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="section">
-            <h2>Fantasy Map Maker</h2>
-            <p>This is a proof of concept. It will not work greatly.</p>
-            <button id="generate-map">Generate Map</button>
-            <button id="export-png">Export as PNG</button>
-            <canvas id="mapCanvas" width="800" height="600"></canvas>
+            <h2>Interactive Fantasy Map</h2>
+            <div id="map" style="height: 600px;"></div>
+            <button id="export-png">Export Map as PNG</button>
         </div>
     </div>
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="map.js"></script>
 </body>
 </html>
