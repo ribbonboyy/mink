@@ -3,227 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulate a Planet</title>
-    <link href="styles.css" rel="stylesheet">
+    <title>Planet Simulator</title>
     <style>
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: #f9f9f9 radial-gradient(circle, #ccc 1px, transparent 1px);
-            background-size: 20px 20px;
-            color: #333;
+            font-family: 'Arial', sans-serif;
             margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
         }
 
         .container {
             max-width: 900px;
             margin: 50px auto;
+            text-align: center;
             padding: 20px;
         }
 
-        .section {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        h2 {
+            font-size: 2rem;
             margin-bottom: 20px;
-            text-align: center;
         }
 
         .planet {
+            position: relative;
+            margin: 0 auto;
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            margin: 20px auto;
             background: radial-gradient(circle at center, #85C1E9, #2E86C1);
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+            overflow: hidden;
+            transition: transform 0.5s ease, background 0.5s ease;
         }
 
-        .planet.black-hole {
-            background: black;
-            box-shadow: 0 0 50px 20px #fff, 0 0 100px 40px rgba(255, 255, 255, 0.5);
+        .land {
+            position: absolute;
+            width: 60%;
+            height: 30%;
+            background: green;
+            border-radius: 50%;
+            top: 30%;
+            left: 20%;
+            transform: rotate(45deg);
         }
 
-        .comparison-text {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .moons {
+            position: relative;
+            display: flex;
+            justify-content: center;
             margin-top: 20px;
-            color: #2D3C41;
         }
 
-        .slider-container,
-        .toggle-container {
-            margin: 20px 0;
+        .moon {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: gray;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        input[type="range"] {
+            width: 80%;
+            margin: 15px auto;
+            display: block;
         }
 
         .slider-label {
             font-weight: bold;
-            margin-bottom: 10px;
-            display: block;
+            margin: 10px 0;
         }
 
-        .slider {
-            width: 100%;
-        }
-
-        .toggle-container label {
+        button {
+            padding: 10px 20px;
             font-size: 1rem;
-            margin-right: 10px;
+            color: #fff;
+            background: #00A2E8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
         }
 
-        .toggle-container input {
-            transform: scale(1.5);
-            margin-left: 10px;
+        button:hover {
+            background: #007BB8;
         }
 
-        .output {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin: 10px 0;
-            color: #2D3C41;
-        }
-
-        .habitability-feedback {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-            color: #008000;
-        }
-
-        .habitability-feedback.not-habitable {
-            color: #FF0000;
+        .description {
+            font-size: 1rem;
+            color: #aaa;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="section">
-            <h2>Simulate a Planet</h2>
-            <p>Design a planet by adjusting its properties. See how it evolves and what it resembles!</p>
+        <h2>Planet Simulator</h2>
+        <div class="planet" id="planet">
+            <div class="land" id="land"></div>
+        </div>
+        <div class="moons" id="moons"></div>
 
+        <div class="controls">
             <div class="slider-container">
                 <label class="slider-label" for="gravity">Gravity (m/s²): <span id="gravity-value">9.8</span></label>
-                <input id="gravity" class="slider" type="range" min="0.1" max="100" step="0.1" value="9.8">
+                <input type="range" id="gravity" min="0.1" max="50" step="0.1" value="9.8">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
-                <input id="mass" class="slider" type="range" min="0.1" max="100" step="0.1" value="1.0">
+                <input type="range" id="mass" min="0.1" max="50" step="0.1" value="1.0">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="solar-distance">Solar Distance (AU): <span id="solar-distance-value">1.0</span></label>
-                <input id="solar-distance" class="slider" type="range" min="0.1" max="10" step="0.1" value="1.0">
-            </div>
-
-            <div class="slider-container">
-                <label class="slider-label" for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
-                <input id="temperature" class="slider" type="range" min="50" max="1000" step="10" value="288">
+                <input type="range" id="solar-distance" min="0.1" max="10" step="0.1" value="1.0">
             </div>
 
             <div class="slider-container">
                 <label class="slider-label" for="moons">Number of Moons: <span id="moons-value">1</span></label>
-                <input id="moons" class="slider" type="range" min="0" max="20" step="1" value="1">
+                <input type="range" id="moons" min="0" max="10" step="1" value="1">
             </div>
 
-            <div class="toggle-container">
-                <label for="type">Planet Type:</label>
-                <label>Rocky</label>
-                <input type="radio" id="rocky" name="type" value="rocky" checked>
-                <label>Gas Giant</label>
-                <input type="radio" id="gas" name="type" value="gas">
+            <div class="slider-container">
+                <label class="slider-label" for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
+                <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
             </div>
 
-            <div class="planet" id="planet"></div>
-
-            <p class="output">Habitability: <span id="habitability-status">Undetermined</span></p>
-            <p id="habitability-feedback" class="habitability-feedback not-habitable">Adjust parameters to see feedback.</p>
-            <p id="comparison-text" class="comparison-text"></p>
+            <button onclick="updatePlanet()">Update Planet</button>
         </div>
+
+        <p id="description" class="description">Modify the planet's attributes to explore how it evolves!</p>
     </div>
 
     <script>
+        const planetElement = document.getElementById("planet");
+        const landElement = document.getElementById("land");
+        const moonsElement = document.getElementById("moons");
+
         const sliders = {
-            gravity: document.getElementById('gravity'),
-            mass: document.getElementById('mass'),
-            solarDistance: document.getElementById('solar-distance'),
-            temperature: document.getElementById('temperature'),
-            moons: document.getElementById('moons'),
+            gravity: document.getElementById("gravity"),
+            mass: document.getElementById("mass"),
+            solarDistance: document.getElementById("solar-distance"),
+            moons: document.getElementById("moons"),
+            temperature: document.getElementById("temperature")
         };
 
         const values = {
-            gravity: document.getElementById('gravity-value'),
-            mass: document.getElementById('mass-value'),
-            solarDistance: document.getElementById('solar-distance-value'),
-            temperature: document.getElementById('temperature-value'),
-            moons: document.getElementById('moons-value'),
+            gravity: document.getElementById("gravity-value"),
+            mass: document.getElementById("mass-value"),
+            solarDistance: document.getElementById("solar-distance-value"),
+            moons: document.getElementById("moons-value"),
+            temperature: document.getElementById("temperature-value")
         };
 
-        const planetTypeRadio = document.getElementsByName('type');
-        const planet = document.getElementById('planet');
-        const habitabilityStatus = document.getElementById('habitability-status');
-        const habitabilityFeedback = document.getElementById('habitability-feedback');
-        const comparisonText = document.getElementById('comparison-text');
-
-        const updatePlanet = () => {
+        function updatePlanet() {
             // Update slider values
-            for (const key in sliders) {
-                values[key].textContent = sliders[key].value;
-            }
+            Object.keys(sliders).forEach(key => {
+                values[key].innerText = sliders[key].value;
+            });
 
             const gravity = parseFloat(sliders.gravity.value);
             const mass = parseFloat(sliders.mass.value);
             const solarDistance = parseFloat(sliders.solarDistance.value);
             const temperature = parseFloat(sliders.temperature.value);
-            const moons = parseInt(sliders.moons.value);
+            const moonCount = parseInt(sliders.moons.value);
 
-            const planetType = [...planetTypeRadio].find(radio => radio.checked).value;
-
-            // Determine black hole transformation
-            if (mass > 50) {
-                planet.className = 'planet black-hole';
-                habitabilityStatus.textContent = 'None';
-                habitabilityFeedback.textContent = 'Your planet has collapsed into a black hole!';
-                habitabilityFeedback.className = 'habitability-feedback not-habitable';
-                comparisonText.textContent = '';
-                return;
+            // Update planet visuals
+            if (temperature >= 273 && temperature <= 373 && solarDistance >= 0.8 && solarDistance <= 1.5) {
+                // Habitable (Green land)
+                landElement.style.background = "green";
+                planetElement.style.background = "radial-gradient(circle at center, #85C1E9, #2E86C1)";
+            } else if (temperature > 500) {
+                // Hot barren (Orange land)
+                landElement.style.background = "orange";
+                planetElement.style.background = "radial-gradient(circle at center, #FF5733, #C70039)";
             } else {
-                planet.className = 'planet';
+                // Cold barren (Brown land)
+                landElement.style.background = "brown";
+                planetElement.style.background = "radial-gradient(circle at center, #6E2C00, #1C2833)";
             }
 
-            // Update planet type visuals
-            if (planetType === 'rocky') {
-                planet.style.background = `radial-gradient(circle at center, #C39BD3, #8E44AD)`;
-            } else {
-                planet.style.background = `radial-gradient(circle at center, #F7DC6F, #F1C40F)`;
+            // Update moons
+            moonsElement.innerHTML = "";
+            for (let i = 0; i < moonCount; i++) {
+                const moon = document.createElement("div");
+                moon.className = "moon";
+                const orbitDistance = 50 + i * 30;
+                moon.style.transform = `translate(${orbitDistance}px, ${orbitDistance}px) rotate(${i * 36}deg)`;
+                moonsElement.appendChild(moon);
             }
 
-            // Determine habitability and comparison
-            let habitability = 'Undetermined';
-            let comparison = 'an unknown planet';
-            let feedbackClass = 'not-habitable';
+            // Update description
+            const desc = `Gravity: ${gravity} m/s², Mass: ${mass} Earth masses, Distance: ${solarDistance} AU, Temperature: ${temperature}K, Moons: ${moonCount}`;
+            document.getElementById("description").innerText = desc;
+        }
 
-            if (planetType === 'rocky' && gravity >= 9 && gravity <= 15 && solarDistance >= 0.8 && solarDistance <= 1.5 && temperature >= 273 && temperature <= 373) {
-                habitability = 'Habitable';
-                feedbackClass = '';
-                comparison = 'Earth';
-            } else if (planetType === 'gas' && gravity > 20 && solarDistance > 5 && mass > 5) {
-                comparison = 'Jupiter or Saturn';
-            } else if (planetType === 'rocky' && gravity < 9 && solarDistance > 2) {
-                comparison = 'Mars';
-            }
-
-            // Update UI
-            habitabilityStatus.textContent = habitability;
-            habitabilityFeedback.textContent = habitability === 'Habitable' ? 'Life can thrive here!' : 'Conditions are not suitable for life.';
-            habitabilityFeedback.className = `habitability-feedback ${feedbackClass}`;
-            comparisonText.textContent = `Your planet resembles ${comparison}.`;
-        };
-
-        Object.values(sliders).forEach(slider => slider.addEventListener('input', updatePlanet));
-        planetTypeRadio.forEach(radio => radio.addEventListener('change', updatePlanet));
-
-        updatePlanet(); // Initialize on page load
+        updatePlanet(); // Initialize
     </script>
 </body>
 </html>
