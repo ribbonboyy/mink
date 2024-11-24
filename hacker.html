@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker Heist Simulation</title>
+  <style>
+    /* Dark Hacker Green CSS */
+    body {
+      background-color: #0d0d0d;
+      color: #00ff00;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1, h2 {
+      margin: 10px;
+      text-shadow: 0 0 20px #00ff00;
+    }
+
+    button {
+      background-color: #0d0d0d;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      cursor: pointer;
+      text-shadow: 0 0 10px #00ff00;
+    }
+
+    button:hover {
+      background-color: #00ff00;
+      color: #0d0d0d;
+      text-shadow: none;
+    }
+
+    .terminal {
+      width: 80%;
+      height: 40vh;
+      background-color: #1a1a1a;
+      border: 2px solid #00ff00;
+      overflow-y: auto;
+      padding: 10px;
+      color: #00ff00;
+      text-align: left;
+      box-shadow: 0 0 20px #00ff00;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .leaderboard {
+      margin-top: 20px;
+      background-color: #0d0d0d;
+      padding: 10px;
+      border: 2px solid #00ff00;
+      color: #00ff00;
+      text-align: left;
+      width: 50%;
+    }
+
+    .easter-egg {
+      display: none;
+      color: #ff00ff;
+      font-weight: bold;
+      margin-top: 20px;
+      text-shadow: 0 0 20px #ff00ff;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💻 Hacker Heist Simulation</h1>
+    <h2>Crack the code. Evade the firewall. Beat the clock!</h2>
+
+    <button id="start-button">Start Simulation</button>
+
+    <div id="game-area" class="hidden">
+      <div class="terminal" id="terminal">
+        <p>Initializing hacking tools...</p>
+      </div>
+      <input
+        type="text"
+        id="code-input"
+        placeholder="Enter the security code"
+        style="margin-top: 10px; padding: 5px; width: 50%; text-align: center;"
+      />
+      <button id="submit-code">Submit Code</button>
+    </div>
+
+    <div class="leaderboard hidden" id="leaderboard">
+      <h3>🏆 Leaderboard</h3>
+      <ul id="leaderboard-list"></ul>
+    </div>
+
+    <div class="easter-egg" id="easter-egg">🎉 You've unlocked an Easter Egg! 🎉</div>
+  </div>
+
+  <script>
+    const startButton = document.getElementById('start-button');
+    const gameArea = document.getElementById('game-area');
+    const terminal = document.getElementById('terminal');
+    const codeInput = document.getElementById('code-input');
+    const submitCode = document.getElementById('submit-code');
+    const leaderboard = document.getElementById('leaderboard');
+    const leaderboardList = document.getElementById('leaderboard-list');
+    const easterEgg = document.getElementById('easter-egg');
+
+    const correctCode = '42'; // Security code for the game
+    const bonusCode = '1337'; // Easter egg code
+    const timerLimit = 60; // Timer in seconds
+
+    let startTime;
+    let userTime;
+
+    startButton.addEventListener('click', () => {
+      startButton.classList.add('hidden');
+      gameArea.classList.remove('hidden');
+      leaderboard.classList.add('hidden');
+      terminal.innerHTML = '<p>Hacking tools loaded. Start cracking the code...</p>';
+      startTime = new Date();
+      generateTerminalText();
+    });
+
+    submitCode.addEventListener('click', () => {
+      const input = codeInput.value.trim();
+
+      if (input === correctCode) {
+        userTime = ((new Date() - startTime) / 1000).toFixed(2);
+        terminal.innerHTML += `<p style="color: lightgreen;">Access Granted! Time: ${userTime}s</p>`;
+        updateLeaderboard(userTime);
+        leaderboard.classList.remove('hidden');
+        codeInput.value = '';
+      } else if (input === bonusCode) {
+        easterEgg.style.display = 'block';
+        terminal.innerHTML += `<p style="color: magenta;">You triggered the bonus logic bomb!</p>`;
+      } else {
+        terminal.innerHTML += `<p style="color: red;">Access Denied. Try again!</p>`;
+        codeInput.value = '';
+      }
+
+      terminal.scrollTop = terminal.scrollHeight;
+    });
+
+    function generateTerminalText() {
+      const commands = [
+        'Connecting to mainframe...',
+        'Bypassing firewall...',
+        'Injecting logic bomb...',
+        'Cracking encryption...',
+        'Scanning for vulnerabilities...'
+      ];
+
+      let index = 0;
+
+      const interval = setInterval(() => {
+        if (index < commands.length) {
+          terminal.innerHTML += `<p>${commands[index]}</p>`;
+          index++;
+          terminal.scrollTop = terminal.scrollHeight;
+        } else {
+          clearInterval(interval);
+        }
+      }, 2000);
+    }
+
+    function updateLeaderboard(time) {
+      const listItem = document.createElement('li');
+      listItem.textContent = `Hacker - ${time}s`;
+      leaderboardList.appendChild(listItem);
+    }
+  </script>
+</body>
+</html>
