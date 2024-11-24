@@ -57,8 +57,29 @@
       box-shadow: 0 0 20px #00ff00;
     }
 
-    .hidden {
-      display: none;
+    .progress-bar {
+      width: 80%;
+      background-color: #0d0d0d;
+      border: 2px solid #00ff00;
+      margin-top: 20px;
+      height: 20px;
+      position: relative;
+    }
+
+    .progress-fill {
+      background-color: #00ff00;
+      width: 0;
+      height: 100%;
+      animation: progress 5s linear forwards;
+    }
+
+    @keyframes progress {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
     }
 
     .leaderboard {
@@ -78,6 +99,13 @@
       margin-top: 20px;
       text-shadow: 0 0 20px #ff00ff;
     }
+
+    .timer {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: #ff0000;
+      text-shadow: 0 0 20px #ff0000;
+    }
   </style>
 </head>
 <body>
@@ -91,6 +119,10 @@
       <div class="terminal" id="terminal">
         <p>Initializing hacking tools...</p>
       </div>
+      <div class="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div class="timer" id="timer">Time Left: 60s</div>
       <input
         type="text"
         id="code-input"
@@ -117,6 +149,7 @@
     const leaderboard = document.getElementById('leaderboard');
     const leaderboardList = document.getElementById('leaderboard-list');
     const easterEgg = document.getElementById('easter-egg');
+    const timerDisplay = document.getElementById('timer');
 
     const correctCode = '42'; // Security code for the game
     const bonusCode = '1337'; // Easter egg code
@@ -124,6 +157,7 @@
 
     let startTime;
     let userTime;
+    let countdown;
 
     startButton.addEventListener('click', () => {
       startButton.classList.add('hidden');
@@ -131,6 +165,7 @@
       leaderboard.classList.add('hidden');
       terminal.innerHTML = '<p>Hacking tools loaded. Start cracking the code...</p>';
       startTime = new Date();
+      startCountdown();
       generateTerminalText();
     });
 
@@ -138,6 +173,7 @@
       const input = codeInput.value.trim();
 
       if (input === correctCode) {
+        clearInterval(countdown);
         userTime = ((new Date() - startTime) / 1000).toFixed(2);
         terminal.innerHTML += `<p style="color: lightgreen;">Access Granted! Time: ${userTime}s</p>`;
         updateLeaderboard(userTime);
@@ -174,6 +210,22 @@
           clearInterval(interval);
         }
       }, 2000);
+    }
+
+    function startCountdown() {
+      let timeLeft = timerLimit;
+
+      countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          terminal.innerHTML += `<p style="color: red;">Time's up! You failed to crack the code.</p>`;
+          gameArea.classList.add('hidden');
+          leaderboard.classList.remove('hidden');
+        }
+      }, 1000);
     }
 
     function updateLeaderboard(time) {
