@@ -16,7 +16,7 @@ body {
 /* Extremely long scrolling background */
 .background {
   position: relative;
-  height: 5500vh; /* Even longer! */
+  height: 55000vh; /* Even longer! */
   width: 100%;
   background: radial-gradient(circle, #000 70%, #002147 100%);
   background-repeat: no-repeat;
