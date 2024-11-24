@@ -28,8 +28,9 @@
     <div class="container">
         <div class="section">
             <h2>Simulate a Planet</h2>
-            <p>Adjust the sliders below to modify your planet's gravity, atmospheric pressure, and solar distance. See your planet model and find out which real planet it most resembles!</p>
+            <p>Adjust the sliders below to define your planet's properties. Watch your planet model evolve and discover which real planet it resembles!</p>
             
+            <!-- Existing sliders -->
             <div class="slider-container">
                 <label class="slider-label" for="gravity">Gravity (m/s²): <span id="gravity-value">9.8</span></label>
                 <input id="gravity" class="slider" type="range" min="0.1" max="25" step="0.1" value="9.8">
@@ -45,8 +46,26 @@
                 <input id="solar-distance" class="slider" type="range" min="0.1" max="5" step="0.1" value="1.0">
             </div>
 
+            <!-- New sliders -->
+            <div class="slider-container">
+                <label class="slider-label" for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
+                <input id="mass" class="slider" type="range" min="0.1" max="10" step="0.1" value="1.0">
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label" for="rotation-speed">Rotation Speed (hours/day): <span id="rotation-speed-value">24</span></label>
+                <input id="rotation-speed" class="slider" type="range" min="1" max="48" step="1" value="24">
+            </div>
+
+            <div class="slider-container">
+                <label class="slider-label" for="orbital-tilt">Orbital Tilt (degrees): <span id="orbital-tilt-value">23.5</span></label>
+                <input id="orbital-tilt" class="slider" type="range" min="0" max="90" step="0.1" value="23.5">
+            </div>
+
+            <!-- Planet Visualization -->
             <div class="planet" id="planet"></div>
 
+            <!-- Feedback -->
             <p class="output">Habitability: <span id="habitability-status">Undetermined</span></p>
             <p id="habitability-feedback" class="habitability-feedback not-habitable">Adjust parameters to see feedback.</p>
             <p id="comparison-text" class="comparison-text"></p>
@@ -54,13 +73,20 @@
     </div>
 
     <script>
+        // Elements
         const gravitySlider = document.getElementById('gravity');
         const atmosphereSlider = document.getElementById('atmosphere');
         const solarDistanceSlider = document.getElementById('solar-distance');
+        const massSlider = document.getElementById('mass');
+        const rotationSpeedSlider = document.getElementById('rotation-speed');
+        const orbitalTiltSlider = document.getElementById('orbital-tilt');
 
         const gravityValue = document.getElementById('gravity-value');
         const atmosphereValue = document.getElementById('atmosphere-value');
         const solarDistanceValue = document.getElementById('solar-distance-value');
+        const massValue = document.getElementById('mass-value');
+        const rotationSpeedValue = document.getElementById('rotation-speed-value');
+        const orbitalTiltValue = document.getElementById('orbital-tilt-value');
 
         const habitabilityStatus = document.getElementById('habitability-status');
         const habitabilityFeedback = document.getElementById('habitability-feedback');
@@ -68,37 +94,44 @@
         const planetElement = document.getElementById('planet');
 
         const updateValues = () => {
+            // Get slider values
             const gravity = parseFloat(gravitySlider.value);
             const atmosphere = parseFloat(atmosphereSlider.value);
             const solarDistance = parseFloat(solarDistanceSlider.value);
+            const mass = parseFloat(massSlider.value);
+            const rotationSpeed = parseFloat(rotationSpeedSlider.value);
+            const orbitalTilt = parseFloat(orbitalTiltSlider.value);
 
+            // Update displayed values
             gravityValue.textContent = gravity.toFixed(1);
             atmosphereValue.textContent = atmosphere.toFixed(1);
             solarDistanceValue.textContent = solarDistance.toFixed(1);
+            massValue.textContent = mass.toFixed(1);
+            rotationSpeedValue.textContent = rotationSpeed.toFixed(1);
+            orbitalTiltValue.textContent = orbitalTilt.toFixed(1);
 
+            // Determine habitability
             let habitability = 'Undetermined';
             let feedbackClass = 'not-habitable';
             let planetComparison = 'an unknown planet';
             let planetColor = '#85C1E9';
 
-            // Determine habitability
-            if (gravity >= 9.8 && gravity <= 15 && atmosphere >= 0.8 && atmosphere <= 2 && solarDistance >= 0.8 && solarDistance <= 1.5) {
+            if (gravity >= 9.8 && gravity <= 15 &&
+                atmosphere >= 0.8 && atmosphere <= 2 &&
+                solarDistance >= 0.8 && solarDistance <= 1.5 &&
+                mass >= 0.5 && mass <= 2 &&
+                rotationSpeed >= 10 && rotationSpeed <= 30 &&
+                orbitalTilt >= 10 && orbitalTilt <= 30) {
                 habitability = 'Habitable';
                 feedbackClass = '';
-            } else {
-                habitability = 'Not Habitable';
-            }
-
-            // Determine comparison planet
-            if (gravity >= 9 && gravity <= 11 && atmosphere >= 0.8 && atmosphere <= 1.5 && solarDistance >= 0.9 && solarDistance <= 1.1) {
                 planetComparison = 'Earth';
-                planetColor = '#85C1E9'; // Blue-green for Earth-like planet
-            } else if (gravity < 9 && atmosphere < 0.8 && solarDistance > 1.5) {
+                planetColor = '#85C1E9';
+            } else if (gravity < 9 && atmosphere < 0.8 && solarDistance > 1.5 && mass < 0.5) {
                 planetComparison = 'Mars';
-                planetColor = '#E74C3C'; // Red for Mars-like planet
-            } else if (gravity > 15 && atmosphere > 2 && solarDistance < 0.8) {
+                planetColor = '#E74C3C';
+            } else if (gravity > 15 && atmosphere > 2 && solarDistance < 0.8 && mass > 2) {
                 planetComparison = 'Venus';
-                planetColor = '#F4D03F'; // Yellow-gold for Venus-like planet
+                planetColor = '#F4D03F';
             }
 
             // Update habitability feedback
@@ -114,11 +147,15 @@
             planetElement.style.transform = habitability === 'Habitable' ? 'scale(1.2)' : 'scale(1)';
         };
 
+        // Attach events
         gravitySlider.addEventListener('input', updateValues);
         atmosphereSlider.addEventListener('input', updateValues);
         solarDistanceSlider.addEventListener('input', updateValues);
+        massSlider.addEventListener('input', updateValues);
+        rotationSpeedSlider.addEventListener('input', updateValues);
+        orbitalTiltSlider.addEventListener('input', updateValues);
 
-        updateValues(); // Initialize on page load
+        updateValues(); // Initialize
     </script>
 </body>
 </html>
