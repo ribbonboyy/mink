@@ -7,60 +7,69 @@ body {
     background-size: 20px 20px;
     margin: 0;
     padding: 0;
-    color: #333;
     text-align: center;
+    color: #333;
 }
 
 h1 {
     font-size: 2rem;
     font-weight: 600;
-    margin: 20px 0;
+    margin: 30px 0;
 }
 
 .container {
     width: 90%;
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 15px;
+    padding: 20px;
 }
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Flexible grid layout */
-    gap: 15px; /* Gap between items */
-    justify-items: center; /* Center grid items horizontally */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Flexible grid for responsiveness */
+    gap: 20px;
+    justify-items: center;
 }
 
 .grid-item {
-    position: relative;
-    width: 100%;
-    max-width: 250px; /* Ensure items aren't too wide */
-    aspect-ratio: 4 / 3; /* Maintain a consistent 4:3 aspect ratio */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     background: #fff;
-    padding: 10px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: 2px dashed #ccc;
-    overflow: hidden; /* Prevent content overflow */
-    transition: transform 0.2s ease-out;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid #ddd;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
 }
 
 .grid-item:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
 }
 
 .grid-item img {
-    width: 100%; /* Scale image to fill grid-item */
-    height: 100%;
-    object-fit: cover; /* Maintain aspect ratio and cover grid-item area */
-    border-radius: 10px;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.grid-item img:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+.grid-item p {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.grid-item:hover p {
+    color: #007bff; /* Add slight hover effect for text */
 }
 
 @media (max-width: 768px) {
@@ -69,12 +78,11 @@ h1 {
     }
 
     .grid {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Smaller columns for mobile */
-        gap: 10px; /* Smaller gap */
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Smaller grid items */
+        gap: 15px;
     }
 
     .grid-item {
-        max-width: 180px; /* Limit size of grid items for smaller screens */
-        aspect-ratio: 4 / 3; /* Maintain aspect ratio */
+        padding: 10px;
     }
 }
