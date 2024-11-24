@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fantasy Map Maker</title>
-    <!-- Leaflet CSS -->
+    <title>Interactive Fantasy Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -16,8 +15,12 @@
             <button id="export-png">Export Map as PNG</button>
         </div>
     </div>
-    <!-- Leaflet JavaScript -->
+
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- html2canvas for exporting map -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- Custom map script -->
     <script src="map.js"></script>
 </body>
 </html>
