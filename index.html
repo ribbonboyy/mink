@@ -1,68 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orientation Page</title>
-    <link rel="stylesheet" href="mainpage.css">
+    <title>Enhanced Planet Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset and Styling */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 2%, transparent 3%);
+            background-size: 5px 5px;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 800px;
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-weight: 400;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .planet {
+            position: relative;
+            margin: 20px auto;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, #85C1E9, #2E86C1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: spin 10s linear infinite;
+        }
+
+        .black-hole {
+            background: black;
+            border: 5px solid rgba(255, 255, 0, 0.6);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 255, 0, 0.6);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 255, 0, 1);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .land {
+            position: absolute;
+            width: 50%;
+            height: 25%;
+            background: green;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .moons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .moon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: gray;
+            border-radius: 50%;
+            animation: orbit 5s linear infinite;
+        }
+
+        @keyframes orbit {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Panel Styling */
+        .panel {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .slider-container {
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        .slider-container:not(:last-child) {
+            border-bottom: 1px dashed #555;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background: #3498DB;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #2980B9;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #ccc;
+            margin-top: 15px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Welcome to prettyfunny.xyz!</h1>
     <div class="container">
-        <div class="grid">
-            <a class="grid-item" href="https://prettyfunny.xyz/space">
-                <img src="nasaa.png" alt="NASA">
-                <p>Space</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/czechia">
-                <img src="czechh.png" alt="Czechia">
-                <p>Czechia</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/bio">
-                <img src="bioo.png" alt="Bio">
-                <p>Bio</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/password">
-                <img src="passwordd.png" alt="Password">
-                <p>Password Strenght</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/planet">
-                <img src="planett.png" alt="Planet">
-                <p>Simulate a planet</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/kanye">
-                <img src="kanyee.png" alt="Kanye">
-                <p>Kanye</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/cats">
-                <img src="catss.png" alt="Cat">
-                <p>Cat</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/solar-system">
-                <img src="solarsystemm.png" alt="Solar">
-                <p>Solar System</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/badnicknames">
-                <img src="usernamee.png" alt="Username">
-                <p>Username Gen.</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/polls">
-                <img src="pollss.png" alt="Polls">
-                <p>Polls</p>
-                       </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/hacker">
-                <img src="hackerr.png" alt="Hacker">
-                <p>Hacker</p>
-            </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/map">
-                <img src="mapp.png" alt="Map">
-                <p>Map - Proof of concept</p>
-             </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/stocks">
-                <img src="stockss.png" alt="Stocks">
-                <p>Stocks</p>
-            </a>
+        <h2>Enhanced Planet Simulator</h2>
+        <p>Create a planet by adjusting its properties. Visualize its habitability, moons, and more!</p>
+
+        <!-- Planet visualization -->
+        <div class="planet" id="planet">
+            <div class="land" id="land"></div>
         </div>
+        <div class="moons" id="moons"></div>
+
+        <!-- Control Panel -->
+        <div class="panel">
+            <div class="slider-container">
+                <label for="gravity">Gravity (m/s²): <span id="gravity-value">9.8</span></label>
+                <input type="range" id="gravity" min="0.1" max="50" step="0.1" value="9.8">
+            </div>
+
+            <div class="slider-container">
+                <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
+                <input type="range" id="mass" min="0.1" max="50" step="0.1" value="1.0">
+            </div>
+
+            <div class="slider-container">
+                <label for="solar-distance">Solar Distance (AU): <span id="solar-distance-value">1.0</span></label>
+                <input type="range" id="solar-distance" min="0.1" max="10" step="0.1" value="1.0">
+            </div>
+
+            <div class="slider-container">
+                <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
+                <input type="range" id="moons" min="0" max="10" step="1" value="1">
+            </div>
+
+            <div class="slider-container">
+                <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
+                <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
+            </div>
+        </div>
+
+        <!-- Update button -->
+        <button onclick="updatePlanet()">Update Planet</button>
+
+        <!-- Description -->
+        <p id="description" class="description">Modify the sliders above to see your planet's changes.</p>
     </div>
+
+    <script>
+        const planetElement = document.getElementById("planet");
+        const landElement = document.getElementById("land");
+        const moonsElement = document.getElementById("moons");
+
+        const sliders = {
+            gravity: document.getElementById("gravity"),
+            mass: document.getElementById("mass"),
+            solarDistance: document.getElementById("solar-distance"),
+            moons: document.getElementById("moons"),
+            temperature: document.getElementById("temperature")
+        };
+
+        const values = {
+            gravity: document.getElementById("gravity-value"),
+            mass: document.getElementById("mass-value"),
+            solarDistance: document.getElementById("solar-distance-value"),
+            moons: document.getElementById("moons-value"),
+            temperature: document.getElementById("temperature-value")
+        };
+
+        function updatePlanet() {
+            Object.keys(sliders).forEach(key => {
+                values[key].innerText = sliders[key].value;
+            });
+
+            const mass = parseFloat(sliders.mass.value);
+            const temperature = parseFloat(sliders.temperature.value);
+            const moonCount = parseInt(sliders.moons.value);
+
+            // Transform into black hole if mass is at max
+            if (mass === 50) {
+                planetElement.className = "planet black-hole";
+                landElement.style.display = "none";
+                moonsElement.innerHTML = "";
+            } else {
+                planetElement.className = "planet";
+                landElement.style.display = "block";
+
+                // Update moons
+                moonsElement.innerHTML = "";
+                for (let i = 0; i < moonCount; i++) {
+                    const moon = document.createElement("div");
+                    moon.className = "moon";
+                    const angle = (360 / moonCount) * i;
+                    const orbitRadius = 100;
+                    moon.style.transform = `rotate(${angle}deg) translate(${orbitRadius}px)`;
+                    moon.style.animationDuration = `${5 + i}s`;
+                    moonsElement.appendChild(moon);
+                }
+            }
+        }
+
+        updatePlanet();
+    </script>
 </body>
+
 </html>
+
