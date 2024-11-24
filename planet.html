@@ -1,192 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Planet Simulator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <title>Styled Sliders</title>
     <style>
         body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black;
             font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        .ui-panel {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 14px;
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
         }
 
         .slider-container {
-            margin-bottom: 10px;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 500px;
         }
 
-        label {
-            display: block;
-            font-weight: bold;
+        .slider-label {
             margin-bottom: 5px;
+            font-size: 1.2em;
         }
 
         input[type="range"] {
+            -webkit-appearance: none; /* Removes default styling */
             width: 100%;
+            height: 8px;
+            background: #444;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s;
         }
 
-        .description {
-            margin-top: 10px;
-            font-size: 12px;
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #1e90ff;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #1e90ff;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        input[type="range"]:focus {
+            background: #555;
+        }
+
+        .value-display {
+            font-size: 1em;
+            text-align: right;
+            margin-top: 5px;
         }
     </style>
 </head>
-
 <body>
-    <div class="ui-panel">
-        <h2>3D Planet Simulator</h2>
-        <div class="slider-container">
-            <label for="mass">Mass (Earth Masses): <span id="mass-value">1.0</span></label>
-            <input type="range" id="mass" min="0.1" max="100" step="0.1" value="1.0">
-        </div>
-        <div class="slider-container">
-            <label for="temperature">Temperature (K): <span id="temperature-value">288</span></label>
-            <input type="range" id="temperature" min="50" max="1000" step="10" value="288">
-        </div>
-        <div class="slider-container">
-            <label for="moons">Number of Moons: <span id="moons-value">1</span></label>
-            <input type="range" id="moons" min="0" max="10" step="1" value="1">
-        </div>
-        <div class="description" id="description">
-            Adjust the sliders to create your planet. If the mass exceeds 50, the planet will collapse into a black hole!
-        </div>
+    <h1>Styled Sliders</h1>
+
+    <!-- Slider 1 -->
+    <div class="slider-container">
+        <label class="slider-label" for="mass-slider">Mass (Earth Masses):</label>
+        <input id="mass-slider" type="range" min="1" max="50" step="0.1" value="1">
+        <div class="value-display" id="mass-value">1.0</div>
+    </div>
+
+    <!-- Slider 2 -->
+    <div class="slider-container">
+        <label class="slider-label" for="temperature-slider">Temperature (K):</label>
+        <input id="temperature-slider" type="range" min="100" max="1000" step="10" value="290">
+        <div class="value-display" id="temperature-value">290</div>
+    </div>
+
+    <!-- Slider 3 -->
+    <div class="slider-container">
+        <label class="slider-label" for="moons-slider">Number of Moons:</label>
+        <input id="moons-slider" type="range" min="0" max="10" step="1" value="1">
+        <div class="value-display" id="moons-value">1</div>
     </div>
 
     <script>
-        // Scene, Camera, Renderer
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // Lights
-        const pointLight = new THREE.PointLight(0xffffff, 1, 100);
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
-
-        const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
-        scene.add(ambientLight);
-
-        // Planet and Moon Groups
-        const planetGroup = new THREE.Group();
-        const moonGroup = new THREE.Group();
-
-        // Create Planet (Sphere)
-        const planetGeometry = new THREE.SphereGeometry(1, 32, 32);
-        const planetMaterial = new THREE.MeshStandardMaterial({ color: 0x85C1E9 });
-        const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-        planetGroup.add(planet);
-
-        // Add planet group to scene
-        scene.add(planetGroup);
-        planetGroup.add(moonGroup);
-
-        // Position camera
-        camera.position.z = 5;
-
-        // Update planet appearance
-        function updatePlanet(mass, temperature, moonCount) {
-            // Change planet size based on mass
-            const scale = mass / 10;
-            planet.scale.set(scale, scale, scale);
-
-            // Change planet color based on temperature
-            if (temperature < 150) {
-                planetMaterial.color.set(0x4682B4); // Cold (ice world)
-            } else if (temperature > 800) {
-                planetMaterial.color.set(0xFF4500); // Hot (lava world)
-            } else {
-                planetMaterial.color.set(0x85C1E9); // Temperate
-            }
-
-            // Transition to Black Hole if mass exceeds threshold
-            if (mass > 50) {
-                planetMaterial.color.set(0x000000); // Black
-                planetMaterial.emissive.set(0x222222); // Glow effect
-                planet.scale.set(0.5, 0.5, 0.5); // Shrink into singularity
-            }
-
-            // Update moons
-            moonGroup.clear();
-            for (let i = 0; i < moonCount; i++) {
-                const moonGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-                const moonMaterial = new THREE.MeshStandardMaterial({ color: 0xAAAAAA });
-                const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-
-                // Position moons in orbit
-                const angle = (i / moonCount) * Math.PI * 2;
-                const radius = scale + 0.5;
-                moon.position.set(
-                    radius * Math.cos(angle),
-                    radius * Math.sin(angle),
-                    0
-                );
-
-                moonGroup.add(moon);
-            }
-        }
-
-        // Sliders
-        const massSlider = document.getElementById("mass");
-        const temperatureSlider = document.getElementById("temperature");
-        const moonsSlider = document.getElementById("moons");
+        // Script to dynamically update slider values
+        const massSlider = document.getElementById("mass-slider");
+        const temperatureSlider = document.getElementById("temperature-slider");
+        const moonsSlider = document.getElementById("moons-slider");
 
         const massValue = document.getElementById("mass-value");
         const temperatureValue = document.getElementById("temperature-value");
         const moonsValue = document.getElementById("moons-value");
 
-        function updateSliders() {
-            const mass = parseFloat(massSlider.value);
-            const temperature = parseFloat(temperatureSlider.value);
-            const moons = parseInt(moonsSlider.value);
-
-            massValue.textContent = mass.toFixed(1);
-            temperatureValue.textContent = temperature.toFixed(0);
-            moonsValue.textContent = moons;
-
-            updatePlanet(mass, temperature, moons);
-
-            const description = document.getElementById("description");
-            if (mass > 50) {
-                description.textContent = "The planet has collapsed into a black hole!";
-            } else {
-                description.textContent = "Adjust the sliders to create your planet. If the mass exceeds 50, the planet will collapse into a black hole!";
-            }
+        function updateValue(slider, display) {
+            slider.addEventListener("input", () => {
+                display.textContent = slider.value;
+            });
         }
 
-        massSlider.addEventListener("input", updateSliders);
-        temperatureSlider.addEventListener("input", updateSliders);
-        moonsSlider.addEventListener("input", updateSliders);
-
-        // Animation Loop
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Rotate planet and moons
-            planet.rotation.y += 0.005;
-            moonGroup.rotation.y += 0.01;
-
-            renderer.render(scene, camera);
-        }
-
-        updateSliders(); // Initialize with default values
-        animate();
+        // Attach event listeners
+        updateValue(massSlider, massValue);
+        updateValue(temperatureSlider, temperatureValue);
+        updateValue(moonsSlider, moonsValue);
     </script>
 </body>
-
 </html>
