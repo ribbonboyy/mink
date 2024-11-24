@@ -1,38 +1,32 @@
-// Initialize the map
-const map = L.map('map').setView([20, 0], 2); // Centered at [lat, lng], zoom level 2
+// Initialize the map and set view to an initial position
+const map = L.map('map').setView([20, 0], 3);
 
-// Add a fantasy map tile layer
-L.tileLayer('https://tile-examples.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-    maxZoom: 6,
-    attribution: '&copy; <a href="https://azgaar.github.io/Fantasy-Map-Generator/">Azgaar\'s Fantasy Map Generator</a>',
+// Add Stamen Watercolor fantasy-style tile layer
+L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg', {
+    maxZoom: 16,
+    attribution: '&copy; <a href="http://stamen.com">Stamen Design</a>, &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// Store markers for interactive elements
-const cities = [];
+// Array of city data with names, descriptions, and coordinates
+const cityData = [
+    { name: "Eldoria", description: "A bustling port city known for its skilled sailors and merchants.", lat: 10, lng: -20 },
+    { name: "Mistral Peaks", description: "A secluded mountain village famous for its rare herbs.", lat: 30, lng: 15 },
+    { name: "Dragon's Keep", description: "A fortress with rumors of a dragon sighting.", lat: -15, lng: 45 },
+    { name: "Whispering Woods", description: "An ancient forest filled with magic and mystery.", lat: 5, lng: -50 },
+    { name: "Shimmerlake", description: "A quiet town by a lake that glows under the moonlight.", lat: 25, lng: -10 }
+];
 
-// Generate random city markers
-function generateCities() {
-    for (let i = 0; i < 5; i++) {
-        // Generate random lat/lng positions
-        const lat = Math.random() * 140 - 70;  // Random latitude
-        const lng = Math.random() * 360 - 180; // Random longitude
+// Add each city marker with a popup containing the name and description
+cityData.forEach(city => {
+    const marker = L.marker([city.lat, city.lng]).addTo(map);
+    marker.bindPopup(`<b>${city.name}</b><br>${city.description}`);
+});
 
-        const city = L.marker([lat, lng]).addTo(map);
-        city.bindPopup(`<b>City ${i + 1}</b><br>Random lore and details.`);
-
-        cities.push(city);
-    }
-}
-
-// Generate Cities on Page Load
-generateCities();
-
-// Export map as PNG using Leaflet's print control
+// Export map as PNG using html2canvas
 document.getElementById('export-png').addEventListener('click', function() {
-    map.once('postcompose', function(event) {
-        const dataURL = canvas.toDataURL("image/png");
+    html2canvas(document.querySelector("#map")).then(canvas => {
         const link = document.createElement('a');
-        link.href = dataURL;
+        link.href = canvas.toDataURL('image/png');
         link.download = 'fantasy_map.png';
         link.click();
     });
