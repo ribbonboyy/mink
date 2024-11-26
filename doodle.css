@@ -7,7 +7,6 @@
 
 body {
     font-family: 'Comic Sans MS', cursive, sans-serif;
-    background: linear-gradient(135deg, #ffcc70, #ff5733);
     color: #333;
     display: flex;
     justify-content: center;
