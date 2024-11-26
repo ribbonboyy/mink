@@ -1,0 +1,49 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 2px dashed #ccc;
+}
+
+input[type="file"] {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+canvas {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.debug-info {
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  color: #555;
+}
