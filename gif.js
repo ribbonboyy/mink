@@ -41,7 +41,6 @@ function parseGIF(arrayBuffer) {
 GIF size: ${Math.round(blob.size / 1024)} KB
 GIF width: ${img.width}px
 GIF height: ${img.height}px
-Number of frames: (use gif.js for accurate frame extraction)
       </pre>
     `;
   };
