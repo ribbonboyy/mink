@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Apparel Designer</title>
+    <link rel="stylesheet" href="design.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1>🎨 DIY Custom Apparel Designer</h1>
+    </header>
+    <main>
+        <div class="designer">
+            <div class="canvas-container">
+                <canvas id="designCanvas" width="500" height="500"></canvas>
+                <div class="controls">
+                    <button id="addText">Add Text</button>
+                    <button id="uploadImage">Upload Image</button>
+                    <button id="preview3D">Preview in 3D</button>
+                </div>
+            </div>
+            <div id="preview3DContainer"></div>
+        </div>
+    </main>
+    <footer>
+        <p>© 2024 DIY Custom Apparel Designer</p>
+    </footer>
+    <script src="design.js"></script>
+</body>
+</html>
