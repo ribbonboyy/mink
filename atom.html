@@ -13,7 +13,7 @@
     <div class="controls">
       <label for="atom-select">Choose Atom:</label>
       <select id="atom-select">
-        <!-- Add 30 elements -->
+        <!-- 30 elements -->
         <option value="1">Hydrogen (1)</option>
         <option value="2">Helium (2)</option>
         <option value="3">Lithium (3)</option>
@@ -52,34 +52,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/controls/OrbitControls.js"></script>
   <script>
-    // Canvas and Renderer
+    // Setup
     const canvas = document.querySelector("#atomCanvas");
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    // Scene and Camera
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 100;
 
-    // OrbitControls for camera movement
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
-    // Lights
+    // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
     const pointLight = new THREE.PointLight(0xffffff, 1);
-    pointLight.position.set(20, 20, 20);
+    pointLight.position.set(50, 50, 50);
     scene.add(pointLight);
 
     // Materials
-    const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
-    const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x0000ff });
+    const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff5733 });
+    const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x1e90ff });
 
-    // Atom Configuration
     let nucleus;
     const electronOrbits = [];
 
@@ -91,69 +89,64 @@
 
     // Function to Create Electron Orbits
     function createElectronOrbits(atomicNumber) {
-      const orbitGroups = [];
-      let electronsLeft = atomicNumber;
-      let radiusStep = 10;
-
-      for (let i = 0; electronsLeft > 0; i++) {
-        const orbit = new THREE.Group();
-        const electronsInThisOrbit = Math.min(electronsLeft, 2 + i * 4); // First 2, then 8, then more
-        const radius = radiusStep + i * 5;
-
-        for (let j = 0; j < electronsInThisOrbit; j++) {
+      const orbits = [];
+      let electrons = atomicNumber;
+      const radii = [10, 20, 30, 40]; // Example radii for electron orbits
+      for (let i = 0; electrons > 0; i++) {
+        const orbitGroup = new THREE.Group();
+        const numElectrons = Math.min(electrons, 2 + i * 4);
+        for (let j = 0; j < numElectrons; j++) {
           const electron = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), electronMaterial);
-          const angle = (j / electronsInThisOrbit) * Math.PI * 2;
-          electron.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
-          orbit.add(electron);
+          const angle = (j / numElectrons) * Math.PI * 2;
+          electron.position.set(Math.cos(angle) * radii[i], 0, Math.sin(angle) * radii[i]);
+          orbitGroup.add(electron);
         }
-
-        orbitGroups.push(orbit);
-        scene.add(orbit);
-        electronsLeft -= electronsInThisOrbit;
+        orbits.push(orbitGroup);
+        scene.add(orbitGroup);
+        electrons -= numElectrons;
       }
-
-      return orbitGroups;
+      return orbits;
     }
 
-    // Function to Reset Atom
+    // Reset Atom
     function resetAtom(atomicNumber) {
-      scene.remove(nucleus);
+      if (nucleus) scene.remove(nucleus);
+      electronOrbits.forEach((orbit) => scene.remove(orbit));
+      electronOrbits.length = 0;
 
-      // Update nucleus size
-      const nucleusSize = Math.log(atomicNumber) * 3 + 5;
+      const nucleusSize = Math.log(atomicNumber) * 2 + 3;
       nucleus = createNucleus(nucleusSize);
       scene.add(nucleus);
 
-      // Update electron orbits
-      electronOrbits.forEach((orbit) => scene.remove(orbit));
-      electronOrbits.length = 0;
-      electronOrbits.push(...createElectronOrbits(atomicNumber));
+      const orbits = createElectronOrbits(atomicNumber);
+      orbits.forEach((orbit) => electronOrbits.push(orbit));
     }
 
-    // Initial Atom Setup
-    resetAtom(1); // Default is Hydrogen
+    // Initial Atom
+    resetAtom(1);
 
-    // Animation Loop
+    // Animation
     function animate() {
       requestAnimationFrame(animate);
       nucleus.rotation.y += 0.01;
-      electronOrbits.forEach((orbit, idx) => {
-        orbit.rotation.y += 0.01 + idx * 0.005;
+      electronOrbits.forEach((orbit) => {
+        orbit.rotation.y += 0.01;
       });
-      controls.update(); // Update OrbitControls
+      controls.update();
       renderer.render(scene, camera);
     }
     animate();
 
     // Event Listeners
-    const atomSelect = document.querySelector("#atom-select");
-    atomSelect.addEventListener("change", (e) => resetAtom(parseInt(e.target.value, 10)));
+    document.querySelector("#atom-select").addEventListener("change", (e) => {
+      const atomicNumber = parseInt(e.target.value);
+      resetAtom(atomicNumber);
+    });
 
-    const splitButton = document.querySelector("#split-atom");
-    splitButton.addEventListener("click", () => {
+    document.querySelector("#split-atom").addEventListener("click", () => {
       scene.remove(nucleus);
       electronOrbits.forEach((orbit) => scene.remove(orbit));
-      alert("Atom split simulation!");
+      alert("Atom split!");
     });
   </script>
 </body>
