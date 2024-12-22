@@ -127,6 +127,11 @@
         </select>
         <button id="split-atom">Split Atom</button>
         <button id="fissle-atom" style="display: none;">Fissle Atom</button>
+        <div id="fission-info" style="display: none;">
+            <p><strong>Energy Released:</strong> <span id="energy-counter">0</span> MeV</p>
+            <p><strong>Radiation Level:</strong> <span id="radiation-level">0</span> Rad</p>
+            <p><strong>Dangerous Radius:</strong> <span id="danger-radius">0</span> meters</p>
+        </div>
     </div>
 </div>
 
@@ -247,6 +252,8 @@
         if (isRadioactive(selectedElement)) {
             // Simulate fission (flash, explosion effect, etc.)
             alert("The atom has fissled! ⚛️ Energy released!");
+            const { energy, radiation, radius } = simulateFission(selectedElement);
+            displayFissionInfo(energy, radiation, radius);
             simulateFissionEffect();
             resetAtom(1); // Reset to hydrogen as an example
         }
@@ -268,6 +275,27 @@
         setTimeout(() => {
             scene.remove(explosionEffect);
         }, 500); // Remove after 500ms
+    }
+
+    // Simulate fission energy, radiation, and dangerous radius
+    function simulateFission(atomicNumber) {
+        const bindingEnergyPerNucleon = {
+            92: 200,  // Uranium
+            100: 210, // Fermium
+        };
+        const energy = bindingEnergyPerNucleon[atomicNumber] * atomicNumber; // Energy in MeV
+        const radiation = atomicNumber * 10; // Arbitrary radiation level based on atomic number
+        const radius = Math.min(100, atomicNumber * 5); // Dangerous radius (meters)
+
+        return { energy, radiation, radius };
+    }
+
+    // Display the fission info
+    function displayFissionInfo(energy, radiation, radius) {
+        document.getElementById("energy-counter").innerText = energy;
+        document.getElementById("radiation-level").innerText = radiation;
+        document.getElementById("danger-radius").innerText = radius;
+        document.getElementById("fission-info").style.display = "block";
     }
 
     // Handle window resizing
