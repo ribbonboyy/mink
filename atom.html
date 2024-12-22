@@ -153,8 +153,8 @@
     scene.add(ambientLight);
 
     // Atom parts
-    const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff5733 }); // Orange nucleus
-    const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x1e90ff }); // Blue electrons
+    const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff5733 });
+    const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x1e90ff });
     let nucleus;
     const electronGroups = [];
 
@@ -180,46 +180,87 @@
         for (let i = 0; i < numElectrons; i++) {
           const angle = (i / numElectrons) * Math.PI * 2;
           const electron = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), electronMaterial);
-          electron.position.set(
-            Math.cos(angle) * radius,
-            Math.sin(angle) * radius,
-            0
-          );
+          electron.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
           group.add(electron);
         }
 
-        electronsRemaining -= numElectrons;
+        group.rotation.x = Math.random() * Math.PI;
+        group.rotation.y = Math.random() * Math.PI;
         orbits.push(group);
         scene.add(group);
+        electronsRemaining -= numElectrons;
       });
+
+      return orbits;
     }
 
-    // Atom selection logic
-    const atomSelect = document.querySelector("#atom-select");
-    atomSelect.addEventListener("change", (event) => {
-      const atomicNumber = parseInt(event.target.value);
-      scene.clear();  // Remove previous atom visualization
-      createAtom(atomicNumber);
-    });
+    function resetAtom(atomicNumber) {
+      // Clear existing atom
+      if (nucleus) scene.remove(nucleus);
+      electronGroups.forEach(group => scene.remove(group));
+      electronGroups.length = 0;
 
-    function createAtom(atomicNumber) {
-      const numShells = Math.min(4, Math.ceil(atomicNumber / 2)); // Use max 4 shells
-      nucleus = createNucleus(5);
+      // Create nucleus
+      const nucleusSize = Math.log(atomicNumber + 1) * 3;
+      nucleus = createNucleus(nucleusSize);
       scene.add(nucleus);
-      createElectronRings(atomicNumber);
+
+      // Create electrons
+      const newElectronGroups = createElectronRings(atomicNumber);
+      electronGroups.push(...newElectronGroups);
     }
 
-    // Create initial atom (Hydrogen)
-    createAtom(1);
+    // Initial atom
+    resetAtom(1);
 
-    // Animation loop
     function animate() {
+      requestAnimationFrame(animate);
+
+      // Rotate the nucleus
+      if (nucleus) nucleus.rotation.y += 0.01;
+
+      // Rotate electron groups
+      electronGroups.forEach(group => {
+        group.rotation.y += 0.02;
+      });
+
       controls.update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
     }
-
     animate();
+
+    // Atom selection
+    document.getElementById("atom-select").addEventListener("change", e => {
+      resetAtom(Number(e.target.value));
+    });
+
+document.getElementById("split-atom").addEventListener("click", () => {
+    const selectedElement = document.getElementById("element-select").value; // Assumes an element dropdown
+    const energyReleased = calculateFissionEnergy(selectedElement);
+    alert(The atom has been split! ⚛️\nEnergy released: ${energyReleased} MeV);
+    resetAtom(1); // Reset to hydrogen as an example
+});
+
+function calculateFissionEnergy(atomicNumber) {
+    const bindingEnergyPerNucleon = {
+        1: 0,   // Hydrogen
+        2: 28,  // Helium
+        3: 55,  // Lithium
+        // ... Add all binding energies (in MeV)
+        92: 200 // Uranium
+    };
+    const nucleons = parseInt(atomicNumber, 10); // Assuming atomic number approximates nucleons
+    const bindingEnergy = bindingEnergyPerNucleon[atomicNumber] || 0;
+    return bindingEnergy * nucleons; // Total energy in MeV
+}
+
+
+    // Handle window resizing
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
   </script>
 </body>
 </html>
