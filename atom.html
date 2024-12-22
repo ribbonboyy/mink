@@ -322,6 +322,53 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
+    <script>
+    // Handle dragging of the fission-info popup
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    const fissionInfo = document.getElementById('fission-info');
+    const closeIcon = document.createElement('img');
+    closeIcon.src = 'cross-small (1).png';
+    closeIcon.style.position = 'absolute';
+    closeIcon.style.top = '10px';
+    closeIcon.style.right = '10px';
+    closeIcon.style.cursor = 'pointer';
+    fissionInfo.appendChild(closeIcon);
+
+    closeIcon.addEventListener('click', () => {
+        fissionInfo.style.display = 'none';  // Close the fission info box
+    });
+
+    // Make the fission info panel draggable
+    fissionInfo.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - fissionInfo.getBoundingClientRect().left;
+        offsetY = e.clientY - fissionInfo.getBoundingClientRect().top;
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            fissionInfo.style.left = `${e.clientX - offsetX}px`;
+            fissionInfo.style.top = `${e.clientY - offsetY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Display the fission info when simulating fission
+    function displayFissionInfo(energy, radiation, radius) {
+        document.getElementById("energy-counter").innerText = energy;
+        document.getElementById("radiation-level").innerText = radiation;
+        document.getElementById("danger-radius").innerText = radius;
+        fissionInfo.style.display = "block"; // Ensure the info is visible
+        fissionInfo.style.position = 'absolute'; // Allow it to move freely
+        fissionInfo.style.zIndex = '10'; // Ensure it's on top
+    }
+</script>
+
     });
 </script>
 </body>
