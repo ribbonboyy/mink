@@ -126,6 +126,7 @@
         <option value="100">Fermium (100)</option>
         </select>
         <button id="split-atom">Split Atom</button>
+        <button id="fissle-atom" style="display: none;">Fissle Atom</button>
     </div>
 </div>
 
@@ -138,19 +139,21 @@
     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x202020);
+    scene.background = new THREE.Color(0x202020); // Neutral dark background
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 50;
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
+    // Lighting
     const light = new THREE.PointLight(0xffffff, 1, 0);
     light.position.set(50, 50, 50);
     scene.add(light);
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    const ambientLight = new THREE.AmbientLight(0x404040); // Soft ambient light
     scene.add(ambientLight);
 
+    // Atom parts
     const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff5733 });
     const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x1e90ff });
     let nucleus;
@@ -162,16 +165,16 @@
     }
 
     function createElectronRings(atomicNumber) {
-        const electronShells = [];
+        const electronShells = [2, 8, 18, 32]; // Electron shell distribution
         let electronsRemaining = atomicNumber;
-        const maxElectronsInShell = [2, 8, 18, 32, 50, 72, 98];  // Extended shell capacities for higher atomic numbers
+        const orbits = [];
 
-        for (let shellIndex = 0; electronsRemaining > 0 && shellIndex < maxElectronsInShell.length; shellIndex++) {
-            const maxElectrons = maxElectronsInShell[shellIndex];
+        electronShells.forEach((maxElectrons, shellIndex) => {
+            if (electronsRemaining <= 0) return;
+
             const numElectrons = Math.min(maxElectrons, electronsRemaining);
-
             const group = new THREE.Group();
-            const radius = 10 + shellIndex * 10;  // Increase radius for each shell
+            const radius = 10 + shellIndex * 10;
 
             for (let i = 0; i < numElectrons; i++) {
                 const angle = (i / numElectrons) * Math.PI * 2;
@@ -182,50 +185,92 @@
 
             group.rotation.x = Math.random() * Math.PI;
             group.rotation.y = Math.random() * Math.PI;
-            electronShells.push(group);
+            orbits.push(group);
             scene.add(group);
-
             electronsRemaining -= numElectrons;
-        }
+        });
 
-        return electronShells;
+        return orbits;
     }
 
     function resetAtom(atomicNumber) {
+        // Clear existing atom
         if (nucleus) scene.remove(nucleus);
         electronGroups.forEach(group => scene.remove(group));
         electronGroups.length = 0;
 
+        // Create nucleus
         const nucleusSize = Math.log(atomicNumber + 1) * 3;
         nucleus = createNucleus(nucleusSize);
         scene.add(nucleus);
 
+        // Create electrons
         const newElectronGroups = createElectronRings(atomicNumber);
         electronGroups.push(...newElectronGroups);
     }
 
+    // Initial atom
     resetAtom(1);
 
     function animate() {
         requestAnimationFrame(animate);
+
+        // Rotate the nucleus
         if (nucleus) nucleus.rotation.y += 0.01;
+
+        // Rotate electron groups
         electronGroups.forEach(group => {
             group.rotation.y += 0.02;
         });
+
         controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
+    // Atom selection
     document.getElementById("atom-select").addEventListener("change", e => {
-        resetAtom(Number(e.target.value));
+        const atomicNumber = Number(e.target.value);
+        resetAtom(atomicNumber);
+        
+        // Show "Fissle Atom" button if element is radioactive (Uranium, Fermium, etc.)
+        if (isRadioactive(atomicNumber)) {
+            document.getElementById("fissle-atom").style.display = "inline-block";
+        } else {
+            document.getElementById("fissle-atom").style.display = "none";
+        }
     });
 
-    document.getElementById("split-atom").addEventListener("click", () => {
-        alert("The atom has been split! ⚛️");
-        resetAtom(1);  // Reset to hydrogen after "splitting"
+    // Fissle Atom button event
+    document.getElementById("fissle-atom").addEventListener("click", () => {
+        const selectedElement = document.getElementById("atom-select").value;
+        if (isRadioactive(selectedElement)) {
+            // Simulate fission (flash, explosion effect, etc.)
+            alert("The atom has fissled! ⚛️ Energy released!");
+            simulateFissionEffect();
+            resetAtom(1); // Reset to hydrogen as an example
+        }
     });
 
+    // Check if element is radioactive
+    function isRadioactive(atomicNumber) {
+        const radioactiveElements = [92, 100]; // Uranium and Fermium
+        return radioactiveElements.includes(Number(atomicNumber));
+    }
+
+    // Simulate Fission Effect (e.g., flashing or explosion)
+    function simulateFissionEffect() {
+        const explosionEffect = new THREE.PointLight(0xff0000, 10, 50);
+        explosionEffect.position.set(0, 0, 0);
+        scene.add(explosionEffect);
+
+        // Animate the effect
+        setTimeout(() => {
+            scene.remove(explosionEffect);
+        }, 500); // Remove after 500ms
+    }
+
+    // Handle window resizing
     window.addEventListener('resize', () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         camera.aspect = window.innerWidth / window.innerHeight;
