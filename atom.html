@@ -130,7 +130,6 @@
     const canvas = document.querySelector("#atomCanvas");
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio); // Set high-quality pixel ratio
     document.body.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
@@ -139,9 +138,7 @@
     camera.position.z = 50;
 
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;  // Enables smooth transitions
-    controls.dampingFactor = 0.25; // You can adjust this factor for more or less smoothness
-    controls.screenSpacePanning = false;
+    controls.enableDamping = true;
 
     // Lighting
     const light = new THREE.PointLight(0xffffff, 1, 0);
@@ -209,26 +206,94 @@
     // Initial atom
     resetAtom(1);
 
-    const clock = new THREE.Clock();
-
     function animate() {
         requestAnimationFrame(animate);
 
-        const delta = clock.getDelta(); // Time elapsed between frames
-        controls.update(); // Update controls with damping
+        // Rotate the nucleus
+        if (nucleus) nucleus.rotation.y += 0.01;
 
-        // Rotate the nucleus and electron groups
-        if (nucleus) nucleus.rotation.y += 0.01 * delta;
+        // Rotate electron groups
         electronGroups.forEach(group => {
-            group.rotation.y += 0.02 * delta;
+            group.rotation.y += 0.02;
         });
 
+        controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // Atom selection logic, fission and splitting as per your previous code
-    // (No change needed here unless you want to optimize those functions as well)
+    // Atom selection
+    document.getElementById("atom-select").addEventListener("change", e => {
+        const atomicNumber = Number(e.target.value);
+        resetAtom(atomicNumber);
+        
+        // Show "Fissle Atom" button if element is radioactive (Uranium, Fermium, etc.)
+        if (isRadioactive(atomicNumber)) {
+            document.getElementById("fissle-atom").style.display = "inline-block";
+        } else {
+            document.getElementById("fissle-atom").style.display = "none";
+        }
+    });
+
+    // Fissle Atom button event
+    document.getElementById("fissle-atom").addEventListener("click", () => {
+        const selectedElement = document.getElementById("atom-select").value;
+        if (isRadioactive(selectedElement)) {
+            // Simulate fission (flash, explosion effect, etc.)
+            const { energy, radiation, radius } = simulateFission(selectedElement);
+            displayFissionInfo(energy, radiation, radius);
+            simulateFissionEffect();
+            resetAtom(1); // Reset to hydrogen as an example
+        }
+    });
+
+    // Split Atom button event (same logic as fission for demonstration)
+    document.getElementById("split-atom").addEventListener("click", () => {
+        const selectedElement = document.getElementById("atom-select").value;
+        // Simulate splitting the atom (can reuse fission logic for now)
+        const { energy, radiation, radius } = simulateFission(selectedElement);
+        displayFissionInfo(energy, radiation, radius);
+        simulateFissionEffect();
+    });
+
+    // Check if element is radioactive
+    function isRadioactive(atomicNumber) {
+        const radioactiveElements = [92, 100]; // Uranium and Fermium
+        return radioactiveElements.includes(Number(atomicNumber));
+    }
+
+    // Simulate Fission Effect (e.g., flashing or explosion)
+    function simulateFissionEffect() {
+        const explosionEffect = new THREE.PointLight(0xff0000, 10, 50);
+        explosionEffect.position.set(0, 0, 0);
+        scene.add(explosionEffect);
+
+        // Animate the effect
+        setTimeout(() => {
+            scene.remove(explosionEffect);
+        }, 500); // Remove after 500ms
+    }
+
+    // Simulate fission energy, radiation, and dangerous radius
+    function simulateFission(atomicNumber) {
+        const bindingEnergyPerNucleon = {
+            92: 200,  // Uranium
+            100: 210, // Fermium
+        };
+        const energy = bindingEnergyPerNucleon[atomicNumber] * atomicNumber; // Energy in MeV
+        const radiation = atomicNumber * 10; // Arbitrary radiation level based on atomic number
+        const radius = Math.min(100, atomicNumber * 5); // Dangerous radius (meters)
+
+        return { energy, radiation, radius };
+    }
+
+    // Display the fission info
+    function displayFissionInfo(energy, radiation, radius) {
+        document.getElementById("energy-counter").innerText = energy;
+        document.getElementById("radiation-level").innerText = radiation;
+        document.getElementById("danger-radius").innerText = radius;
+        document.getElementById("fission-info").style.display = "block";
+    }
 
     // Handle window resizing
     window.addEventListener('resize', () => {
