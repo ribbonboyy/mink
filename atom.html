@@ -323,6 +323,105 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
     });
+
+  // Array to store trace lines
+const electronTraces = [];
+
+// Function to create trace lines for electrons
+function createElectronTrace(group) {
+    const traceGroup = new THREE.Group();
+    group.children.forEach(electron => {
+        const traceMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+        const traceGeometry = new THREE.BufferGeometry();
+        const maxPoints = 50; // Number of points in the trail
+        const positions = new Float32Array(maxPoints * 3); // x, y, z for each point
+        traceGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const traceLine = new THREE.Line(traceGeometry, traceMaterial);
+
+        // Attach a custom property to the electron for tracking its trace
+        electron.trace = { line: traceLine, index: 0, maxPoints };
+        traceGroup.add(traceLine);
+    });
+
+    electronTraces.push(traceGroup);
+    scene.add(traceGroup);
+}
+
+// Modified createElectronRings function to include traces
+function createElectronRings(atomicNumber) {
+    const electronShells = [2, 8, 18, 32]; // Electron shell distribution
+    let electronsRemaining = atomicNumber;
+    const orbits = [];
+
+    electronShells.forEach((maxElectrons, shellIndex) => {
+        if (electronsRemaining <= 0) return;
+
+        const numElectrons = Math.min(maxElectrons, electronsRemaining);
+        const group = new THREE.Group();
+        const radius = 10 + shellIndex * 10;
+
+        for (let i = 0; i < numElectrons; i++) {
+            const angle = (i / numElectrons) * Math.PI * 2;
+            const electron = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 16), electronMaterial);
+            electron.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+            group.add(electron);
+        }
+
+        group.rotation.x = Math.random() * Math.PI;
+        group.rotation.y = Math.random() * Math.PI;
+        orbits.push(group);
+        scene.add(group);
+        electronsRemaining -= numElectrons;
+
+        // Add traces for electrons in this group
+        createElectronTrace(group);
+    });
+
+    return orbits;
+}
+
+// Function to update electron traces
+function updateElectronTraces() {
+    electronGroups.forEach((group, groupIndex) => {
+        group.children.forEach((electron, electronIndex) => {
+            if (!electron.trace) return;
+
+            const { line, index, maxPoints } = electron.trace;
+            const positions = line.geometry.attributes.position.array;
+
+            // Update the position in the trail
+            positions[index * 3] = electron.position.x;
+            positions[index * 3 + 1] = electron.position.y;
+            positions[index * 3 + 2] = electron.position.z;
+
+            // Increment the index and loop back if needed
+            const nextIndex = (index + 1) % maxPoints;
+            electron.trace.index = nextIndex;
+
+            // Mark the geometry as needing an update
+            line.geometry.attributes.position.needsUpdate = true;
+        });
+    });
+}
+
+// Update the animate function to include trace updates
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Rotate the nucleus
+    if (nucleus) nucleus.rotation.y += 0.01;
+
+    // Rotate electron groups and update traces
+    electronGroups.forEach(group => {
+        group.rotation.y += 0.02;
+    });
+
+    updateElectronTraces();
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+
 </script>
 </body>
 </html>
