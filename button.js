@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainContent = document.querySelector(".container");
 
     agreeBtn.addEventListener("click", function () {
-        warningPopup.style.display = "none";
-        mainContent.style.display = "block";
+        warningPopup.style.display = "none";  // Hide the popup
+        mainContent.style.display = "block";  // Show the main content
     });
 });
