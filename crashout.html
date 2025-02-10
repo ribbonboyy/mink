@@ -16,31 +16,37 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background-color: #222; /* Darker background */
+            background-image: radial-gradient(circle, #444 1px, transparent 1px);
+            background-size: 20px 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
         }
 
-        /* Style for the warning section */
+        /* Match popup styling with the sections */
         .warning-box {
+            font-family: 'Montserrat', sans-serif;
             background: #fff;
             padding: 20px;
             border-radius: 15px;
+            max-width: 600px;
             text-align: center;
-            max-width: 500px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px dashed #ccc;
+            transition: transform 0.2s ease-out;
         }
 
         .warning-box h2 {
             color: #d9534f;
+            font-size: 1.8rem;
         }
 
         .warning-box p {
             font-size: 1rem;
-            margin-bottom: 15px;
             color: #333;
+            line-height: 1.6;
         }
 
         .warning-box button {
@@ -51,6 +57,7 @@
             cursor: pointer;
             font-size: 16px;
             border-radius: 5px;
+            font-weight: bold;
         }
 
         .warning-box button:hover {
@@ -69,7 +76,7 @@
     <div id="warning-popup">
         <section class="warning-box">
             <h2>⚠️ Content Warning</h2>
-            <p>This page contains controversial content regarding Kanye West’s statements. It might be a bit too much for some people.</p>
+            <p>This page contains controversial content regarding Kanye West’s statements. Viewer discretion is advised.</p>
             <button id="agree-btn">I Understand</button>
         </section>
     </div>
