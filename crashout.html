@@ -8,27 +8,79 @@
     <link rel="stylesheet" href="styles.css">
     <script src="button.js" defer></script>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        /* Ensure the popup covers everything */
+        #warning-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        /* Style for the warning section */
+        .warning-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .warning-box h2 {
+            color: #d9534f;
+        }
+
+        .warning-box p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .warning-box button {
+            background: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .warning-box button:hover {
+            background: #c9302c;
+        }
+
+        /* Hide main content initially */
+        .container {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Warning Popup -->
+    <!-- Warning Popup Section -->
     <div id="warning-popup">
-        <div class="warning-box">
-            <h2>Warning</h2>
+        <section class="warning-box">
+            <h2>⚠️ Content Warning</h2>
             <p>This page contains controversial content regarding Kanye West’s statements. Viewer discretion is advised.</p>
             <button id="agree-btn">I Understand</button>
-        </div>
+        </section>
     </div>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Title Section -->
         <section class="section" id="intro">
             <h2>Kanye West's Twitter Crashout</h2>
             <p>Documenting one of the most chaotic moments in Twitter history.</p>
         </section>
 
-        <!-- Notable Tweets -->
         <section class="section" id="tweets">
             <h2>Notable Tweets</h2>
             <p>"I'm a bit sleepy tonight but when I wake up I'm going death con 3 on JEWISH PEOPLE." <br> <strong>– October 8, 2022</strong></p>
@@ -36,7 +88,6 @@
             <p>"I love Hitler." <br> <strong>– December 1, 2022</strong></p>
         </section>
 
-        <!-- Aftermath & Consequences -->
         <section class="section" id="aftermath">
             <h2>Consequences</h2>
             <ul>
@@ -47,13 +98,11 @@
             </ul>
         </section>
 
-        <!-- Public Reaction -->
         <section class="section" id="reaction">
             <h2>Public Reaction</h2>
             <p>The fallout from Kanye’s tweets sparked intense debates about free speech, accountability, and mental health. Some defended his right to speak, while others demanded he be permanently banned from social media.</p>
         </section>
 
-        <!-- Media Coverage -->
         <section class="section" id="media">
             <h2>Media Coverage</h2>
             <ul>
