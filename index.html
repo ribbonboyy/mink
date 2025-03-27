@@ -6,9 +6,37 @@
     <title>Orientation Page</title>
     <link rel="stylesheet" href="mainpage.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script>
+        function searchPage() {
+            // Get the search input and format it
+            var searchTerm = document.getElementById('search-bar').value.trim();
+            
+            // Replace spaces with dashes and remove any unwanted characters
+            var formattedTerm = searchTerm.replace(/\s+/g, '-').toLowerCase();
+
+            // Check if the formatted term is non-empty, then redirect
+            if (formattedTerm) {
+                window.location.href = "https://prettyfunny.xyz/" + formattedTerm;
+            } else {
+                alert("Please enter a valid search term.");
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Welcome to prettyfunny.xyz!</h1>
+    
+    <!-- Disclaimer for search -->
+    <div style="margin-bottom: 20px; padding: 10px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 5px;">
+        <strong>Disclaimer:</strong> Searches must be perfectly accurate, including the correct use of capitalization and spaces. All spaces will be replaced with dashes.
+    </div>
+
+    <!-- Search bar -->
+    <div class="search-container" style="text-align: center; margin-bottom: 20px;">
+        <input type="text" id="search-bar" placeholder="Search for a page..." style="padding: 10px; width: 60%; font-size: 1rem; border-radius: 5px; border: 1px solid #ccc;">
+        <button onclick="searchPage()" style="padding: 10px 20px; font-size: 1rem; margin-left: 10px; cursor: pointer; border-radius: 5px; background-color: #4CAF50; color: white; border: none;">Search</button>
+    </div>
+
     <div class="container">
         <div class="grid">
             <a class="grid-item" href="https://prettyfunny.xyz/space">
