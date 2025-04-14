@@ -6,6 +6,7 @@
     <title>Orientation Page</title>
     <link rel="stylesheet" href="mainpage.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <script>
         function searchPage() {
             // Get the search input and format it
@@ -21,7 +22,49 @@
                 alert("Please enter a valid search term.");
             }
         }
+
+        async function getHTMLFileCount() {
+            // GitHub repository details
+            const username = 'ribbonboyy';
+            const repo = 'mink';
+            const url = `https://api.github.com/repos/${username}/${repo}/contents/`;
+
+            try {
+                // Fetch repository contents
+                const response = await fetch(url);
+                const data = await response.json();
+
+                // Filter files that are .html
+                const htmlFiles = data.filter(file => file.name.endsWith('.html'));
+                
+                // Update the page with the count of .html files
+                document.getElementById('page-count').innerHTML = `Pages: ${htmlFiles.length}`;
+            } catch (error) {
+                console.error('Error fetching GitHub repo contents:', error);
+                document.getElementById('page-count').innerHTML = 'Pages: Error loading data';
+            }
+        }
+
+        // Fetch HTML file count when the page loads
+        window.onload = getHTMLFileCount;
     </script>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .info-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .info-section p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .info-section a {
+            color: #0073e6;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to prettyfunny.xyz!</h1>
@@ -37,7 +80,7 @@
         <button onclick="searchPage()" style="padding: 10px 20px; font-size: 1rem; margin-left: 10px; cursor: pointer; border-radius: 5px; background-color: #4CAF50; color: white; border: none;">Search</button>
     </div>
 
-    <div class="container">
+ <div class="container">
         <div class="grid">
             <a class="grid-item" href="https://prettyfunny.xyz/about">
                 <img src="ABOUTT.png" alt="NASA">
@@ -96,6 +139,12 @@
                 <p>Map - Proof of concept</p>
             </a>
         </div>
+    </div>
+    <!-- Information Section for Pages -->
+    <div class="info-section">
+        <p id="page-count">Pages: Loading...</p>
+        <p>If you want to suggest a page, add me on Guilded or Discord:</p>
+        <p><a href="https://guilded.gg/u/matthew" target="_blank">Guilded.gg/u/matthew</a> or my Discord username is <strong>mink.org</strong>.</p>
     </div>
 </body>
 </html>
