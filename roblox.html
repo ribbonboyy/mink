@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All About Roblox</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animated.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: 2px solid #2D3C41;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-link:hover {
+            background-color: #2D3C41;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section animated">
+            <h2>Welcome to the World of Roblox</h2>
+            <p>Roblox is more than just a game—it's a universe of user-generated experiences. From action-packed adventures to social hangouts, Roblox offers something for everyone. Whether you're a creator or a player, this is your ultimate playground.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>How Roblox Works</h2>
+            <p>Players can create avatars, explore virtual worlds, and interact with millions of other users. Developers can use Roblox Studio to build complex games using Lua scripting.</p>
+            <ul>
+                <li>Explore immersive 3D worlds</li>
+                <li>Earn and spend Robux</li>
+                <li>Create and monetize games</li>
+                <li>Join groups and communities</li>
+                <li>Chat and play with friends</li>
+            </ul>
+        </div>
+
+        <div class="section animated">
+            <h2>Who Makes Roblox Games?</h2>
+            <p>Anyone can make games on Roblox—from young creators trying coding for the first time, to experienced devs earning a living from their creations. Roblox Studio provides all the tools needed to create entire virtual universes.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>Popular Game Types</h2>
+            <ul>
+                <li>Tycoon and simulator games</li>
+                <li>Obby (obstacle course) games</li>
+                <li>Roleplay experiences</li>
+                <li>Survival and horror games</li>
+                <li>FPS and combat arenas</li>
+            </ul>
+        </div>
+
+        <div class="section animated">
+            <h2>Roblox and Education</h2>
+            <p>Roblox isn’t just for fun. It’s also used in educational environments to teach coding, game design, and digital citizenship. Kids learn Lua scripting while having fun!</p>
+        </div>
+
+        <div class="section animated">
+            <h2>my roblox profile</h2>
+            <p>check it out 👇</p>
+            <a class="profile-link" href="https://www.roblox.com/users/344762347/profile" target="_blank">Visit My Roblox Profile</a>
+        </div>
+
+        <div class="section animated">
+            <h2>Ready to Join the Fun?</h2>
+            <p>If you haven’t joined Roblox yet, what are you waiting for? Dive in and start exploring. Build something amazing, meet new friends, and become part of a massive online community.</p>
+            <p><a href="https://www.roblox.com" target="_blank">Go to Roblox.com</a></p>
+        </div>
+    </div>
+
+    <script>
+  
+        const sections = document.querySelectorAll('.animated');
+
+        const animateOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
