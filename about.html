@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About PrettyFunny</title>
+
+    <!-- Google Font: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Internal Animation Styles -->
+    <style>
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animated.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .emphasis {
+            color: #2D3C41;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section animated">
+            <h2>About PrettyFunny</h2>
+            <p><span class="emphasis">PrettyFunny</span> is an online platform dedicated to delivering accurate, clear, and helpful information across a variety of topics. Whether you're here to learn something new, solve a problem, or simply explore, we aim to be your most reliable source of knowledge.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>Our Mission</h2>
+            <p>We believe that high-quality content should be accessible to everyone. Our goal is to simplify complex topics and present them in a way that’s both formal and engaging—without compromising clarity or professionalism.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>What Makes Us Different?</h2>
+            <ul>
+                <li><strong>Integrity:</strong> Every article and explanation is thoroughly reviewed and based on accurate, up-to-date facts.</li>
+                <li><strong>Clarity:</strong> We strive to explain topics in a way that anyone can understand—without oversimplifying important details.</li>
+                <li><strong>Presentation:</strong> Our clean design and structured layout keep the focus on content.</li>
+            </ul>
+        </div>
+
+        <div class="section animated">
+            <h2>Striving for Excellence</h2>
+            <p>At PrettyFunny, we're committed to being the best we can. We continuously update our platform, improve our content, and listen to your feedback—all to make sure you get the best information in the best way possible.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>Thank You</h2>
+            <p>We appreciate your trust and support. Whether you’re a first-time visitor or a returning reader, thank you for choosing PrettyFunny. We’re here for you—always.</p>
+        </div>
+    </div>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        const sections = document.querySelectorAll('.animated');
+
+        const animateOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
+
