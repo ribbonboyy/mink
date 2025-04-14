@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Discord</title>
+
+    <!-- Google Font: Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Internal Animation Styles -->
+    <style>
+        .animated {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animated.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .invite-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: 2px solid #7289DA;
+            border-radius: 10px;
+            color: #7289DA;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .invite-link:hover {
+            background-color: #7289DA;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section animated">
+            <h2>What is Discord?</h2>
+            <p>Discord is a free voice, video, and text communication app used by millions of people to talk and hang out with their communities and friends. It's used for everything from casual gaming chats to professional workspaces.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>Why Discord?</h2>
+            <ul>
+                <li>Crystal-clear voice channels and group calls</li>
+                <li>Organized servers with channels and roles</li>
+                <li>Low-latency, high-quality voice and video</li>
+                <li>Custom bots and automation</li>
+                <li>Powerful integrations and rich embeds</li>
+            </ul>
+        </div>
+
+        <div class="section animated">
+            <h2>Use Cases</h2>
+            <p>Discord isn't just for gamers! It’s also used by educators, developers, musicians, study groups, and companies to build community and communicate efficiently.</p>
+        </div>
+
+        <div class="section animated">
+            <h2>Cool Discord Features</h2>
+            <ul>
+                <li>Slash Commands</li>
+                <li>Server Boosting & Custom Emojis</li>
+                <li>Screen Sharing & Go Live</li>
+                <li>Stage Channels for large audiences</li>
+                <li>Private threads & forums for focus</li>
+            </ul>
+        </div>
+
+        <div class="section animated">
+            <h2>Get Started with Discord</h2>
+            <p>Creating an account is easy and free. Join a server, make your own, or just hop in and chat with friends using voice or video.</p>
+            <p><a class="invite-link" href="https://discord.com" target="_blank">Open Discord</a></p>
+        </div>
+    </div>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        const sections = document.querySelectorAll('.animated');
+
+        const animateOnScroll = () => {
+            const triggerBottom = window.innerHeight * 0.85;
+
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+
+                if (sectionTop < triggerBottom) {
+                    section.classList.add('visible');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
