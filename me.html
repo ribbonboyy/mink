@@ -4,13 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Profile Card</title>
+
+  <!-- Google Fonts Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
       padding: 0;
       background: url('femboy-izfml55pdwvvtjt8.jpg') no-repeat center center fixed;
       background-size: cover;
-      font-family: 'Poppins', sans-serif;
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
     }
 
     .profile-card {
@@ -20,16 +25,17 @@
       transform: translate(-50%, -50%);
       background: rgba(0, 0, 0, 0.7);
       border-radius: 15px;
-      padding: 20px 30px;
+      padding: 30px 40px;
       text-align: center;
       color: white;
       backdrop-filter: blur(10px);
       width: 350px;
+      transition: transform 0.2s ease;
     }
 
     .profile-card img.pfp {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
       object-fit: cover;
       border: 3px solid white;
@@ -37,14 +43,16 @@
     }
 
     .profile-card h1 {
-      font-size: 24px;
+      font-size: 26px;
+      font-weight: 700;
       margin: 10px 0 5px 0;
     }
 
     .profile-card p {
       margin: 5px 0;
-      font-size: 14px;
+      font-size: 15px;
       opacity: 0.8;
+      font-weight: 400;
     }
 
     .profile-footer {
@@ -52,17 +60,19 @@
       display: flex;
       justify-content: space-around;
       align-items: center;
+      font-size: 14px;
     }
 
     .profile-footer a {
       text-decoration: none;
       color: #00bfff;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
     }
 
     .profile-footer a:hover {
+      color: #0099cc;
       text-decoration: underline;
     }
 
@@ -70,17 +80,34 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      font-size: 14px;
     }
 
     .views::before {
       content: "👁️";
     }
+
+    /* Smooth tilt effect */
+    .section {
+      will-change: transform;
+    }
+
+    /* Hide native audio controls */
+    audio {
+      display: none;
+    }
   </style>
+
 </head>
 <body>
 
-  <div class="profile-card">
+  <!-- Audio background -->
+  <audio id="bg-music" autoplay loop>
+    <source src="Feel It (From “Invincible”)-yt.savetube.me.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Profile Card Section -->
+  <div class="profile-card section">
     <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
     <h1>mink</h1>
     <p>5M visits on RBLX!</p>
@@ -91,6 +118,39 @@
       <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
     </div>
   </div>
+
+  <!-- JavaScript for tilt effect -->
+  <script>
+    // Select all sections
+    const sections = document.querySelectorAll('.section');
+
+    // Add tilt effect
+    sections.forEach((section) => {
+      section.addEventListener('mousemove', (e) => {
+        const rect = section.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const offsetX = e.clientX - centerX;
+        const offsetY = e.clientY - centerY;
+
+        const tiltX = (offsetY / rect.height) * 15;
+        const tiltY = -(offsetX / rect.width) * 15;
+
+        section.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      });
+
+      section.addEventListener('mouseleave', () => {
+        section.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+      });
+    });
+
+    // Ensure music plays even if browser blocks autoplay
+    const music = document.getElementById('bg-music');
+    document.body.addEventListener('click', () => {
+      music.play().catch(() => {});
+    });
+  </script>
 
 </body>
 </html>
