@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Much Info You Reveal Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9f9;
+            background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: 2px dashed #ccc;
+            text-align: center;
+            transform-origin: center;
+            transition: transform 0.2s ease-out;
+        }
+
+        .section:hover {
+            transform: scale(1.02);
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: #2D3C41;
+            margin-bottom: 15px;
+        }
+
+        p, li {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            text-align: left;
+        }
+
+        .data-list {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="section">
+        <h2>What You Reveal to Websites 🔎</h2>
+        <p>Just by visiting a website, you're already giving away a lot of information. Here's an example:</p>
+        <ul class="data-list" id="geo-data">
+            <li>Loading your information...</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Why It Matters 🚨</h2>
+        <p>Many harmful websites can use your IP address to:</p>
+        <ul>
+            <li>Find your approximate location (city, country, zip code)</li>
+            <li>Detect your ISP (Internet Service Provider)</li>
+            <li>Identify your timezone and device information</li>
+            <li>Launch targeted attacks or scams based on where you live</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Important Disclaimer ⚠️</h2>
+        <p>This page is a static demonstration and does <strong>NOT</strong> store, save, or log your IP address, location, or any other information. All data is fetched live from a public API only for educational purposes.</p>
+    </div>
+
+    <footer>
+        Created with ❤️ to raise awareness about online privacy.
+    </footer>
+
+</div>
+
+<script>
+// Using free IP Geolocation API
+fetch('https://ipapi.co/json/')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('geo-data').innerHTML = `
+            <li><strong>IP Address:</strong> ${data.ip}</li>
+            <li><strong>City:</strong> ${data.city}</li>
+            <li><strong>Region:</strong> ${data.region}</li>
+            <li><strong>Country:</strong> ${data.country_name}</li>
+            <li><strong>Postal Code:</strong> ${data.postal}</li>
+            <li><strong>Latitude:</strong> ${data.latitude}</li>
+            <li><strong>Longitude:</strong> ${data.longitude}</li>
+            <li><strong>Timezone:</strong> ${data.timezone}</li>
+            <li><strong>ISP:</strong> ${data.org}</li>
+        `;
+    })
+    .catch(error => {
+        document.getElementById('geo-data').innerHTML = '<li>Could not retrieve your data. (Are you blocking location services?)</li>';
+        console.error('Error fetching geolocation:', error);
+    });
+</script>
+
+</body>
+</html>
