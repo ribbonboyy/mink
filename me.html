@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Profile Card</title>
 
-  <!-- Google Fonts Montserrat -->
+  <!-- Montserrat Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -16,13 +20,18 @@
       background-size: cover;
       font-family: 'Montserrat', sans-serif;
       overflow: hidden;
+      height: 100vh;
     }
 
-    .profile-card {
+    .container {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      perspective: 1000px;
+    }
+
+    .profile-card {
       background: rgba(0, 0, 0, 0.7);
       border-radius: 15px;
       padding: 30px 40px;
@@ -30,7 +39,8 @@
       color: white;
       backdrop-filter: blur(10px);
       width: 350px;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transform-style: preserve-3d;
     }
 
     .profile-card img.pfp {
@@ -86,69 +96,66 @@
       content: "👁️";
     }
 
-    /* Smooth tilt effect */
-    .section {
-      will-change: transform;
-    }
-
     /* Hide native audio controls */
     audio {
       display: none;
     }
   </style>
-
 </head>
 <body>
 
-  <!-- Audio background -->
-  <audio id="bg-music" autoplay loop>
+  <!-- Audio -->
+  <audio id="bg-music" loop>
     <source src="Feel It (From “Invincible”)-yt.savetube.me.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Profile Card Section -->
-  <div class="profile-card section">
-    <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
-    <h1>mink</h1>
-    <p>5M visits on RBLX!</p>
-    <p>Joined 12 months ago</p>
+  <div class="container">
+    <div class="profile-card section">
+      <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
+      <h1>mink</h1>
+      <p>5M visits on RBLX!</p>
+      <p>Joined 12 months ago</p>
 
-    <div class="profile-footer">
-      <div class="views">566</div>
-      <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
+      <div class="profile-footer">
+        <div class="views">566</div>
+        <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
+      </div>
     </div>
   </div>
 
-  <!-- JavaScript for tilt effect -->
   <script>
-    // Select all sections
-    const sections = document.querySelectorAll('.section');
+    // Get card element
+    const card = document.querySelector('.profile-card');
 
     // Add tilt effect
-    sections.forEach((section) => {
-      section.addEventListener('mousemove', (e) => {
-        const rect = section.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
 
-        const offsetX = e.clientX - centerX;
-        const offsetY = e.clientY - centerY;
+      const offsetX = e.clientX - centerX;
+      const offsetY = e.clientY - centerY;
 
-        const tiltX = (offsetY / rect.height) * 15;
-        const tiltY = -(offsetX / rect.width) * 15;
+      const tiltX = (offsetY / rect.height) * 10; // softer tilt
+      const tiltY = -(offsetX / rect.width) * 10;
 
-        section.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-      });
-
-      section.addEventListener('mouseleave', () => {
-        section.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
-      });
+      card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
     });
 
-    // Ensure music plays even if browser blocks autoplay
-    const music = document.getElementById('bg-music');
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+    });
+
+    // Music autoplay on user interaction
+    const bgMusic = document.getElementById('bg-music');
+
     document.body.addEventListener('click', () => {
-      music.play().catch(() => {});
+      if (bgMusic.paused) {
+        bgMusic.play().catch((error) => {
+          console.log('Autoplay prevented:', error);
+        });
+      }
     });
   </script>
 
