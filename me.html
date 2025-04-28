@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile Card</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('femboy-izfml55pdwvvtjt8.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .profile-card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 15px;
+      padding: 20px 30px;
+      text-align: center;
+      color: white;
+      backdrop-filter: blur(10px);
+      width: 350px;
+    }
+
+    .profile-card img.pfp {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      margin-bottom: 15px;
+    }
+
+    .profile-card h1 {
+      font-size: 24px;
+      margin: 10px 0 5px 0;
+    }
+
+    .profile-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .profile-footer {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .profile-footer a {
+      text-decoration: none;
+      color: #00bfff;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+    }
+
+    .profile-footer a:hover {
+      text-decoration: underline;
+    }
+
+    .views {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 14px;
+    }
+
+    .views::before {
+      content: "👁️";
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-card">
+    <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
+    <h1>mink</h1>
+    <p>5M visits on RBLX!</p>
+    <p>Joined 12 months ago</p>
+
+    <div class="profile-footer">
+      <div class="views">566</div>
+      <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
+    </div>
+  </div>
+
+</body>
+</html>
