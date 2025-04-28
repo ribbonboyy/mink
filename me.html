@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Profile Card</title>
 
-  <!-- Montserrat Google Fonts -->
+  <!-- Montserrat Font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -19,65 +19,60 @@
       background: url('femboy-izfml55pdwvvtjt8.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Montserrat', sans-serif;
-      overflow: hidden;
       height: 100vh;
-    }
-
-    .container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      perspective: 1000px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .profile-card {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.65);
       border-radius: 15px;
-      padding: 30px 40px;
+      backdrop-filter: blur(8px);
+      padding: 20px 30px;
       text-align: center;
-      color: white;
-      backdrop-filter: blur(10px);
-      width: 350px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      transform-style: preserve-3d;
+      width: 320px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
     }
 
     .profile-card img.pfp {
-      width: 90px;
-      height: 90px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
+      border: 2px solid #fff;
+      margin-bottom: 10px;
       object-fit: cover;
-      border: 3px solid white;
-      margin-bottom: 15px;
     }
 
     .profile-card h1 {
-      font-size: 26px;
+      font-size: 22px;
+      margin: 8px 0 2px 0;
       font-weight: 700;
-      margin: 10px 0 5px 0;
+      color: white;
     }
 
     .profile-card p {
-      margin: 5px 0;
-      font-size: 15px;
-      opacity: 0.8;
+      font-size: 13px;
+      margin: 2px 0;
+      color: rgba(255, 255, 255, 0.7);
       font-weight: 400;
     }
 
     .profile-footer {
-      margin-top: 20px;
+      margin-top: 15px;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      font-size: 13px;
+      padding: 0 10px;
     }
 
     .profile-footer a {
       text-decoration: none;
       color: #00bfff;
       font-weight: 600;
-      letter-spacing: 0.5px;
       transition: color 0.3s;
     }
 
@@ -90,66 +85,40 @@
       display: flex;
       align-items: center;
       gap: 5px;
+      color: rgba(255, 255, 255, 0.8);
     }
 
     .views::before {
       content: "👁️";
     }
 
-    /* Hide native audio controls */
     audio {
       display: none;
     }
   </style>
+
 </head>
 <body>
 
-  <!-- Audio -->
   <audio id="bg-music" loop>
     <source src="Feel It (From “Invincible”)-yt.savetube.me.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <div class="container">
-    <div class="profile-card section">
-      <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
-      <h1>mink</h1>
-      <p>5M visits on RBLX!</p>
-      <p>Joined 12 months ago</p>
+  <div class="profile-card">
+    <img src="Snímek obrazovky 2025-04-28 163808.png" alt="Profile Picture" class="pfp">
+    <h1>mink</h1>
+    <p>5M visits on RBLX!</p>
+    <p>Joined 12 months ago</p>
 
-      <div class="profile-footer">
-        <div class="views">566</div>
-        <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
-      </div>
+    <div class="profile-footer">
+      <div class="views">566</div>
+      <a href="https://www.roblox.com/users/160253710/profile" target="_blank">ROBLOX</a>
     </div>
   </div>
 
   <script>
-    // Get card element
-    const card = document.querySelector('.profile-card');
-
-    // Add tilt effect
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-
-      const offsetX = e.clientX - centerX;
-      const offsetY = e.clientY - centerY;
-
-      const tiltX = (offsetY / rect.height) * 10; // softer tilt
-      const tiltY = -(offsetX / rect.width) * 10;
-
-      card.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
-    });
-
-    // Music autoplay on user interaction
     const bgMusic = document.getElementById('bg-music');
-
     document.body.addEventListener('click', () => {
       if (bgMusic.paused) {
         bgMusic.play().catch((error) => {
