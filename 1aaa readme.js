@@ -5,4 +5,5 @@
 //i added some explanation to what the scripts do in some of them. 
 //sorry if something doesnt work
 //for curious minds; the file name is 1aaa readme, becasue 1aaa ensures it will always be on top
-// -4thpatriot on discord
+// .mink_ (or _mink. not sure) on discord
+// ai helped me with some of this so ig shout out ai
