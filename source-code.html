@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Source Code Behind Websites</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        pre.code-block {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 20px auto;
+            text-align: left;
+        }
+
+        code {
+            color: #f8f8f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h2>The Source Code Behind Every Website</h2>
+            <p>Every website you see is built using a combination of three core technologies: <strong>HTML</strong>, <strong>CSS</strong>, and <strong>JavaScript</strong>. These three pillars work together to define the structure, design, and interactivity of a site.</p>
+        </div>
+
+        <div class="section">
+            <h2>1. HTML – The Skeleton 🦴</h2>
+            <p>HTML (HyperText Markup Language) provides the backbone of any web page. It defines the structure, semantics, and content of the site. Everything from headings and paragraphs to images and videos starts with HTML.</p>
+            <pre class="code-block"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;title&gt;My First Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+    &lt;p&gt;This is a simple HTML structure.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>2. CSS – The Skin and Makeup 💄</h2>
+            <p>CSS (Cascading Style Sheets) is what makes a site beautiful. It controls the layout, colors, typography, and visual transitions. CSS can turn a dull HTML document into a stunning webpage with animations and interactive feedback.</p>
+            <pre class="code-block"><code>body {
+    background: linear-gradient(to right, #2980b9, #6dd5fa);
+    color: white;
+    font-family: 'Arial', sans-serif;
+    padding: 40px;
+}
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>3. JavaScript – The Brain 🧠</h2>
+            <p>JavaScript is the programming language of the web. It makes websites dynamic and interactive. From image sliders to form validations and single-page applications, JavaScript makes things happen on the web.</p>
+            <pre class="code-block"><code>document.querySelector('button').addEventListener('click', () =&gt; {
+    alert('Hello World!');
+});
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>4. Code Organization – Behind the Curtains 🎭</h2>
+            <p>As websites grow in complexity, developers use folder structures, reusable components, and frameworks like React, Vue, and Angular to keep everything manageable.</p>
+            <ul>
+                <li><strong>HTML</strong> in `/public` or `/views`</li>
+                <li><strong>CSS</strong> in `/styles` or scoped into components</li>
+                <li><strong>JavaScript</strong> in `/scripts` or as modules</li>
+            </ul>
+            <pre class="code-block"><code>project/
+├── index.html
+├── styles/
+│   └── main.css
+├── scripts/
+│   └── app.js
+└── assets/
+    └── logo.png
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>5. Dev Tools, Minification & Deployment 🚀</h2>
+            <p>Before going live, developers use tools to bundle, minify, and optimize their code. Tools like Webpack, Vite, and Babel prepare the source code to run efficiently in any browser.</p>
+            <pre class="code-block"><code>// Babel example: transform ES6 to ES5
+const greet = (name) =&gt; `Hello, ${name}`;
+</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>6. Hosting & The Web Server Connection 🌐</h2>
+            <p>The final step is hosting the site on servers. Hosting platforms like Netlify, Vercel, GitHub Pages, and traditional VPS hosts allow your site to be accessed globally.</p>
+            <p>Once hosted, the HTML/CSS/JS files are served over HTTP/S when someone visits your domain.</p>
+        </div>
+
+        <div class="section">
+            <h2>Conclusion</h2>
+            <p>What you see on the screen is only the tip of the iceberg. Behind every pixel is a developer's code — orchestrated carefully using HTML, styled by CSS, and powered by JavaScript.</p>
+            <p>Understanding the source code is the first step to creating your own websites, apps, and interactive experiences on the web! 🧑‍💻✨</p>
+        </div>
+    </div>
+</body>
+</html>
