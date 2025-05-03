@@ -65,48 +65,40 @@
     </div>
 
     <script>
-        function owoifyText(text) {
-            const faces = ["(・`ω´・)", ";;w;;", "owo", "UwU", ">w<", "^w^", ":3", "rawr~", "^^"];
-            const replaceMap = {
-                r: 'w',
-                l: 'w',
-                R: 'W',
-                L: 'W',
-                no: 'nu',
-                mo: 'mu',
-                ove: 'uv',
-                you: 'uu',
-                has: 'haz',
-                have: 'haz',
-                the: 'da'
-            };
+    function owoifyText(text) {
+        const faces = [":3", "^w^", "owo", "UwU", ">:3", "~"];
+        const replaceMap = {
+            r: 'w',
+            l: 'w',
+            R: 'W',
+            L: 'W',
+            you: 'u',
+            You: 'U',
+            has: 'haz',
+            have: 'haz',
+            the: 'da'
+        };
 
-            let result = text.replace(/(?:r|l|R|L|no|mo|ove|you|has|have|the)/gi, match => {
-                let low = match.toLowerCase();
-                return replaceMap[low] || match;
-            });
+        // soft replacements
+        let result = text.replace(/\b(?:you|You|has|have|the)\b/g, match => replaceMap[match] || match);
+        result = result.replace(/[rl]/g, 'w').replace(/[RL]/g, 'W');
 
-            result = result
-                .replace(/n([aeiou])/gi, 'ny$1')
-                .replace(/!+/g, " owo!")
-                .replace(/\./g, "~");
+        // add a face every 1–2 sentences
+        result = result.split(/([.!?])/g).map((part, i) => {
+            if (part.match(/[.!?]/) && Math.random() < 0.5) {
+                return part + " " + faces[Math.floor(Math.random() * faces.length)];
+            }
+            return part;
+        }).join('');
 
-            // randomly insert faces at end of sentences
-            const sentences = result.split(/([.!?~])/g).map(part => {
-                if (Math.random() < 0.5 && part.trim()) {
-                    return part + " " + faces[Math.floor(Math.random() * faces.length)];
-                }
-                return part;
-            });
+        return result;
+    }
 
-            return sentences.join('');
-        }
-
-        function owoify() {
-            const input = document.getElementById("inputText").value;
-            const output = owoifyText(input);
-            document.getElementById("output").innerText = output;
-        }
-    </script>
+    function owoify() {
+        const input = document.getElementById("inputText").value;
+        const output = owoifyText(input);
+        document.getElementById("output").innerText = output;
+    }
+</script>
 </body>
 </html>
