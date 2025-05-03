@@ -1,77 +1,74 @@
-/* Import Montserrat font */
+/* Import Montserrat */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
-body {
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Montserrat', sans-serif;
-  background-color: #f9f9f9;
-  background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
-  background-size: 20px 20px;
-  color: #333;
+  background: linear-gradient(to right, #f0f0f5, #e0e0e8);
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
   min-height: 100vh;
-  padding: 40px 10px;
+  color: #2D3C41;
 }
 
 .container {
   background: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  border: 2px dashed #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 960px;
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
   width: 90%;
   text-align: center;
 }
 
 h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 600;
-  color: #2D3C41;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 canvas {
-  display: block;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 700px;
   border-radius: 12px;
-  border: 2px dashed #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: #fafafa;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 .controls {
-  margin-top: 20px;
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 }
 
-select, button {
+select,
+button {
   font-family: 'Montserrat', sans-serif;
   font-size: 1rem;
-  padding: 10px 15px;
-  margin: 5px;
-  border-radius: 10px;
+  padding: 10px 16px;
   border: 1px solid #ccc;
-  background: #fefefe;
+  border-radius: 10px;
+  background: #ffffff;
   cursor: pointer;
-  transition: background 0.2s ease-in-out, transform 0.2s ease;
+  transition: all 0.2s ease-in-out;
 }
 
-button:hover, select:hover {
-  background: #f0f0f0;
-  transform: scale(1.03);
+select:hover,
+button:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.02);
 }
 
-@media (max-width: 768px) {
-  canvas {
-    width: 100%;
-    height: auto;
-  }
-
+@media (max-width: 600px) {
   .controls {
-    display: flex;
     flex-direction: column;
     gap: 10px;
   }
