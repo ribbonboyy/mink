@@ -7,67 +7,52 @@
     <link rel="stylesheet" href="mainpage.css">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <script>
-        function searchPage() {
-            // Get the search input and format it
-            var searchTerm = document.getElementById('search-bar').value.trim();
-            
-            // Replace spaces with dashes and remove any unwanted characters
-            var formattedTerm = searchTerm.replace(/\s+/g, '-').toLowerCase();
-
-            // Check if the formatted term is non-empty, then redirect
-            if (formattedTerm) {
-                window.location.href = "https://prettyfunny.xyz/" + formattedTerm;
-            } else {
-                alert("Please enter a valid search term.");
-            }
-        }
-
-        async function getHTMLFileCount() {
-            // GitHub repository details
-            const username = 'ribbonboyy';
-            const repo = 'mink';
-            const url = `https://api.github.com/repos/${username}/${repo}/contents/`;
-
-            try {
-                // Fetch repository contents
-                const response = await fetch(url);
-                const data = await response.json();
-
-                // Filter files that are .html
-                const htmlFiles = data.filter(file => file.name.endsWith('.html'));
-                
-                // Update the page with the count of .html files
-                document.getElementById('page-count').innerHTML = `Pages: ${htmlFiles.length}`;
-            } catch (error) {
-                console.error('Error fetching GitHub repo contents:', error);
-                document.getElementById('page-count').innerHTML = 'Pages: Error loading data';
-            }
-        }
-
-        // Fetch HTML file count when the page loads
-        window.onload = getHTMLFileCount;
-    </script>
     <style>
         body {
             font-family: 'Montserrat', sans-serif;
         }
+
         .info-section {
             text-align: center;
             margin-top: 20px;
         }
+
         .info-section p {
             font-size: 1rem;
             margin: 10px 0;
         }
+
         .info-section a {
             color: #0073e6;
             text-decoration: none;
         }
+
+        /* Confetti styles */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            opacity: 0.8;
+            top: 0;
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall 3s linear forwards;
+            border-radius: 50%;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to prettyfunny.xyz!</h1>
+    <h1 id="confetti-trigger">Welcome to prettyfunny.xyz!</h1>
     
     <!-- Disclaimer for search -->
     <div style="margin-bottom: 20px; padding: 10px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 5px;">
@@ -80,7 +65,7 @@
         <button onclick="searchPage()" style="padding: 10px 20px; font-size: 1rem; margin-left: 10px; cursor: pointer; border-radius: 5px; background-color: #4CAF50; color: white; border: none;">Search</button>
     </div>
 
- <div class="container">
+    <div class="container">
         <div class="grid">
             <a class="grid-item" href="https://prettyfunny.xyz/about">
                 <img src="ABOUTT.png" alt="NASA">
@@ -144,11 +129,69 @@
             </a>
         </div>
     </div>
+
     <!-- Information Section for Pages -->
     <div class="info-section">
         <p id="page-count">Pages: Loading...</p>
         <p>If you want to suggest a page, add me on Guilded or Discord:</p>
         <p><a href="https://guilded.gg/u/matthew" target="_blank">Guilded.gg/u/matthew</a> or my Discord username is <strong>mink.org</strong>.</p>
     </div>
+
+    <!-- JavaScript Section -->
+    <script>
+        function searchPage() {
+            var searchTerm = document.getElementById('search-bar').value.trim();
+            var formattedTerm = searchTerm.replace(/\s+/g, '-').toLowerCase();
+
+            if (formattedTerm) {
+                window.location.href = "https://prettyfunny.xyz/" + formattedTerm;
+            } else {
+                alert("Please enter a valid search term.");
+            }
+        }
+
+        async function getHTMLFileCount() {
+            const username = 'ribbonboyy';
+            const repo = 'mink';
+            const url = `https://api.github.com/repos/${username}/${repo}/contents/`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const htmlFiles = data.filter(file => file.name.endsWith('.html'));
+                document.getElementById('page-count').innerHTML = `Pages: ${htmlFiles.length}`;
+            } catch (error) {
+                console.error('Error fetching GitHub repo contents:', error);
+                document.getElementById('page-count').innerHTML = 'Pages: Error loading data';
+            }
+        }
+
+        window.onload = getHTMLFileCount;
+
+        // Confetti effect
+        const h1 = document.getElementById("confetti-trigger");
+        let confettiInterval;
+
+        function createConfetti() {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+            confetti.style.left = Math.random() * window.innerWidth + "px";
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+            confetti.style.width = confetti.style.height = Math.random() * 8 + 4 + "px";
+            document.body.appendChild(confetti);
+
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+
+        h1.addEventListener("mouseenter", () => {
+            confettiInterval = setInterval(createConfetti, 100);
+        });
+
+        h1.addEventListener("mouseleave", () => {
+            clearInterval(confettiInterval);
+        });
+    </script>
 </body>
 </html>
