@@ -1,47 +1,78 @@
-/* Importing Montserrat font from Google Fonts */
+/* Import Montserrat font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 body {
   margin: 0;
-  font-family: Montserrat, sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f9f9;
+  background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background: linear-gradient(to bottom, #eef2f3, #8e9eab);
-  overflow: hidden;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 40px 10px;
 }
 
 .container {
-  position: absolute;
-  top: 10px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px dashed #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 960px;
+  width: 90%;
   text-align: center;
 }
 
 h1 {
-  margin-bottom: 10px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #2D3C41;
+  margin-bottom: 15px;
 }
 
 canvas {
   display: block;
+  margin: 0 auto;
   border-radius: 12px;
+  border: 2px dashed #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
 
 .controls {
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 select, button {
-  margin: 0 5px;
-  padding: 10px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  padding: 10px 15px;
+  margin: 5px;
   border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #fff;
+  border: 1px solid #ccc;
+  background: #fefefe;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, transform 0.2s ease;
 }
 
 button:hover, select:hover {
   background: #f0f0f0;
+  transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
