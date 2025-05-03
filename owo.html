@@ -3,17 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OwOify Text Converter</title>
-    <link rel="stylesheet" href="stylepink.css">
+    <title>OWO Text Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #ffe0f0;
+            background-image: radial-gradient(circle, #f9a9c4 1px, transparent 1px);
+            color: #880044;
+        }
+
+        .section {
+            border: 2px dashed #f9a9c4;
+        }
+
+        button {
+            background-color: #f48fb1;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #ec407a;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #f9a9c4;
+            resize: vertical;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        #output {
+            margin-top: 20px;
+            white-space: pre-line;
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="section">
-        <h2>OwOify Text Converter</h2>
-        <label for="input-text">Enter text to OwOify:</label>
-        <textarea id="input-text" placeholder="Type something to OwOify!"></textarea>
-        <button id="convert">OwOify</button>
-        <p id="output-text">Your OwOified text will appear here.</p>
+    <div class="container">
+        <section class="section">
+            <h2>✧ OWO Text Converter ✧</h2>
+            <p>Type your message below and press convert to make it adorably cursed owo-style ✨</p>
+            <textarea id="inputText" placeholder="Type your message here..."></textarea>
+            <br><br>
+            <button onclick="owoify()">Convert to OwO</button>
+            <div id="output"></div>
+        </section>
     </div>
-    <script src="app.js"></script>
+
+    <script>
+        function owoifyText(text) {
+            const faces = ["(・`ω´・)", ";;w;;", "owo", "UwU", ">w<", "^w^", ":3", "rawr~", "^^"];
+            const replaceMap = {
+                r: 'w',
+                l: 'w',
+                R: 'W',
+                L: 'W',
+                no: 'nu',
+                mo: 'mu',
+                ove: 'uv',
+                you: 'uu',
+                has: 'haz',
+                have: 'haz',
+                the: 'da'
+            };
+
+            let result = text.replace(/(?:r|l|R|L|no|mo|ove|you|has|have|the)/gi, match => {
+                let low = match.toLowerCase();
+                return replaceMap[low] || match;
+            });
+
+            result = result
+                .replace(/n([aeiou])/gi, 'ny$1')
+                .replace(/!+/g, " owo!")
+                .replace(/\./g, "~");
+
+            // randomly insert faces at end of sentences
+            const sentences = result.split(/([.!?~])/g).map(part => {
+                if (Math.random() < 0.5 && part.trim()) {
+                    return part + " " + faces[Math.floor(Math.random() * faces.length)];
+                }
+                return part;
+            });
+
+            return sentences.join('');
+        }
+
+        function owoify() {
+            const input = document.getElementById("inputText").value;
+            const output = owoifyText(input);
+            document.getElementById("output").innerText = output;
+        }
+    </script>
 </body>
 </html>
