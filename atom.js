@@ -1,125 +1,117 @@
-// Initialize scene, camera, and renderer
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
-
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-camera.position.z = 30;
-
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('atomCanvas'), antialias: true });
+// === Setup Scene ===
+const canvas = document.getElementById('atomCanvas');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// Add orbit controls
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x101010);
+
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 60;
+
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
 
-// Create nucleus
-const nucleusGeometry = new THREE.SphereGeometry(2, 32, 32);
-const nucleusMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
-const nucleus = new THREE.Mesh(nucleusGeometry, nucleusMaterial);
-scene.add(nucleus);
-
-// Add lighting
-const ambientLight = new THREE.AmbientLight(0x404040, 2); // Soft white light
-scene.add(ambientLight);
-
+// === Lights ===
+scene.add(new THREE.AmbientLight(0x404040, 2));
 const pointLight = new THREE.PointLight(0xffffff, 1);
-camera.add(pointLight);
-scene.add(camera);
+pointLight.position.set(50, 50, 50);
+scene.add(pointLight);
 
-// Electron parameters
-let electrons = [];
-const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+// === Materials ===
+const protonMaterial = new THREE.MeshPhongMaterial({ color: 0xff4c4c });
+const neutronMaterial = new THREE.MeshPhongMaterial({ color: 0x4c4cff });
+const electronMaterial = new THREE.MeshPhongMaterial({ color: 0x00ffff });
 
-// Function to create electrons
-function createElectrons(atomicNumber) {
-  // Remove existing electrons
-  electrons.forEach(electron => scene.remove(electron.mesh));
-  electrons = [];
+// === Atom Components ===
+let nucleusGroup = new THREE.Group();
+let electronShells = [];
+scene.add(nucleusGroup);
 
-  // Define electron shell configuration (simplified)
-  const shellConfig = [2, 8, 18, 32, 32, 18, 8]; // Maximum electrons per shell
-  let remainingElectrons = atomicNumber;
-  let shellRadius = 5;
+// === Create Nucleus ===
+function createNucleus(atomicNumber) {
+    const protonCount = atomicNumber;
+    const neutronCount = Math.round(protonCount * 1.3); // Approximation
 
-  for (let i = 0; i < shellConfig.length && remainingElectrons > 0; i++) {
-    const electronsInShell = Math.min(remainingElectrons, shellConfig[i]);
-    const angleIncrement = (2 * Math.PI) / electronsInShell;
+    const totalParticles = protonCount + neutronCount;
+    const particleSize = 1.5;
 
-    for (let j = 0; j < electronsInShell; j++) {
-      const angle = j * angleIncrement;
-      const x = shellRadius * Math.cos(angle);
-      const y = shellRadius * Math.sin(angle);
-      const electronGeometry = new THREE.SphereGeometry(0.5, 16, 16);
-      const electron = new THREE.Mesh(electronGeometry, electronMaterial);
-      electron.position.set(x, y, 0);
-      scene.add(electron);
-      electrons.push({ mesh: electron, radius: shellRadius, angle: angle, speed: 0.02 + Math.random() * 0.01 });
+    nucleusGroup.clear();
+
+    for (let i = 0; i < totalParticles; i++) {
+        const material = i < protonCount ? protonMaterial : neutronMaterial;
+        const mesh = new THREE.Mesh(new THREE.SphereGeometry(particleSize, 16, 16), material);
+        mesh.position.set(
+            (Math.random() - 0.5) * 6,
+            (Math.random() - 0.5) * 6,
+            (Math.random() - 0.5) * 6
+        );
+        nucleusGroup.add(mesh);
     }
-
-    remainingElectrons -= electronsInShell;
-    shellRadius += 5;
-  }
 }
 
-// Animate electrons
-function animateElectrons() {
-  electrons.forEach(electron => {
-    electron.angle += electron.speed;
-    const x = electron.radius * Math.cos(electron.angle);
-    const y = electron.radius * Math.sin(electron.angle);
-    electron.mesh.position.set(x, y, 0);
-  });
+// === Create Electron Shells ===
+function createElectronShells(atomicNumber) {
+    electronShells.forEach(shell => scene.remove(shell.group));
+    electronShells = [];
+
+    const shellConfig = [2, 8, 18, 32, 32, 18, 8];
+    let electronsLeft = atomicNumber;
+
+    for (let i = 0; i < shellConfig.length && electronsLeft > 0; i++) {
+        const electronsInShell = Math.min(electronsLeft, shellConfig[i]);
+        const radius = 10 + i * 6;
+        const group = new THREE.Group();
+
+        for (let j = 0; j < electronsInShell; j++) {
+            const angle = (j / electronsInShell) * Math.PI * 2;
+            const electron = new THREE.Mesh(new THREE.SphereGeometry(0.8, 16, 16), electronMaterial);
+            electron.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+            group.add(electron);
+        }
+
+        scene.add(group);
+        electronShells.push({ group, speed: 0.01 + i * 0.005 });
+        electronsLeft -= electronsInShell;
+    }
 }
 
-// Animation loop
+// === Reset Atom ===
+function resetAtom(atomicNumber) {
+    createNucleus(atomicNumber);
+    createElectronShells(atomicNumber);
+}
+
+resetAtom(1);
+
+// === Animate Scene ===
 function animate() {
-  requestAnimationFrame(animate);
-  animateElectrons();
-  controls.update();
-  renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+
+    // Rotate the nucleus subtly
+    nucleusGroup.rotation.x += 0.005;
+    nucleusGroup.rotation.y += 0.005;
+
+    // Rotate each electron shell
+    electronShells.forEach(({ group, speed }) => {
+        group.rotation.y += speed;
+    });
+
+    controls.update();
+    renderer.render(scene, camera);
 }
 
 animate();
 
-// Handle atom selection
-const atomSelect = document.getElementById('atom-select');
-atomSelect.addEventListener('change', () => {
-  const atomicNumber = parseInt(atomSelect.value);
-  createElectrons(atomicNumber);
+// === Handle Atom Select ===
+document.getElementById("atom-select").addEventListener("change", e => {
+    resetAtom(Number(e.target.value));
 });
 
-// Initialize with default atom
-createElectrons(parseInt(atomSelect.value));
-
-// Handle split atom button
-const splitButton = document.getElementById('split-atom');
-const fissleButton = document.getElementById('fissle-atom');
-const energyCounter = document.getElementById('energy-counter');
-const radiationLevel = document.getElementById('radiation-level');
-const dangerRadius = document.getElementById('danger-radius');
-
-splitButton.addEventListener('click', () => {
-  // Simulate fission: change nucleus color and show fissle button
-  nucleus.material.color.set(0xffff00); // Yellow
-  fissleButton.style.display = 'inline-block';
-});
-
-// Handle fissle atom button
-fissleButton.addEventListener('click', () => {
-  // Simulate explosion: remove nucleus and electrons
-  scene.remove(nucleus);
-  electrons.forEach(electron => scene.remove(electron.mesh));
-  electrons = [];
-
-  // Update fission info
-  energyCounter.textContent = '200';
-  radiationLevel.textContent = '500';
-  dangerRadius.textContent = '1000';
-
-  fissleButton.style.display = 'none';
+// === Resize ===
+window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
 });
