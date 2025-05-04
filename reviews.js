@@ -1,38 +1,46 @@
-const reviews = [
-  {
-    text: "I visited PrettyFunny.xyz and now my dog speaks fluent sarcasm.",
-    author: "Alex J."
-  },
-  {
-    text: "PrettyFunny.xyz is like an internet fever dream. I woke up fluent in meme.",
-    author: "Jamie L."
-  },
-  {
-    text: "After using this site, my toaster became self-aware. Coincidence?",
-    author: "Morgan S."
-  },
-  {
-    text: "I laughed so hard, my neighbor filed a noise complaint. Worth it.",
-    author: "Dana P."
-  },
-  {
-    text: "I thought this was a serious site... then I saw the dancing banana.",
-    author: "Taylor R."
-  }
+const funnyReviews = [
+  "I laughed so hard I snorted cereal out of my nose.",
+  "PrettyFunny.xyz made my goldfish question its existence.",
+  "The jokes are so bad, they’re good. Like, Oscar-worthy bad.",
+  "I showed this site to my boss. I got promoted. No correlation probably.",
+  "It’s like the internet ate a clown and threw up joy.",
+  "10/10 would laugh again. And again. And again.",
+  "I'm not saying this site changed my life, but my cat now pays rent.",
+  "I visited PrettyFunny.xyz and now my grandma speaks in memes.",
+  "Honestly, this site should be illegal — too funny for free."
 ];
 
-document.getElementById('generate-btn').addEventListener('click', () => {
-  const r = reviews[Math.floor(Math.random() * reviews.length)];
-  document.getElementById('review-card').innerHTML = `
-    <p>"${r.text}"</p>
-    <p><strong>– ${r.author}</strong></p>
-  `;
-});
+const stars = '⭐️⭐️⭐️⭐️⭐️';
 
-document.getElementById('review-form').addEventListener('submit', function (e) {
-  e.preventDefault();
-  const review = document.getElementById('review-text').value;
-  const name = document.getElementById('reviewer-name').value;
-  document.getElementById('confirmation-msg').textContent = `Review submitted. Thank you, ${name}! (Disclaimer: It'll never be read 😂)`;
-  this.reset();
+async function loadReviews(count = 6) {
+  const container = document.getElementById('reviews-wrapper');
+  try {
+    const response = await fetch(`https://randomuser.me/api/?results=${count}`);
+    const data = await response.json();
+
+    data.results.forEach(user => {
+      const name = `${user.name.first} ${user.name.last}`;
+      const photo = user.picture.medium;
+      const review = funnyReviews[Math.floor(Math.random() * funnyReviews.length)];
+
+      const reviewCard = document.createElement('div');
+      reviewCard.className = 'review-card';
+      reviewCard.innerHTML = `
+        <img class="review-img" src="${photo}" alt="${name}" />
+        <div class="review-content">
+          <div class="stars">${stars}</div>
+          <div class="review-text">"${review}"</div>
+          <div class="review-name">– ${name}</div>
+        </div>
+      `;
+      container.appendChild(reviewCard);
+    });
+  } catch (err) {
+    console.error('Error loading reviews:', err);
+    container.innerHTML = '<p style="text-align:center;">Could not load reviews. Try reloading.</p>';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadReviews();
 });
