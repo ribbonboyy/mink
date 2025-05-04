@@ -15,19 +15,33 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #2D3C41;
 }
 
+#reviews-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* 🧾 Individual review card styling */
 .review-card {
   background: #fff;
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px dashed #ccc;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  align-items: flex-start;
   gap: 20px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.review-card:hover {
+  transform: scale(1.02);
 }
 
 .review-img {
@@ -35,25 +49,28 @@ h1 {
   height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
+  border: 3px solid #2D3C41;
 }
 
 .review-content {
   flex: 1;
+  text-align: left;
 }
 
 .stars {
-  color: gold;
+  color: #FFD700;
   font-size: 1.2rem;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .review-text {
   font-size: 1.1rem;
-  margin: 5px 0;
+  margin-bottom: 10px;
+  line-height: 1.5;
 }
 
 .review-name {
   font-weight: 600;
   color: #2D3C41;
+  font-size: 1rem;
 }
