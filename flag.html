@@ -246,13 +246,14 @@
       // Disable the Submit button to prevent spamming
       document.getElementById('submit-btn').disabled = true;
 
+      // Re-enable the button and prepare for the next round after a short delay
       setTimeout(() => {
         if (lives > 0) {
           document.getElementById('result').innerText = '';
           document.getElementById('country-guess').value = '';
           getRandomCountry();
         }
-      }, 2000);
+      }, 2000); // 2-second delay before enabling button again
     }
 
     // Event listener to trigger answer check when Enter is pressed
