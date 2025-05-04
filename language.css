@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 50px;
+  background-color: #f0f0f0;
+}
+
+#game-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+#text-snippet {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+#language-input {
+  padding: 10px;
+  font-size: 1em;
+  width: 60%;
+  margin-bottom: 10px;
+}
+
+#submit-btn {
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+#feedback {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#score, #timer {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
