@@ -171,7 +171,7 @@
       { code: 'ES', name: 'Spain' },
       { code: 'ID', name: 'Indonesia' },
       { code: 'KE', name: 'Kenya' },
-      { code: 'CZ', name: 'Czechia' }, // Added Czechia
+      { code: 'CZ', name: 'Czechia' },
       { code: 'PL', name: 'Poland' },
       { code: 'TH', name: 'Thailand' },
       { code: 'SE', name: 'Sweden' },
@@ -235,7 +235,9 @@
         document.getElementById('result').innerText = `Incorrect! The correct answer was ${currentCountry.name}.`;
         if (lives === 0) {
           document.getElementById('result').innerText = 'Game Over! You ran out of lives!';
-          document.getElementById('submit-btn').disabled = true;
+          setTimeout(() => {
+            location.reload();  // Reload the page when lives reach zero
+          }, 2000); // Delay before reloading
         }
       }
 
