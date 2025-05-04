@@ -144,6 +144,22 @@
       { code: 'BR', name: 'Brazil' },
       { code: 'CA', name: 'Canada' },
       { code: 'AU', name: 'Australia' },
+      { code: 'GB', name: 'United Kingdom' },
+      { code: 'IT', name: 'Italy' },
+      { code: 'CN', name: 'China' },
+      { code: 'RU', name: 'Russia' },
+      { code: 'ZA', name: 'South Africa' },
+      { code: 'MX', name: 'Mexico' },
+      { code: 'KR', name: 'South Korea' },
+      { code: 'NG', name: 'Nigeria' },
+      { code: 'EG', name: 'Egypt' },
+      { code: 'NG', name: 'Nigeria' },
+      { code: 'SA', name: 'Saudi Arabia' },
+      { code: 'AR', name: 'Argentina' },
+      { code: 'ES', name: 'Spain' },
+      { code: 'ID', name: 'Indonesia' },
+      { code: 'NG', name: 'Nigeria' },
+      { code: 'KE', name: 'Kenya' }
     ];
 
     let currentCountry = {};
@@ -153,7 +169,8 @@
     function getRandomCountry() {
       const randomIndex = Math.floor(Math.random() * countries.length);
       currentCountry = countries[randomIndex];
-      document.getElementById('flag').src = `https://www.countryflags.io/${currentCountry.code}/flat/64.png`;
+      // URL to fetch flag image from Flagpedia CDN
+      document.getElementById('flag').src = `https://flagpedia.net/data/flags/h80/${currentCountry.code.toLowerCase()}.png`;
     }
 
     // Check the user's guess
