@@ -128,7 +128,7 @@
     <img id="flag" src="" alt="Country Flag">
   </div>
 
-  <input type="text" id="country-guess" placeholder="Guess the country" />
+  <input type="text" id="country-guess" placeholder="Guess the country or its code" />
   <button onclick="checkAnswer()">Submit Guess</button>
 
   <div class="result" id="result"></div>
@@ -153,14 +153,45 @@
       { code: 'KR', name: 'South Korea' },
       { code: 'NG', name: 'Nigeria' },
       { code: 'EG', name: 'Egypt' },
-      { code: 'NG', name: 'Nigeria' },
       { code: 'SA', name: 'Saudi Arabia' },
       { code: 'AR', name: 'Argentina' },
       { code: 'ES', name: 'Spain' },
       { code: 'ID', name: 'Indonesia' },
-      { code: 'NG', name: 'Nigeria' },
-      { code: 'KE', name: 'Kenya' }
+      { code: 'KE', name: 'Kenya' },
+      { code: 'CZ', name: 'Czechia' }, // Added Czechia
+      { code: 'PL', name: 'Poland' },
+      { code: 'TH', name: 'Thailand' },
+      { code: 'SE', name: 'Sweden' },
+      { code: 'TR', name: 'Turkey' },
+      { code: 'NL', name: 'Netherlands' },
+      { code: 'SG', name: 'Singapore' },
+      { code: 'DK', name: 'Denmark' },
+      { code: 'FI', name: 'Finland' },
+      { code: 'PT', name: 'Portugal' },
+      { code: 'MY', name: 'Malaysia' },
+      { code: 'PH', name: 'Philippines' }
     ];
+
+    // Abbreviation map for common shorthand
+    const abbreviationMap = {
+      'UK': 'United Kingdom',
+      'US': 'United States',
+      'Czech': 'Czechia',
+      'CZ': 'Czechia',
+      'UAE': 'United Arab Emirates',
+      'KSA': 'Saudi Arabia',
+      'S Korea': 'South Korea',
+      'N. Korea': 'North Korea',
+      'S Africa': 'South Africa',
+      'Niger': 'Nigeria',
+      'Indonesia': 'Indonesia',
+      'Argentina': 'Argentina',
+      'Brazil': 'Brazil',
+      'Russia': 'Russia',
+      'Japan': 'Japan',
+      'China': 'China',
+      'Canada': 'Canada'
+    };
 
     let currentCountry = {};
     let score = 0;
@@ -171,17 +202,24 @@
       currentCountry = countries[randomIndex];
       // URL to fetch flag image from Flagpedia CDN
       document.getElementById('flag').src = `https://flagpedia.net/data/flags/h80/${currentCountry.code.toLowerCase()}.png`;
+
+      // Automatically focus on the input field when a new flag appears
+      document.getElementById('country-guess').focus();
     }
 
     // Check the user's guess
     function checkAnswer() {
       const guess = document.getElementById('country-guess').value.trim();
-      if (guess.toLowerCase() === currentCountry.name.toLowerCase()) {
+      const correctedGuess = abbreviationMap[guess.toUpperCase()] || guess;
+
+      // If abbreviation map exists for guess, replace with full name
+      if (correctedGuess.toLowerCase() === currentCountry.name.toLowerCase()) {
         score++;
         document.getElementById('result').innerText = 'Correct!';
       } else {
         document.getElementById('result').innerText = `Incorrect! The correct answer was ${currentCountry.name}.`;
       }
+
       document.getElementById('score').innerText = `Score: ${score}`;
       setTimeout(() => {
         document.getElementById('result').innerText = '';
@@ -189,6 +227,13 @@
         getRandomCountry();
       }, 2000);
     }
+
+    // Event listener to trigger answer check when Enter is pressed
+    document.getElementById('country-guess').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        checkAnswer();
+      }
+    });
 
     // Initialize the game
     getRandomCountry();
