@@ -50,11 +50,25 @@
                 transform: translateY(100vh) rotate(360deg);
             }
         }
+
+        /* New section for games */
+        .games-section {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .games-section .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-items: center;
+        }
+
     </style>
 </head>
 <body>
     <h1 id="confetti-trigger">Welcome to prettyfunny.xyz!</h1>
-    
+
     <!-- Disclaimer for search -->
     <div style="margin-bottom: 20px; padding: 10px; background-color: #f4f4f4; border: 1px solid #ccc; border-radius: 5px;">
         <strong>Disclaimer:</strong> Searches must be perfectly accurate, including the correct use of capitalization and spaces. All spaces will be replaced with dashes.
@@ -104,10 +118,6 @@
                 <img src="dziuáfg.png" alt="Love">
                 <p>Love <3</p>
             </a> 
-            <a class="grid-item" href="https://prettyfunny.xyz/planet">
-                <img src="planett.png" alt="Planet">
-                <p>Simulate a planet</p>
-            </a>
             <a class="grid-item" href="https://prettyfunny.xyz/kanye">
                 <img src="kanyee.png" alt="Kanye">
                 <p>Kanye</p>
@@ -128,10 +138,6 @@
                 <img src="sudhgbdfg.png" alt="Safety">
                 <p>Online Safety (SENSITIVE)</p>
             </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/garden">
-                <img src="gardenn.png" alt="Garden">
-                <p>Fact garden</p>
-            </a>
             <a class="grid-item" href="https://prettyfunny.xyz/badnicknames">
                 <img src="usernamee.png" alt="Username">
                 <p>Username Gen.</p>
@@ -144,10 +150,6 @@
                 <img src="giff.png" alt="Gif">
                 <p>Basic gif Inspector</p>
             </a>
-            <a class="grid-item" href="https://prettyfunny.xyz/hacker">
-                <img src="hackerr.png" alt="Hacker">
-                <p>Hacker</p>
-            </a>
             <a class="grid-item" href="https://prettyfunny.xyz/about">
                 <img src="ABOUTT.png" alt="NASA">
                 <p>About us</p>
@@ -159,6 +161,29 @@
             <a class="grid-item" href="https://prettyfunny.xyz/map">
                 <img src="mapp.png" alt="Map">
                 <p>Map - Proof of concept</p>
+            </a>
+        </div>
+    </div>
+
+    <!-- New Games Section -->
+    <div class="games-section">
+        <h2>Games</h2>
+        <div class="grid">
+            <a class="grid-item" href="https://prettyfunny.xyz/flag">
+                <img src="ahsgfuzhgdsfbghsdfg.png" alt="Flag">
+                <p>Guess the flag</p>
+            </a>
+            <a class="grid-item" href="https://prettyfunny.xyz/planet">
+                <img src="planett.png" alt="Planet">
+                <p>Simulate a planet</p>
+            </a>
+            <a class="grid-item" href="https://prettyfunny.xyz/hacker">
+                <img src="hackerr.png" alt="Hacker">
+                <p>Hacker</p>
+            </a>
+            <a class="grid-item" href="https://prettyfunny.xyz/garden">
+                <img src="gardenn.png" alt="Garden">
+                <p>Fact garden</p>
             </a>
         </div>
     </div>
