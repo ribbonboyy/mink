@@ -13,67 +13,47 @@ body {
   padding: 20px;
 }
 
-.section {
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.review-card {
   background: #fff;
   padding: 20px;
   border-radius: 15px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border: 2px dashed #ccc;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.section h2 {
+.review-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.review-content {
+  flex: 1;
+}
+
+.stars {
+  color: gold;
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.review-text {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+.review-name {
   font-weight: 600;
-  font-size: 1.8rem;
   color: #2D3C41;
-  margin-bottom: 15px;
-}
-
-.section p, li {
-  line-height: 1.6;
-  font-size: 1rem;
-  margin-bottom: 10px;
-}
-
-ul {
-  list-style: disc;
-  padding-left: 20px;
-  text-align: left;
-}
-
-button {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 1rem;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  background-color: #2D3C41;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-button:hover {
-  background-color: #4a5a60;
-}
-
-textarea, input[type="text"] {
-  width: 80%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-family: 'Montserrat', sans-serif;
-}
-
-@media (max-width: 768px) {
-  .container {
-    width: 90%;
-  }
-
-  textarea, input[type="text"] {
-    width: 100%;
-  }
 }
