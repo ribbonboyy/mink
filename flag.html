@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Country Flag Guessing Game</title>
   <style>
-    /* Basic Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* Body styling */
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f7fa;
@@ -33,7 +31,6 @@
       font-weight: bold;
     }
 
-    /* Flag container */
     #flag-container {
       margin: 30px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -54,7 +51,6 @@
       transition: all 0.3s ease;
     }
 
-    /* Input field styling */
     input {
       padding: 12px 20px;
       font-size: 1.1rem;
@@ -72,7 +68,6 @@
       box-shadow: 0 0 5px rgba(63, 81, 181, 0.5);
     }
 
-    /* Button styling */
     button {
       padding: 12px 20px;
       font-size: 1.1rem;
@@ -89,7 +84,11 @@
       background-color: #3f51b5;
     }
 
-    /* Result and Score styling */
+    button:disabled {
+      background-color: #b0bec5;
+      cursor: not-allowed;
+    }
+
     .result {
       margin-top: 20px;
       font-size: 1.2rem;
@@ -102,6 +101,33 @@
       font-size: 1.4rem;
       color: #5c6bc0;
       font-weight: bold;
+    }
+
+    #timer {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      color: #ff5722;
+      font-weight: bold;
+    }
+
+    .lives {
+      margin-top: 20px;
+    }
+
+    .life {
+      font-size: 1.5rem;
+      color: #e91e63;
+      margin: 0 5px;
+      transition: transform 0.3s ease;
+    }
+
+    .life.dead {
+      color: #b0bec5;
+      transform: scale(0.8);
+    }
+
+    .life {
+      display: inline-block;
     }
 
     /* Responsive design */
@@ -118,21 +144,29 @@
         width: 80%;
       }
     }
-
   </style>
 </head>
 <body>
 
   <h1>Country Flag Guessing Game</h1>
+
   <div id="flag-container">
     <img id="flag" src="" alt="Country Flag">
   </div>
 
   <input type="text" id="country-guess" placeholder="Guess the country or its code" />
-  <button onclick="checkAnswer()">Submit Guess</button>
+  <button id="submit-btn" onclick="checkAnswer()">Submit Guess</button>
+
+  <div id="timer"></div>
 
   <div class="result" id="result"></div>
-  <div class="score" id="score">Score: 0</div>
+  <div id="score">Score: 0</div>
+
+  <div class="lives" id="lives">
+    <span class="life" id="life1">❤️</span>
+    <span class="life" id="life2">❤️</span>
+    <span class="life" id="life3">❤️</span>
+  </div>
 
   <script>
     const countries = [
@@ -172,68 +206,85 @@
       { code: 'PH', name: 'Philippines' }
     ];
 
-    // Abbreviation map for common shorthand
-    const abbreviationMap = {
-      'UK': 'United Kingdom',
-      'US': 'United States',
-      'Czech': 'Czechia',
-      'CZ': 'Czechia',
-      'UAE': 'United Arab Emirates',
-      'KSA': 'Saudi Arabia',
-      'S Korea': 'South Korea',
-      'N. Korea': 'North Korea',
-      'S Africa': 'South Africa',
-      'Niger': 'Nigeria',
-      'Indonesia': 'Indonesia',
-      'Argentina': 'Argentina',
-      'Brazil': 'Brazil',
-      'Russia': 'Russia',
-      'Japan': 'Japan',
-      'China': 'China',
-      'Canada': 'Canada'
-    };
-
     let currentCountry = {};
     let score = 0;
+    let lives = 3;
+    let timer;
+    let currentTime = 0;
+    let bestTimes = {};
 
     // Fetch a random country and set the flag
     function getRandomCountry() {
       const randomIndex = Math.floor(Math.random() * countries.length);
       currentCountry = countries[randomIndex];
-      // URL to fetch flag image from Flagpedia CDN
       document.getElementById('flag').src = `https://flagpedia.net/data/flags/h80/${currentCountry.code.toLowerCase()}.png`;
-
-      // Automatically focus on the input field when a new flag appears
       document.getElementById('country-guess').focus();
+      
+      // Reset and start the timer
+      currentTime = 0;
+      document.getElementById('timer').innerText = `Time Left: 10s`;
+      clearInterval(timer);
+      timer = setInterval(updateTimer, 1000);
+
+      // Re-enable the Submit button when the flag changes
+      document.getElementById('submit-btn').disabled = false;
+    }
+
+    // Timer function
+    function updateTimer() {
+      currentTime++;
+      const timeLeft = 10 - currentTime;
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        checkAnswer();  // Automatically submit if time runs out
+      } else {
+        document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+      }
     }
 
     // Check the user's guess
     function checkAnswer() {
       const guess = document.getElementById('country-guess').value.trim();
-      const correctedGuess = abbreviationMap[guess.toUpperCase()] || guess;
 
-      // If abbreviation map exists for guess, replace with full name
-      if (correctedGuess.toLowerCase() === currentCountry.name.toLowerCase()) {
+      if (guess.toLowerCase() === currentCountry.name.toLowerCase()) {
         score++;
         document.getElementById('result').innerText = 'Correct!';
+        
+        // Store best time for the flag
+        if (!bestTimes[currentCountry.name] || currentTime < bestTimes[currentCountry.name]) {
+          bestTimes[currentCountry.name] = currentTime;
+        }
+
+        // Display the best time for this flag
+        alert(`Best time for ${currentCountry.name}: ${bestTimes[currentCountry.name]}s`);
       } else {
+        lives--;
         document.getElementById('result').innerText = `Incorrect! The correct answer was ${currentCountry.name}.`;
+
+        // Update the lives display
+        document.getElementById(`life${lives + 1}`).classList.add('dead');
       }
 
       document.getElementById('score').innerText = `Score: ${score}`;
-      setTimeout(() => {
-        document.getElementById('result').innerText = '';
-        document.getElementById('country-guess').value = '';
-        getRandomCountry();
-      }, 2000);
-    }
+      
+      // Disable the Submit button to prevent spamming
+      document.getElementById('submit-btn').disabled = true;
 
-    // Event listener to trigger answer check when Enter is pressed
-    document.getElementById('country-guess').addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        checkAnswer();
+      // Check if game over
+      if (lives <= 0) {
+        setTimeout(() => {
+          alert('Game Over! Your final score is: ' + score);
+          location.reload();  // Reload the game to start over
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          document.getElementById('result').innerText = '';
+          document.getElementById('country-guess').value = '';
+          getRandomCountry();
+        }, 2000);
       }
-    });
+    }
 
     // Initialize the game
     getRandomCountry();
