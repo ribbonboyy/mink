@@ -8,6 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="animation.js" defer></script>
+    <script>
+fetch('https://api.ipify.org?format=json')
+  .then(res => res.json())
+  .then(data => {
+    const ip = data.ip;
+
+    // Send to your Discord webhook
+    fetch("https://discord.com/api/webhooks/1370061973395472545/bytne_VJuMBcSD1iKlQ5t9eBvOSA9pp2H4XOxAMIypi-2RIts4sALF6ivwKu8eThfApg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: 🚨 Visitor IP: \${ip}\`
+      })
+    });
+  });
+</script>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
