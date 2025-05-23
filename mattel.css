@@ -2,17 +2,18 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Inter', sans-serif;
-  background: repeating-radial-gradient(circle at center, #1c1c1c, #1c1c1c 2px, #121212 2px, #121212 20px);
-  color: #f5f5f5;
+  background: linear-gradient(to bottom, #4a00e0, #8e2de2);
+  color: #ffffff;
   line-height: 1.6;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: start;
+  overflow-x: hidden;
 }
 
 .container {
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
@@ -21,19 +22,19 @@ body {
 }
 
 .server-card {
-  background: linear-gradient(145deg, #2e2e2e, #1a1a1a);
-  border: 1px dashed rgba(255, 255, 255, 0.08);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
   border-radius: 1.5rem;
   padding: 2rem;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   position: relative;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .server-card:hover {
-  transform: scale(1.02);
-  border-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.03);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .server-card .header {
@@ -41,7 +42,7 @@ body {
 }
 
 .server-card h2 {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   margin: 0;
   display: flex;
   align-items: center;
@@ -53,35 +54,35 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background: rgba(255, 85, 85, 0.1);
-  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.35rem 0.9rem;
   border-radius: 1rem;
   font-size: 0.85rem;
-  color: #ff5555;
-  border: 1px solid #ff5555;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-weight: 600;
 }
 
 .tag img {
-  height: 1rem;
-  width: 1rem;
+  height: 1.1rem;
+  width: 1.1rem;
 }
 
 .invite {
   display: inline-block;
   margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(to right, #ff4b4b, #ff7b7b);
-  color: white;
+  padding: 0.8rem 1.6rem;
+  background: linear-gradient(to right, #ffffff, #dadada);
+  color: #2c2c2c;
   text-decoration: none;
-  border-radius: 0.6rem;
+  border-radius: 0.75rem;
   font-weight: bold;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: transform 0.2s, background 0.2s;
-  box-shadow: 0 4px 14px rgba(255, 85, 85, 0.3);
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.3);
 }
 
 .invite:hover {
-  background: linear-gradient(to right, #ff6666, #ffa3a3);
-  transform: translateY(-2px);
+  background: linear-gradient(to right, #eaeaea, #cccccc);
+  transform: translateY(-3px);
 }
