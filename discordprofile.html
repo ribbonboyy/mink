@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Discord Card</title>
+  <title>Live Discord Card</title>
   <style>
     body {
       background: #1e1f22;
-      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      font-family: sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
     .card {
-      background: linear-gradient(145deg, #2f3136, #202225);
-      color: #fff;
-      border-radius: 12px;
+      background: #2f3136;
       padding: 20px;
+      border-radius: 12px;
       width: 300px;
       text-align: center;
       box-shadow: 0 0 20px #00000050;
@@ -25,45 +24,57 @@
 
     .avatar {
       border-radius: 50%;
-      border: 4px solid #7289da;
       width: 80px;
       height: 80px;
       object-fit: cover;
-      margin-bottom: 10px;
+      border: 3px solid #5865f2;
     }
 
-    .username {
-      font-size: 1.4em;
-      font-weight: bold;
-    }
-
-    .date {
+    .status {
       margin-top: 10px;
       font-size: 0.9em;
-      color: #b9bbbe;
     }
+
+    .online { color: #43b581; }
+    .idle { color: #faa61a; }
+    .dnd { color: #f04747; }
+    .offline { color: #747f8d; }
   </style>
 </head>
 <body>
   <div class="card">
-    <img class="avatar" id="avatar" src="" alt="Avatar">
-    <div class="username" id="username">Loading...</div>
-    <div class="date" id="created">Created on: ...</div>
+    <img class="avatar" id="avatar" src="">
+    <div id="username">Loading...</div>
+    <div class="status" id="status">Status: ...</div>
   </div>
 
   <script>
-    const userID = "363091363257909249";
-    const avatarHash = "a_22027de23e77d8128f037e521c0bf648";
-    const username = ".mattel.";
+    const ws = new WebSocket("wss://api.lanyard.rest/socket");
 
-    document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${userID}/${avatarHash}.gif?size=128`;
-    document.getElementById("username").textContent = username;
+    ws.onopen = () => {
+      ws.send(JSON.stringify({
+        op: 2,
+        d: {
+          subscribe_to_ids: ["363091363257909249"]
+        }
+      }));
+    };
 
-    const discordEpoch = 1420070400000;
-    const timestamp = (BigInt(userID) >> 22n) + BigInt(discordEpoch);
-    const date = new Date(Number(timestamp));
-    document.getElementById("created").textContent = "Created on: " + date.toDateString();
+    ws.onmessage = (message) => {
+      const data = JSON.parse(message.data);
+
+      if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
+        const user = data.d.discord_user;
+        const status = data.d.discord_status;
+
+        const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+        document.getElementById("avatar").src = avatarUrl;
+
+        document.getElementById("username").textContent = user.username;
+        document.getElementById("status").textContent = `Status: ${status}`;
+        document.getElementById("status").className = `status ${status}`;
+      }
+    };
   </script>
 </body>
 </html>
-
