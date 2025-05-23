@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Discord Card</title>
+  <style>
+    body {
+      background: #2c2f33;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    .card {
+      background: #23272a;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin: 50px auto;
+    }
+    img {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img id="avatar" width="80"><br>
+    <h2 id="username">Loading...</h2>
+    <p id="created">Created on: </p>
+  </div>
+
+  <script>
+    const userID = "363091363257909249";
+    const avatarHash = "a_123456789abcdef"; // You need to get this once manually or via API
+    const username = "Mink#0001"; // You can hard-code this too
+
+    // Load avatar
+    document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${userID}/${avatarHash}.png`;
+
+    // Set username
+    document.getElementById("username").textContent = username;
+
+    // Decode Snowflake for account creation date
+    const discordEpoch = 1420070400000;
+    const timestamp = (BigInt(userID) >> 22n) + BigInt(discordEpoch);
+    const date = new Date(Number(timestamp));
+    document.getElementById("created").textContent += date.toDateString();
+  </script>
+</body>
+</html>
