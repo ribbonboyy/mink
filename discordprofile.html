@@ -60,21 +60,25 @@
       }));
     };
 
-    ws.onmessage = (message) => {
-      const data = JSON.parse(message.data);
+ws.onmessage = (message) => {
+  const data = JSON.parse(message.data);
 
-      if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
-        const user = data.d.discord_user;
-        const status = data.d.discord_status;
+  if (data.t === "INIT_STATE" || data.t === "PRESENCE_UPDATE") {
+    const userData = data.d;
+    if (!userData || !userData.discord_user) return;
 
-        const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-        document.getElementById("avatar").src = avatarUrl;
+    const user = userData.discord_user;
+    const status = userData.discord_status;
 
-        document.getElementById("username").textContent = user.username;
-        document.getElementById("status").textContent = `Status: ${status}`;
-        document.getElementById("status").className = `status ${status}`;
-      }
-    };
+    const avatarUrl = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+    document.getElementById("avatar").src = avatarUrl;
+
+    document.getElementById("username").textContent = user.username;
+    document.getElementById("status").textContent = `Status: ${status}`;
+    document.getElementById("status").className = `status ${status}`;
+  }
+};
+
   </script>
 </body>
 </html>
