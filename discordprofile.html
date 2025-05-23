@@ -1,49 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Discord Card</title>
+  <title>Discord Card</title>
   <style>
     body {
-      background: #2c2f33;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
+      background: #1e1f22;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
+
     .card {
-      background: #23272a;
+      background: linear-gradient(145deg, #2f3136, #202225);
+      color: #fff;
+      border-radius: 12px;
       padding: 20px;
-      border-radius: 10px;
       width: 300px;
-      margin: 50px auto;
+      text-align: center;
+      box-shadow: 0 0 20px #00000050;
     }
-    img {
+
+    .avatar {
       border-radius: 50%;
+      border: 4px solid #7289da;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .username {
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .date {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #b9bbbe;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <img id="avatar" width="80"><br>
-    <h2 id="username">Loading...</h2>
-    <p id="created">Created on: </p>
+    <img class="avatar" id="avatar" src="" alt="Avatar">
+    <div class="username" id="username">Loading...</div>
+    <div class="date" id="created">Created on: ...</div>
   </div>
 
   <script>
     const userID = "363091363257909249";
-    const avatarHash = "a_123456789abcdef"; // You need to get this once manually or via API
-    const username = "Mink#0001"; // You can hard-code this too
+    const avatarHash = "a_22027de23e77d8128f037e521c0bf648";
+    const username = ".mattel.";
 
-    // Load avatar
-    document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${userID}/${avatarHash}.png`;
-
-    // Set username
+    document.getElementById("avatar").src = `https://cdn.discordapp.com/avatars/${userID}/${avatarHash}.gif?size=128`;
     document.getElementById("username").textContent = username;
 
-    // Decode Snowflake for account creation date
     const discordEpoch = 1420070400000;
     const timestamp = (BigInt(userID) >> 22n) + BigInt(discordEpoch);
     const date = new Date(Number(timestamp));
-    document.getElementById("created").textContent += date.toDateString();
+    document.getElementById("created").textContent = "Created on: " + date.toDateString();
   </script>
 </body>
 </html>
+
