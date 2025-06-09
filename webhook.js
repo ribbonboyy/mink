@@ -1,6 +1,6 @@
 document.getElementById('sendBtn').addEventListener('click', async () => {
   const password = prompt("Enter staff password:");
-  if (password !== "JIZZCORDSTAFFPASSWORD") {
+  if (password !== "publicity") {
     alert("Incorrect password.");
     return;
   }
