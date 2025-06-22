@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Discord Embed Sender</title>
+  <link rel="stylesheet" href="discbot.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Discord Embed Sender</h1>
+
+    <label>Password:</label>
+    <input type="password" id="password" placeholder="Type 'YES'">
+
+    <label>Bot Token:</label>
+    <input type="text" id="botToken" placeholder="Your Bot Token">
+
+    <label>Server ID (Guild ID):</label>
+    <input type="text" id="guildId" placeholder="Server ID">
+
+    <label>Channel ID:</label>
+    <input type="text" id="channelId" placeholder="Channel ID">
+
+    <label>Embed Title:</label>
+    <input type="text" id="title">
+
+    <label>Embed Description:</label>
+    <textarea id="description" rows="4"></textarea>
+
+    <label>Embed Color (hex):</label>
+    <input type="text" id="color" placeholder="#ff0000">
+
+    <label>Footer Text:</label>
+    <input type="text" id="footer">
+
+    <label>Thumbnail URL:</label>
+    <input type="text" id="thumbnail">
+
+    <label>Image URL:</label>
+    <input type="text" id="image">
+
+    <button onclick="sendEmbed()">Send Embed</button>
+
+    <div id="result"></div>
+  </div>
+  <script src="discbot.js"></script>
+</body>
+</html>
