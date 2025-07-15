@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Webhook Chatbox</title>
-  <link rel="stylesheet" href="webhook.css">
+  <link rel="stylesheet" href="webhook.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Send Message via Discod Webhook</h1>
-    
+    <h1>Send Message via Discord Webhook</h1>
+
     <textarea id="chatbox" placeholder="Enter your message with formatting like *bold* or _italic_..."></textarea>
-    
+
     <input type="text" id="webhookUrl" placeholder="Enter Webhook URL">
-    
+
+    <div>
+      <input type="checkbox" id="embedCheckbox">
+      <label for="embedCheckbox">Send as Embed</label>
+    </div>
+
     <button id="sendBtn">Send (requires a password)</button>
-    
+
     <p class="note">Formatting: *bold*, _italic_</p>
   </div>
-  
+
   <script src="webhook.js"></script>
 </body>
 </html>
